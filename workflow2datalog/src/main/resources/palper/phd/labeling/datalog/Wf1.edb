@@ -1,0 +1,71 @@
+workflow(w1).
+
+
+workflowInput(w1,win1).
+definedDepth(w1, win1,1).
+predictedDepth(w1, win1,1).
+
+workflowInput(w1,win2).
+definedDepth(w1,win2,1).
+predictedDepth(w1,win2,1).
+
+workflowInput(w1,win3).
+definedDepth(w1,win3,2).
+predictedDepth(w1,win3,2).
+
+workflowOutput(w1,wout1).
+%definedDepth(w1,wout1,0).
+
+
+
+process(p1).
+hasLhbRoot(p1,uid1).
+realizedBy(p1,testresource).
+processInput(p1,a).
+processInput(p1,b).
+processInput(p1,x).
+processInput(p1,y).
+processInput(p1,z).
+processInput(p1,t).
+processOutput(p1,out1).
+
+dataLink(dl1,w1,win1,p1,a).
+dataLink(dl2,w1,win1,p1,b).
+dataLink(dl3,w1,win2,p1,x).
+dataLink(dl4,w1,win2,p1,y).
+dataLink(dl5,w1,win2,p1,z).
+dataLink(dl6,w1,win3,p1,t).
+
+
+dataLink(dl7,p1,out1,w1,wout1).
+
+
+%LHB DEFINITIONS
+lhbNode(uid1, cross, p1).
+lhbNode(uid2, dot, p1).
+lhbNode(uid3, dot, p1).
+lhbNode(uid4, t, p1).
+lhbNode(uid5, a, p1).
+lhbNode(uid9, b, p1).
+lhbNode(uid6, x, p1).
+lhbNode(uid7, y, p1).
+lhbNode(uid8, z, p1).
+
+
+
+hasChild(uid1, uid2,0).
+hasChild(uid1, uid3, 1).
+hasChild(uid1, uid4,2).
+
+hasChild(uid2,uid5,0).
+hasChild(uid2, uid9,1).
+
+hasChild(uid3,uid6,0).
+hasChild(uid3,uid7,1).
+hasChild(uid3, uid8,2).
+
+
+%CONTEXT DEFINITIONS
+
+%context(ctx1,w1,win1,0).
+context(ctx2,w1,win2,0).

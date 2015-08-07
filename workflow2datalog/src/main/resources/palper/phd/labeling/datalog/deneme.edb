@@ -1,0 +1,62 @@
+
+#const dotnode = dot.
+#const crossnode = cross.
+
+
+
+process(p1).
+hasLhbRoot(p1,uid1).
+
+normDeltaDepth(p1,a,0).
+normDeltaDepth(p1,b,0).
+normDeltaDepth(p1,x,1).
+normDeltaDepth(p1,y,1).
+normDeltaDepth(p1,z,1).
+normDeltaDepth(p1,t,2).
+
+
+
+%LHB DEFINITIONS
+lhbNode(uid1, cross, p1).
+lhbNode(uid2, dot, p1).
+lhbNode(uid3, dot, p1).
+lhbNode(uid4, t, p1).
+lhbNode(uid5, a, p1).
+lhbNode(uid9,b, p1).
+lhbNode(uid6, x, p1).
+lhbNode(uid7, y, p1).
+lhbNode(uid8, z, p1).
+
+hasChild(uid1, uid2,0).
+hasChild(uid1, uid3, 1).
+hasChild(uid1, uid4,2).
+
+hasChild(uid2,uid5,0).
+hasChild(uid2, uid9,1).
+
+hasChild(uid3,uid6,0).
+hasChild(uid3,uid7,1).
+hasChild(uid3, uid8,2).
+
+
+lhf(R,0):-  hasLhbRoot(P,R).
+
+lhf(FIRSTCHILD,VAL) :- lhbNode(PARENT,_,_), hasChild(PARENT, FIRSTCHILD, 0), lhf(PARENT,VAL).
+
+runningTotal(NODEID,Z) :- lhbNode(NODEID, NAME, PROC), NAME != dotnode, NAME != crossnode, lhf(NODEID,VAL),  normDeltaDepth(PROC, NAME, NDEL), Z=NDEL+VAL.
+
+lhf(SIBLING2, VAL):- lhbNode(PARENT,dotnode,_), hasChild(PARENT, SIBLING1, N), hasChild(PARENT, SIBLING2, NEXT), lhf(SIBLING1,VAL), NEXT= N+1.
+ 
+lhf(SIBLING2, VAL):- lhbNode(PARENT,crossnode,_), hasChild(PARENT, SIBLING1, N), hasChild(PARENT, SIBLING2, NEXT), runningTotal(SIBLING1,VAL), NEXT= N+1.
+
+runningTotal(PARENT, VAL):- lhbNode(PARENT,_,_), hasChild(PARENT, LASTCHILD, Y), #max{V : hasChild(PARENT,_,V)} =Y, runningTotal(LASTCHILD,VAL).
+
+
+
+
+
+
+ 
+
+
+

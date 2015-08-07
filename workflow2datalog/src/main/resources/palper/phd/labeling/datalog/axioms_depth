@@ -1,0 +1,33 @@
+
+%Processes inherit the defined depth from the resource that is used to realize them.
+definedDepth(P,O,D):- process(P), processOutput(P,O), realizedBy(P,R), resOutput(R,O,D).
+definedDepth(P,I,D):- process(P), processInput(P,I), realizedBy(P,R), resInput(R,I,D).
+
+% Calculate the delta for a single port using only  EDB predicates
+% This is to be used for workflow input ports
+deltaDepth(PRO, POR,Z):-  definedDepth(PRO, POR,DEFD), predictedDepth(PRO, POR, PREDD),  Z= PREDD-DEFD.
+
+
+% PROPAGATE predicted depth through a datalink .
+predictedDepth(SNK_PRO, SNK_POR,Z):- dataLink(ID,SRC_PRO, SRC_POR,SNK_PRO, SNK_POR), predictedDepth(SRC_PRO,SRC_POR,Z).
+
+
+normDeltaDepth(PRO, POR, 0):- deltaDepth(PRO, POR, PREDD), PREDD < 0.
+normDeltaDepth(PRO, POR, PREDD):- deltaDepth(PRO, POR, PREDD), PREDD >= 0.
+
+%comment out ettim
+%leftmostPosition(PRO, PORT,Z):- definedDepth(PRO,PORT,DDEP), predictedDepth(PRO, PORT,PDEP), PDEP >= DDEP, Z=PDEP-DDEP.
+%leftmostPosition(PRO, PORT,Z):- definedDepth(PRO, PORT,DDEP), predictedDepth(PRO, PORT,PDEP), PDEP < DDEP, Z=DDEP-PDEP.
+
+
+predictedDepth(PRO,O_POR,Z):- hasLhbRoot(PRO,R),runningTotal(R,RT), processOutput(PRO,O_POR), definedDepth(PRO,O_POR,DD),Z=DD+RT.
+
+
+%Iterated
+%iterated(L):-  datalink(L, SRC,SNK), predictedDepth(SNK,Y), definedDepth (SNK,X), Y > X.
+
+%Wrapped
+%wrapped(L):-  datalink(L, SRC,SNK),  predictedDepth(SNK,Y), definedDepth (SNK,X), X > Y.
+
+%Smooth
+%smooth(L):-  datalink(L, SRC,SNK),  predictedDepth(SNK,X), definedDepth (SNK,Y), X == Y.

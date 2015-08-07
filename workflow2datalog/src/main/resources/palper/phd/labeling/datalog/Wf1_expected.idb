@@ -1,0 +1,6 @@
+normalizedDeltaDepth(a,0).
+normalizedDeltaDepth(b,0).
+normalizedDeltaDepth(x,1).
+normalizedDeltaDepth(y,1).
+normalizedDeltaDepth(z,1).
+normalizedDeltaDepth(t,2).

@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>palper.phd.labeler</groupId>
+	<artifactId>wfdesc2datalog</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>wfdesc2datalog</name>
+	<description>converts the workflow description into datalog ground predicates</description>
+<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			</plugins>
+			</build>
+	<dependencies>
+		<dependency>
+			<groupId>palper.phd.summarizer</groupId>
+			<artifactId>wfdesc-browser</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+
+			<groupId>org.deri.iris</groupId>
+			<artifactId>iris-parser</artifactId>
+			<version>0.60</version>
+		</dependency>
+		<dependency>
+
+			<groupId>org.deri.iris</groupId>
+			<artifactId>iris</artifactId>
+			<version>0.60</version>
+		</dependency>
+		<!-- Following only needed by src/test/java -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>palper.phd.t2flow</groupId>
+			<artifactId>t2flow-inquirer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

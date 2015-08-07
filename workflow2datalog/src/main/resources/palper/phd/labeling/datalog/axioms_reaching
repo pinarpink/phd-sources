@@ -1,0 +1,14 @@
+
+
+%Bootstrap axiom
+reaches(CTX,PRO, PORT,Z):- context(CTX,PRO,PORT,RMPOS), predictedDepth(PRO,PORT,PRED_DEP), Z=PRED_DEP - RMPOS.
+
+
+contextDelta(CTX,PRO, PORT,Z):- reaches(CTX, PRO, PORT, CTX_POS), leftmostPosition(PRO, PORT, LMPOS), Z= CTX_POS - LMPOS.
+
+%Datalink axiom% there should be 2  other variants for iterated and wrapped linksreaches(CTX,SNKPRO, SNKPOR,Z):- reaches(CTX, SRCPRO, SRCPOR, Z), smooth(DL1), dataLink(DL1, SRCPRO,SRCPOR, SNKPRO, SNKPOR).
+
+
+%Activity Axiom
+%Propagate context from inputs of an activity to its outputs
+reaches(CTX,PRO, OUT1,Z):-  processInput(P1,IN1), processOutput(P1,OUT1), contextDelta(CTX,P1,IN1,CDEL), lhbNode(NODEID,IN1,P1), runningTotal(NODEID,FFAC), Z= CDEL+FFAC.

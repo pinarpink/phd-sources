@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>palper.phd.summarizer</groupId>
+	<artifactId>wfdesc-motif-extender</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>wfdesc-motif-extender</name>
+	<description>wfdesc-motif-extender</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>palper.phd.summarizer</groupId>
+			<artifactId>wfdesc-browser</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>palper.phd.t2flow</groupId>
+			<artifactId>t2flow-inquirer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Following only needed by src/test/java -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+</project>

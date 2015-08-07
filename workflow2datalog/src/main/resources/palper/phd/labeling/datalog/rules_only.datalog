@@ -1,0 +1,10 @@
+Foo(1).
+Foo(2).
+Foo(3).
+
+Bar(1).
+Bar(2).
+
+Idefix('a').
+
+Fred(?x, ?y) :- Barney(?x), Idefix(?y).

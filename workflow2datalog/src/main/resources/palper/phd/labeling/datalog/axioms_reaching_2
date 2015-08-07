@@ -1,0 +1,11 @@
+
+
+%Bootstrap axiom
+reaches(CTX,PRO,PORT,DEPTH):- context(CTX,PRO,PORT,DEPTH).
+
+%Datalink axiom
+reaches(CTX,SNKPRO,SNKPORT,DEPTH):- reaches(CTX,PRO,PORT,DEPTH), dataLink(_, PRO, PORT, SNKPRO, SNKPORT).
+
+%Activity axiom
+reaches(CTX, PRO, OUTPORT,RES):- reaches(CTX,PRO,INPORT,DEPTH), processInput(PRO,INPORT),processOutput(PRO,OUTPORT), predictedDepth(PRO,OUTPORT,Z), lhbNode(NODEID, INPORT, PRO), runningTotal(NODEID,FFAC), RES=Z-FFAC. 
+
