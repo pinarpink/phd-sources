@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>wfdesc2datalog</name>
 	<description>converts the workflow description into datalog ground predicates</description>
-<build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -17,13 +17,26 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			</plugins>
-			</build>
+		</plugins>
+	</build>
 	<dependencies>
+
+		<dependency>
+			<groupId>com.dlvsystem</groupId>
+			<artifactId>DLVWrapper</artifactId>
+			<version>4.2</version>
+		</dependency>
 		<dependency>
 			<groupId>palper.phd.summarizer</groupId>
 			<artifactId>wfdesc-browser</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.3</version>
+			<type>jar</type>
 		</dependency>
 		<dependency>
 
@@ -46,11 +59,18 @@
 		</dependency>
 
 
-
 		<dependency>
 			<groupId>palper.phd.t2flow</groupId>
 			<artifactId>t2flow-inquirer</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+			<repository>
+			<id>ghxiao-mvn-repo-releases</id>
+			<url>https://github.com/ghxiao/ghxiao-mvn-repo/raw/master/releases</url>
+	</repository>
+	
+	</repositories>
 </project>

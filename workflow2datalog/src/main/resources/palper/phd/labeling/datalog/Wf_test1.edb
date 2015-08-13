@@ -1,0 +1,50 @@
+workflow(w1).
+
+workflowInput(w1,win1).
+definedDepth(w1, win1,1).
+predictedDepth(w1, win1,1).
+
+process(strcons1).
+hasLhbRoot(strcons1,null).
+processOutput(strcons1,value).
+definedDepth(strcons1,value,0).
+
+process(strcons2).
+hasLhbRoot(strcons2,null).
+processOutput(strcons2,value).
+definedDepth(strcons2,value,0).
+
+
+process(concat).
+
+processInput(concat,one).
+definedDepth(concat,one,0).
+processInput(concat,two).
+definedDepth(concat,two,0).
+processInput(concat,three).
+definedDepth(concat,three,0).
+processOutput(concat,out1).
+definedDepth(concat,out1,0).
+
+hasLhbRoot(concat,uid1).
+%LHB DEFINITIONS
+lhbNode(uid1, cross, concat).
+lhbNode(uid6, one, concat).
+lhbNode(uid7, two, concat).
+lhbNode(uid8, three, concat).
+hasChild(uid1, uid6,0).
+hasChild(uid1, uid7, 1).
+hasChild(uid1, uid8,2).
+
+workflowOutput(w1,wout1).
+
+dataLink(dl1,strcons1,value,concat,one).
+dataLink(dl2,strcons2,value,concat,three).
+dataLink(dl3,w1,win1,concat,two).
+dataLink(dl4,concat,out1,w1,wout1).
+
+
+%CONTEXT DEFINITIONS
+context(ctxStatic,strcons2,value,0).
+context(ctxDynamic,w1,win1,0).
+

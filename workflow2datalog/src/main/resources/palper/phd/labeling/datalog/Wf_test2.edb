@@ -14,7 +14,7 @@ definedDepth(w1,win3,2).
 predictedDepth(w1,win3,2).
 
 workflowOutput(w1,wout1).
-%definedDepth(w1,wout1,0).
+definedDepth(w1,wout1,0).
 
 
 

@@ -24,26 +24,16 @@ public class TestEdbGenerator {
 		// /Users/pinarpink/Desktop/SummarizationRules/dataset
 
 		String dataSetDirStr = "/Users/pinarpink/Desktop/SummarizationRules/dataset";
-		String ruleFileStr = "/Users/pinarpink/Work/workspaces/eclipse-helios-new/workflow2datalog/src/main/resources/palper/phd/labeling/datalog/rules_only.datalog";
-
-		File ruleFile = new File(ruleFileStr);
 
 		File dataset_dir = new File(dataSetDirStr);
 		File[] file_array = dataset_dir.listFiles();
 		for (int i = 0; i < file_array.length; i++) {
 			if (file_array[i].getName().endsWith(".wfdesc.ttl")) {
-				String t2FlowAsumedName = file_array[i].getName();
-				t2FlowAsumedName = t2FlowAsumedName.replaceFirst("\\..*", "")
-						+ ".t2flow";
-
-				File t2FlowFile = new File(file_array[i].getParent()
-						+ File.separator + t2FlowAsumedName);
-
 				try {
 					WorkflowEdbGenerator ext;
 					ext = new WorkflowEdbGenerator(file_array[i]);
-
-					
+					ext.writeEdbToFile();
+					System.out.println(ext.getEdbAsDLVString());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -57,6 +47,9 @@ public class TestEdbGenerator {
 
 			}
 		}
+		
+		
+		
 	}
 
 }
