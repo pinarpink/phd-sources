@@ -9,9 +9,9 @@ import palper.phd.labeling.model.LabelInstanceBean;
 
 /**
  * @author pinarpink
- * 
+ *
  */
-public interface ILabelAggregationFunction {
+public interface ILabelPropagationFunction {
 	List<LabelInstanceBean> run(List<LabelInstanceBean> inputLabels);
 
 }

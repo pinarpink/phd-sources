@@ -29,25 +29,25 @@ public class LabelingSpecBean implements Serializable {
 	@JsonIgnore
 	private static final long serialVersionUID = 1L;
 
-	@JsonProperty("wfElementUri")
-	private String wfElementUriString;
+	@JsonProperty("wfElementUriList")
+	private List<String> wfElementUriStringList;
 
 	@JsonProperty("operator")
 	private LabelingOperatorEnum operator;
 
 	@JsonProperty("sourcePortUriList")
 	private List<String> sourcePortUriStringList;
-	
+
 	@JsonProperty("sinkPortUriList")
 	private List<String> sinkPortUriStringList;
-	
-	//TODO do not ignore
+
+	// TODO do not ignore
 	@JsonIgnore
 	private URI labelVectorUri;
-	
+
 	@JsonProperty("depthDifference")
 	private int dataLinkDepthDifference;
-	
+
 	@JsonProperty("labelingFunction")
 	private String labelingFunctionIdentifier;
 
@@ -55,6 +55,14 @@ public class LabelingSpecBean implements Serializable {
 	public LabelingSpecBean() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public List<String> getWfElementUriStringList() {
+		return wfElementUriStringList;
+	}
+
+	public void setWfElementUriStringList(List<String> wfElementUriStringList) {
+		this.wfElementUriStringList = wfElementUriStringList;
 	}
 
 	public int getDataLinkDepthDifference() {
@@ -65,14 +73,6 @@ public class LabelingSpecBean implements Serializable {
 		this.dataLinkDepthDifference = dataLinkDepthDifference;
 	}
 
-	public String getWfElementUriString() {
-		return wfElementUriString;
-	}
-
-	public void setWfElementUriString(String wfElementUriString) {
-		this.wfElementUriString = wfElementUriString;
-	}
-
 	public LabelingOperatorEnum getOperator() {
 		return operator;
 	}
@@ -81,7 +81,6 @@ public class LabelingSpecBean implements Serializable {
 		this.operator = operator;
 	}
 
-	
 	public String getLabelingFunctionIdentifier() {
 		return labelingFunctionIdentifier;
 	}
@@ -90,7 +89,6 @@ public class LabelingSpecBean implements Serializable {
 		this.labelingFunctionIdentifier = labelingFunctionIdentifier;
 	}
 
-
 	public URI getLabelVectorUri() {
 		return labelVectorUri;
 	}
@@ -98,7 +96,7 @@ public class LabelingSpecBean implements Serializable {
 	public void setLabelVectorUriList(URI labelVectorUri) {
 		this.labelVectorUri = labelVectorUri;
 	}
-	
+
 	public List<String> getSourcePortUriStringList() {
 		return sourcePortUriStringList;
 	}
@@ -117,11 +115,11 @@ public class LabelingSpecBean implements Serializable {
 
 	@Override
 	public String toString() {
-		
+
 		StringWriter str = new StringWriter();
 		try {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS, true);
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS, true);
 			mapper.writeValue(str, this);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
@@ -133,11 +131,50 @@ public class LabelingSpecBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 		return str.toString();
-//		return "LabelingSpecBean [wfElementUriString=" + wfElementUriString + ","+" operator=" + operator + ", " 
-//				+ " sourcePortUriString=" + sourcePortUriString + ", " + "sinkPortUriString=" + sinkPortUriString + ", " +
-//				"labelVectorUri=" + labelVectorUri + "]";
+		// return "LabelingSpecBean [wfElementUriString=" + wfElementUriString +
+		// ","+" operator=" + operator + ", "
+		// + " sourcePortUriString=" + sourcePortUriString + ", " +
+		// "sinkPortUriString=" + sinkPortUriString + ", " +
+		// "labelVectorUri=" + labelVectorUri + "]";
+	}
+
+	@Override
+	public int hashCode() {
+
+		if (this.operator.equals(LabelingOperatorEnum.MINT)
+				|| this.operator.equals(LabelingOperatorEnum.PROPAGATE)) {
+			return (this.operator.hashCode() 
+					* this.wfElementUriStringList.get(0).hashCode());
+		} else {
+			return (this.operator.hashCode()
+					* this.sourcePortUriStringList.get(0).hashCode()
+					* this.sinkPortUriStringList.get(0).hashCode() 
+					* this.dataLinkDepthDifference);
+		}
+
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof LabelingSpecBean))
+			return false;
+		LabelingSpecBean other = (LabelingSpecBean) o;
+
+		if (this.operator.equals(LabelingOperatorEnum.MINT)
+				|| this.operator.equals(LabelingOperatorEnum.PROPAGATE)) {
+			return ((this.operator.equals(other.operator)) && (this.wfElementUriStringList
+					.get(0).equals(other.wfElementUriStringList.get(0))));
+		} else {
+			return ((this.operator.equals(other.operator))
+					&& (this.sourcePortUriStringList.get(0)
+							.equals(other.sourcePortUriStringList.get(0)))
+					&& (this.sinkPortUriStringList.get(0)
+							.equals(other.sinkPortUriStringList.get(0))) 
+					&& (this.dataLinkDepthDifference == other.dataLinkDepthDifference));
+		}
+
 	}
 
 }
