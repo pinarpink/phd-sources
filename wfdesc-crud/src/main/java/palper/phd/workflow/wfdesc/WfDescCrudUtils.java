@@ -56,6 +56,8 @@ public class WfDescCrudUtils {
 
 	private QName wfQName;
 
+	private String baseURIString;
+	
 	public SesameManager getSesameManager() {
 		if (sesameManager == null) {
 			ElmoModule module = new ElmoModule();
@@ -70,6 +72,7 @@ public class WfDescCrudUtils {
 
 	public WfDescCrudUtils(String namespace, String workflowURI) {
 
+		baseURIString = namespace;
 		wfQName = new QName(namespace, workflowURI);
 
 		getSesameManager().create(wfQName,
@@ -191,7 +194,7 @@ public class WfDescCrudUtils {
 	// .add(output);
 	// // } else if (node instanceof DataLink) {
 
-	public void save(String baseURI, OutputStream output)
+	public void save(OutputStream output)
 			throws WriterException {
 
 		ContextAwareConnection connection = sesameManager.getConnection();
@@ -207,7 +210,7 @@ public class WfDescCrudUtils {
 							"http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#");
 
 			connection.export(new OrganizedRDFWriter(new TurtleWriterWithBase(
-					output, new URI(baseURI))));
+					output, new URI(baseURIString))));
 		} catch (OpenRDFException e) {
 			throw new WriterException("Can't write to output", e);
 		} catch (URISyntaxException e) {
