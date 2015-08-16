@@ -45,7 +45,7 @@ import com.hp.hpl.jena.util.FileUtils;
  * @author pinarpink
  * 
  */
-public class WorkflowEdbGenerator {
+public class ZZZZZWorkflowEdbGenerator {
 
 	private Model wfdescModel;
 
@@ -61,7 +61,7 @@ public class WorkflowEdbGenerator {
 	private IKnowledgeBase base;
 	private Map<IPredicate, IRelation> facts;
 
-	public WorkflowEdbGenerator(File wfdescFile) throws FileNotFoundException,
+	public ZZZZZWorkflowEdbGenerator(File wfdescFile) throws FileNotFoundException,
 			EvaluationException {
 		super();
 

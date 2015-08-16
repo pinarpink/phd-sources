@@ -24,16 +24,17 @@ public class TestCombined {
 		try {
 			DLVClient cli = new DLVClient();
 
-			String workflowPath = "/Users/pinarpink/Desktop/SummarizationRules/dataset/2920.wfdesc.ttl";
+			String workflowPath = "/Users/pinarpink/Desktop/SummarizationRules/dataset/2920_portname_fixed.wfdesc.ttl";
 
 			File workflowFile = new File(workflowPath);
-			WorkflowEdbGenerator ext = new WorkflowEdbGenerator(workflowFile);
+			Wfdesc2Datalog ext = new Wfdesc2Datalog(workflowFile);
 			// ext.writeEdbToFile();
 			
-			System.out.println(ext.getEdbAsDLVString());
+			//System.out.println(ext.getEdbAsDLVString());
 			cli.addWorkflowDescription(ext.getEdbAsDLVString());
 			cli.invokeDlv(null, null);
 
+			//System.out.println(cli.getWorkflowIDB().toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

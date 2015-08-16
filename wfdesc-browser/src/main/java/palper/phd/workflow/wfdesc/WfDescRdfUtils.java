@@ -37,6 +37,111 @@ public class WfDescRdfUtils {
 		;
 		return res;
 	}
+	public static Set<Resource> getDependentOperations(Resource opA,
+			Model model) {
+
+		Set<Resource> result = new HashSet<Resource>();
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " SELECT DISTINCT ?opB  \n"
+				+ " WHERE { \n"
+				+ " <"
+				+ opA.getURI()
+				+ "> wfdesc:hasOutput ?outA . \n"
+				+ " ?link a wfdesc:DataLink . \n"
+				+ " ?link wfdesc:hasSource ?outA . \n"
+				+ " ?link wfdesc:hasSink ?inB . \n"
+				+ " ?opB  wfdesc:hasInput ?inB . \n" + " } \n";
+
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result.add(soln.getResource("opB"));
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return result;
+	}
+	
+	
+	public static boolean datalinkExists(Resource sourcePort, Resource sinkPort,
+			Model model) {
+
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " SELECT DISTINCT ?link  \n"
+				+ " WHERE { \n"
+				+ " ?link a wfdesc:DataLink . \n"
+				+ " ?link wfdesc:hasSource " +"<"+sourcePort.getURI()+">" +"  . \n"
+				+ " ?link wfdesc:hasSink " +"<"+sinkPort.getURI()+">" +"  . \n"
+				+ " } \n";
+
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		
+		boolean exists = false;
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				exists = true;
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return exists;
+	}
+
+
+	public static Set<Resource> getDependencyOperations(Resource opA,
+			Model model) {
+
+		Set<Resource> result = new HashSet<Resource>();
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX wf4ever: <http://purl.org/wf4ever/wf4ever#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " SELECT DISTINCT ?opD  \n"
+				+ " WHERE { \n"
+				+ " ?opD wfdesc:hasOutput ?outD . \n"
+				+ " <"
+				+ opA.getURI()
+				+ "> wfdesc:hasInput ?inA . \n"
+				+ " ?link a wfdesc:DataLink . \n"
+				+ " ?link wfdesc:hasSource ?outD . \n"
+				+ " ?link wfdesc:hasSink ?inA . \n"
+				+ "FILTER (NOT EXISTS { ?opD a wf4ever:StringConstant } ) \n"
+				+ " } \n";
+
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result.add(soln.getResource("opD"));
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return result;
+	}
 
 	public static boolean isTraceLink(Resource link, Model model) {
 
@@ -790,7 +895,7 @@ public class WfDescRdfUtils {
 	}
 	public static boolean isOperation( Model model, Resource processor) {
 		StmtIterator iter = model.listStatements(processor,
-				model.getProperty(SummarizerNamespaces.rdfNS, "type"),
+				model.getProperty(SummarizerNamespaces.labelingExtNS, "type"),
 				model.getResource(SummarizerNamespaces.wfdescNS + "Process"));
 
 		if (iter.hasNext()){
@@ -801,6 +906,49 @@ public class WfDescRdfUtils {
 		}
 
 	}
+	
+	public static boolean hasLhbFormula(Model model, Resource processor) {
+		return model.contains(processor,
+				model.getProperty(SummarizerNamespaces.labelingExtNS, "lhbFormula"));
+
+
+	}
+	
+	public static String getLhbFormulaJSON( Model model, Resource processor) {
+
+		Literal result = null;
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " PREFIX motifs:  <http://purl.org/wf4ever/motifs.owl#>\n"
+				+ " PREFIX lblwf: <http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#>\n"
+				+ " SELECT  ?val \n"
+				+ " WHERE { \n"
+				//+ " ?proc a lblwf:StringConstant . \n"
+				+"<"
+				+ processor.getURI()
+				+ ">  lblwf:lhbFormula ?val . \n"
+				+ " } \n";
+
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result = soln.getLiteral("val");
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return (String)result.getValue();
+
+	}
+	
 	
 	public static boolean isStringConstant( Model model, Resource processor) {
 		StmtIterator iter = model.listStatements(processor,

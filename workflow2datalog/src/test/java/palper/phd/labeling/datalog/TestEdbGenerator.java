@@ -30,8 +30,8 @@ public class TestEdbGenerator {
 		for (int i = 0; i < file_array.length; i++) {
 			if (file_array[i].getName().endsWith(".wfdesc.ttl")) {
 				try {
-					WorkflowEdbGenerator ext;
-					ext = new WorkflowEdbGenerator(file_array[i]);
+					Wfdesc2Datalog ext;
+					ext = new Wfdesc2Datalog(file_array[i]);
 					ext.writeEdbToFile();
 					System.out.println(ext.getEdbAsDLVString());
 				} catch (FileNotFoundException e) {

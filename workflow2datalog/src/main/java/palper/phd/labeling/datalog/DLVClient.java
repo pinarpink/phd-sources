@@ -3,29 +3,26 @@
  */
 package palper.phd.labeling.datalog;
 
+import it.unical.mat.dlv.program.Literal;
+import it.unical.mat.wrapper.DLVError;
+import it.unical.mat.wrapper.DLVInputProgram;
+import it.unical.mat.wrapper.DLVInputProgramImpl;
+import it.unical.mat.wrapper.DLVInvocation;
+import it.unical.mat.wrapper.DLVInvocationException;
+import it.unical.mat.wrapper.DLVWrapper;
+import it.unical.mat.wrapper.ModelBufferedHandler;
+import it.unical.mat.wrapper.Predicate;
+import it.unical.mat.wrapper.PredicateResult;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
-
-import it.unical.mat.dlv.program.Literal;
-import it.unical.mat.dlv.program.Query;
-import it.unical.mat.wrapper.DLVError;
-import it.unical.mat.wrapper.DLVInputProgram;
-import it.unical.mat.wrapper.DLVInputProgramImpl;
-import it.unical.mat.wrapper.DLVInvocation;
-import it.unical.mat.wrapper.DLVInvocation.DLVInvocationState;
-import it.unical.mat.wrapper.DLVInvocationException;
-import it.unical.mat.wrapper.DLVWrapper;
-import it.unical.mat.wrapper.Model;
-import it.unical.mat.wrapper.ModelBufferedHandler;
-import it.unical.mat.wrapper.ModelHandler;
-import it.unical.mat.wrapper.ModelResult;
-import it.unical.mat.wrapper.Predicate;
-import it.unical.mat.wrapper.PredicateHandlerWithName;
+import java.util.Map;
 
 /**
  * @author pinarpink
@@ -36,6 +33,11 @@ public class DLVClient {
 	private DLVInputProgram inputProgram;
 
 	DLVInvocation invocation;
+	
+
+
+	Map<Predicate, List<Literal>>   workflowIDB;
+
 
 	public DLVClient() throws IOException {
 		super();
@@ -67,17 +69,13 @@ public class DLVClient {
 	}
 
 	public void invokeDlv(String query, List<String> execOptions) {
-		// Query qry = new Query();
-		// qry.s
-		// inputProgram.setQuery(new Query(query));
+
 
 		try {
-//			for (String s : execOptions) {
-//
-//				invocation.addOption(s);
-//
-//			}
-			URL resourceURL = this.getClass().getResource("dlv");
+
+			URL resourceURL = new URL("file:/Users/pinarpink/Work/workspaces/eclipse-helios-gitted/workflow2datalog/src/main/resources/palper/phd/labeling/datalog/dlv");
+					
+			
 			invocation = DLVWrapper.getInstance().createInvocation(resourceURL.getPath());
 			invocation.setInputProgram(inputProgram);
 			invocation.setNumberOfModels(0);
@@ -87,26 +85,38 @@ public class DLVClient {
 
 			/* In this moment I can start the DLV execution */
 			invocation.run();
-
-			/* Scroll all models computed */
-			while (modelBufferedHandler.hasMoreModels()) {
-				Model model = modelBufferedHandler.nextModel();
-				Enumeration<Predicate> ps = model.getPredicates();
-				System.out.println("--------");
-				while (ps.hasMoreElements()) {
-					Predicate predicate = ps.nextElement();
-					System.out.println(predicate.toString());
-					System.out.println("++++++++++");
-//					while (predicate.hasMoreLiterals()) {
-//						Literal literal = predicate.nextLiteral();
-//						
-//					}
-				}
-			}
-
 			/* If i wont to wait the finish of execution, i can use thi method */
 			invocation.waitUntilExecutionFinishes();
 			
+			workflowIDB = new HashMap<Predicate, List<Literal>>();
+			/* Scroll all models computed */
+			while (modelBufferedHandler.hasMoreModels()) {
+				it.unical.mat.wrapper.Model workflowIDBModel = modelBufferedHandler.nextModel();
+				Enumeration<Predicate> ps = workflowIDBModel.getPredicates();
+				//System.out.println("--------");
+				List<Predicate> predList = new ArrayList<Predicate>();
+				
+			   
+				while (ps.hasMoreElements()) {
+					Predicate predicate = ps.nextElement();
+					predList.add(predicate);
+		
+					//if (predicate.name().equals("predictedDepth")){
+						workflowIDB.put(predicate, new ArrayList<Literal>());
+						while (predicate.hasMoreLiterals()) {
+							Literal literal = predicate.nextLiteral();
+							workflowIDB.get(predicate).add(literal);
+							System.out.println(literal.toString());
+					
+						}		
+					//}
+
+					
+				//	System.out.println("++++++++++");
+
+				}
+			}
+
 			List<DLVError>errors =  invocation.getErrors();
 			
 			for(DLVError err:errors){
@@ -121,6 +131,11 @@ public class DLVClient {
 			e.printStackTrace();
 		}
 
+	}
+	
+
+	public Map<Predicate, List<Literal>> getWorkflowIDB() {
+		return workflowIDB;
 	}
 
 }
