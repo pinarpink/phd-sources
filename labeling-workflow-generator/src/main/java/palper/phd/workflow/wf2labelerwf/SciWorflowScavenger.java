@@ -290,20 +290,23 @@ public class SciWorflowScavenger {
 
 		Set<Resource> upstreamOps = WfDescRdfUtils.getDependencyOperations(
 				procResource, sciWorkflowWfdesc);
+		
+		List<String> coveredSourcePorts = processorSpecBag.get(
+				procResource.getURI()).getSourcePortUriStringList();
+		
 		boolean allblackbox = true;
 		for (Resource op : upstreamOps) {
-			LabelingSpecBean preceedingSpec = processorSpecBag.get(op);
+			LabelingSpecBean preceedingSpec = processorSpecBag.get(op.getURI());
 			if (preceedingSpec != null) {
 
 				List<String> taintedSourcePorts = preceedingSpec
 						.getSinkPortUriStringList();
-				List<String> coveredSinkPorts = processorSpecBag.get(
-						procResource).getSinkPortUriStringList();
+
 				// check if there is a datalink that links any two ports from
 				// the above two lists.
 
 				for (String src : taintedSourcePorts) {
-					for (String snk : coveredSinkPorts) {
+					for (String snk : coveredSourcePorts) {
 
 						Resource srcRes = sciWorkflowWfdesc.getResource(src);
 						Resource snkRes = sciWorkflowWfdesc.getResource(snk);
@@ -316,9 +319,18 @@ public class SciWorflowScavenger {
 
 			}
 		}
+		
+		Set<Resource> upstreamWorkfInputs = WfDescRdfUtils.getUpstreamWorkflowInputs(procResource, sciWorkflowWfdesc);
+		for (Resource wfInput : upstreamWorkfInputs) {
+			for (String snk : coveredSourcePorts) {
 
+				Resource snkRes = sciWorkflowWfdesc.getResource(snk);
+				if (WfDescRdfUtils.datalinkExists(wfInput, snkRes,sciWorkflowWfdesc)) {
+					allblackbox = false;
+				}
+			}
+		}
 		return allblackbox;
-
 	}
 
 }

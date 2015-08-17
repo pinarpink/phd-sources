@@ -26,17 +26,11 @@ public class MotifAnnotationsStub {
 	
 	static {
 		
-		
-//		palper.phd.labeling.registry.SesameLabeler
-//		palper.phd.labeling.registry.VII_237Labeler
-//		palper.phd.labeling.registry.Calculate_internal_extinctionLabeler
-//		
-		
 		cache = new HashMap<String, LabelingSpecBean>();
 
-		String proc1= pref+"SesameXML";
+		String proc1= pref+"SesameXML/";
 		cache.put(proc1, LabelSpecFactory.createMintSpec(proc1, null,proc1+"out/return", "palper.phd.labeling.registry.SesameLabeler"));	
-		String proc2= pref+"Extracting_DEC";
+		String proc2= pref+"Extracting_DEC/";
 		cache.put(proc2, LabelSpecFactory.createPropagateSpec(proc2, proc2+"in/xml-text",proc2+"out/nodelist", "palper.phd.labeling.registry.LabelCopier" ));
 		String proc3= pref+"Extracting_RA/";
 		cache.put(proc3, LabelSpecFactory.createPropagateSpec(proc3, proc3+"in/xml-text",proc3+"out/nodelist", "palper.phd.labeling.registry.LabelCopier" ));
