@@ -72,6 +72,41 @@ public class WfDescRdfUtils {
 		return result;
 	}
 	
+	public static Set<Resource> getDependencyOperations(Resource opA,
+			Model model) {
+
+		Set<Resource> result = new HashSet<Resource>();
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " SELECT DISTINCT ?opB  \n"
+				+ " WHERE { \n"
+				+ " ?opB wfdesc:hasOutput ?outB . \n"
+				+ " ?link a wfdesc:DataLink . \n"
+				+ " ?link wfdesc:hasSource ?outB . \n"
+				+ " ?link wfdesc:hasSink ?inA . \n"
+				+ " <"
+				+ opA.getURI()
+				+ ">"+" wfdesc:hasInput ?inA . \n" + " } \n";
+
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result.add(soln.getResource("opB"));
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return result;
+	}
+	
 	
 	public static boolean datalinkExists(Resource sourcePort, Resource sinkPort,
 			Model model) {
@@ -95,6 +130,9 @@ public class WfDescRdfUtils {
 
 			for (; results.hasNext();) {
 
+				QuerySolution soln = results.nextSolution();
+				//we're nt really interested in the soln 
+				//we re just moving the iterator
 				exists = true;
 
 			}
@@ -105,7 +143,7 @@ public class WfDescRdfUtils {
 	}
 
 
-	public static Set<Resource> getDependencyOperations(Resource opA,
+	public static Set<Resource> getUpstreamWorkflowInputs(Resource opA,
 			Model model) {
 
 		Set<Resource> result = new HashSet<Resource>();
@@ -113,18 +151,15 @@ public class WfDescRdfUtils {
 		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
 				+ " PREFIX wf4ever: <http://purl.org/wf4ever/wf4ever#> \n"
 				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?opD  \n"
+				+ " SELECT DISTINCT ?win  \n"
 				+ " WHERE { \n"
-				+ " ?opD wfdesc:hasOutput ?outD . \n"
-				+ " <"
-				+ opA.getURI()
-				+ "> wfdesc:hasInput ?inA . \n"
+				+ " ?wf wfdesc:hasInput ?win . \n"
 				+ " ?link a wfdesc:DataLink . \n"
-				+ " ?link wfdesc:hasSource ?outD . \n"
+				+ " ?link wfdesc:hasSource ?win . \n"
 				+ " ?link wfdesc:hasSink ?inA . \n"
-				+ "FILTER (NOT EXISTS { ?opD a wf4ever:StringConstant } ) \n"
+				+ "<"+ opA.getURI()+">"+ " wfdesc:hasInput  ?inA . \n"
 				+ " } \n";
-
+		
 		Query query = QueryFactory.create(queryStr);
 		QueryExecution qexec = QueryExecutionFactory.create(query, model);
 		try {
@@ -134,7 +169,7 @@ public class WfDescRdfUtils {
 
 				QuerySolution soln = results.nextSolution();
 
-				result.add(soln.getResource("opD"));
+				result.add(soln.getResource("win"));
 
 			}
 		} finally {
