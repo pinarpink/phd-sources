@@ -39,19 +39,14 @@ public class SciWorflowScavenger {
 		return processorSpecBag;
 	}
 
-
-
-	public void setProcessorSpecBag(Map<String, LabelingSpecBean> processorSpecBag) {
+	public void setProcessorSpecBag(
+			Map<String, LabelingSpecBean> processorSpecBag) {
 		this.processorSpecBag = processorSpecBag;
 	}
-
-
 
 	public Map<String, List<LabelingSpecBean>> getAdjustmentSpecBag() {
 		return adjustmentSpecBag;
 	}
-
-
 
 	public void setAdjustmentSpecBag(
 			Map<String, List<LabelingSpecBean>> adjustmentSpecBag) {
@@ -68,12 +63,10 @@ public class SciWorflowScavenger {
 		sciWorkflowWfdesc = wfdescModel;
 
 		this.predictedDepths = predictedDepths;
-		
+
 		obtainLabelingSpecs();
 
 	}
-
-
 
 	private void obtainLabelingSpecs() {
 		Resource wfResource = WfDescRdfUtils
@@ -117,7 +110,7 @@ public class SciWorflowScavenger {
 				processorSpecBag.remove(tobeRemoved);
 			}
 
-		} while (detected == true);
+		} while (detected);
 
 		Set<Resource> links = WfDescRdfUtils.getDataLinks(sciWorkflowWfdesc,
 				wfResource);
@@ -127,6 +120,7 @@ public class SciWorflowScavenger {
 			Resource sourcePort = WfDescRdfUtils.getSource(sciWorkflowWfdesc,
 					link);
 			Resource sinkPort = WfDescRdfUtils.getSink(sciWorkflowWfdesc, link);
+
 
 			if (WfDescRdfUtils.isWorkflowInputPort(sourcePort,
 					sciWorkflowWfdesc)) {
@@ -147,20 +141,7 @@ public class SciWorflowScavenger {
 						sciWorkflowWfdesc);
 				Integer snkDepth = predictedDepths.get(sinkPort.getURI());
 
-				if (snkDepth == null)
-				{
-					System.out.println("Sink depth is null for this port"+sinkPort.getURI());
-					
-				}
-				
-				if (srcDepth == null)
-				{
-					System.out.println("Sink depth is null for this port"+sourcePort.getURI());
-					
-				}
-				// in this case the depth difference is mostdefinitely negative
-				// we will keep creating generalize processors until we reach
-				// the top collection (workflow output)
+
 				int depthDiff = srcDepth - snkDepth;
 				while (depthDiff < 0) {
 					LabelingSpecBean adjustedBefore = hasAssociatedLabelingSpec(
@@ -269,7 +250,7 @@ public class SciWorflowScavenger {
 				List<String> taintedPorts = sourceSpec
 						.getSinkPortUriStringList();
 				for (String port : taintedPorts) {
-					if (port == sourcePort.getURI()) {
+					if (port.equals(sourcePort.getURI())) {
 						sourceTainted = true;
 					}
 				}
@@ -290,10 +271,10 @@ public class SciWorflowScavenger {
 
 		Set<Resource> upstreamOps = WfDescRdfUtils.getDependencyOperations(
 				procResource, sciWorkflowWfdesc);
-		
+
 		List<String> coveredSourcePorts = processorSpecBag.get(
 				procResource.getURI()).getSourcePortUriStringList();
-		
+
 		boolean allblackbox = true;
 		for (Resource op : upstreamOps) {
 			LabelingSpecBean preceedingSpec = processorSpecBag.get(op.getURI());
@@ -319,13 +300,15 @@ public class SciWorflowScavenger {
 
 			}
 		}
-		
-		Set<Resource> upstreamWorkfInputs = WfDescRdfUtils.getUpstreamWorkflowInputs(procResource, sciWorkflowWfdesc);
+
+		Set<Resource> upstreamWorkfInputs = WfDescRdfUtils
+				.getUpstreamWorkflowInputs(procResource, sciWorkflowWfdesc);
 		for (Resource wfInput : upstreamWorkfInputs) {
 			for (String snk : coveredSourcePorts) {
 
 				Resource snkRes = sciWorkflowWfdesc.getResource(snk);
-				if (WfDescRdfUtils.datalinkExists(wfInput, snkRes,sciWorkflowWfdesc)) {
+				if (WfDescRdfUtils.datalinkExists(wfInput, snkRes,
+						sciWorkflowWfdesc)) {
 					allblackbox = false;
 				}
 			}
