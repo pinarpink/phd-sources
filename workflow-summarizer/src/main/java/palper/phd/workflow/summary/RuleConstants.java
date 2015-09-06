@@ -2,6 +2,9 @@ package palper.phd.workflow.summary;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import palper.phd.workflow.wfdesc.WfDescRdfUtils;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -21,27 +24,34 @@ public class RuleConstants {
 	static {
 		handlers = new HashMap<String, SolutionHandler>();
 
-
 		handlers.put(collapseDown, new SolutionHandler() {
 		
-        public Model handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
+        public boolean handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
         	
-
-			Resource opA = soln.getResource("opA");
+			Resource op = soln.getResource("op");
+			Resource wf = soln.getResource("wf");
 			
-			return WorkflowRewritePrimitives.diffuseOperationDownStream(model, opA); 
+			Set<Resource> procs = WfDescRdfUtils.getProcessors(model, WfDescRdfUtils.getWorkflowResource(model));
+			
+			boolean result = WorkflowRewritePrimitives.diffuseOperationDownStream(model, op, wf);
+					
+			Set<Resource> procs2 = WfDescRdfUtils.getProcessors(model, WfDescRdfUtils.getWorkflowResource(model));
+				
+			return result; 
         	
         };
     });
 
 		handlers.put(collapseUp, new SolutionHandler() {
 			
-	        public Model handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
+	        public boolean handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
 	        	
 
-				Resource opB = soln.getResource("opB");
+				Resource op = soln.getResource("op");
+				Resource wf = soln.getResource("wf");
 				
-				return WorkflowRewritePrimitives.diffuseOperationUpStream(model, opB); 
+				
+				return WorkflowRewritePrimitives.diffuseOperationUpStream(model, op, wf); 
 	        	
 	        };
 	    });
@@ -50,51 +60,29 @@ public class RuleConstants {
 		
 		handlers.put(eliminate, new SolutionHandler() {
 			
-            public Model handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
+            public boolean handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
             	
-				Resource opA = soln.getResource("opA");
+				Resource op = soln.getResource("op");
 				
-				return WorkflowRewritePrimitives.eliminateOperation(model, opA); 
+				return WorkflowRewritePrimitives.eliminateOperation(model, op); 
             	
             };
         });
 		
 		
 		
-		handlers.put(compose, new SolutionHandler() {
-			
-            public Model handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
-            	
-				Resource opA = soln.getResource("opA");
-				Resource opB = soln.getResource("opB");
-				
-				return WorkflowRewritePrimitives.combineOperations(model, opA, opB, MotifPropagationPolicy.BOTH); 
-            	
-            };
-        });
-//		handlers.put(unsinkedOutput, new SolutionHandler() {
+//		handlers.put(compose, new SolutionHandler() {
 //			
-//            public Model handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
+//            public boolean handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
 //            	
-//				Resource outA = soln.getResource("outA");
-//			
+//				Resource opA = soln.getResource("opA");
+//				Resource opB = soln.getResource("opB");
 //				
-//				return WorkflowRewritePrimitives.eliminatePort(model, outA); 
+//				return WorkflowRewritePrimitives.combineOperations(model, opA, opB, MotifPropagationPolicy.BOTH); 
 //            	
 //            };
 //        });
-//		
-//		handlers.put(unsourcedInput, new SolutionHandler() {
-//			
-//            public Model handleSummaryRuleSparql(QuerySolution soln, InfModel model) {
-//            	
-//				Resource inA = soln.getResource("inA");
-//			
-//				
-//				return WorkflowRewritePrimitives.eliminatePort(model, inA); 
-//            	
-//            };
-//        });
+
 	}
 	
 	static Map<String, SolutionHandler> getHandlers(){

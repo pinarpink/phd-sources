@@ -12,11 +12,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -24,8 +29,13 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.configuration.tree.ConfigurationNode;
 
 import palper.phd.wfdesc.visualize.graphml.GraphmlWriter;
+import palper.phd.workflow.db.OriginalWfdescModelsRepo;
+import palper.phd.workflow.db.WorkflowInfo;
+import palper.phd.workflow.rewrite.QueryTemplates;
 import palper.phd.workflow.rewrite.RuleConfigurationReader;
-import palper.phd.workflow.wfdesc.WorkflowStatisticsCollector;
+import palper.phd.workflow.rewrite.SimpleRulePair;
+import palper.phd.workflow.wfdesc.WfDescRdfUtils;
+import palper.phd.workflow.wfdesc.WfdescStatistics;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -37,6 +47,7 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.ReificationStyle;
 import com.hp.hpl.jena.util.FileUtils;
 
@@ -47,70 +58,68 @@ import com.hp.hpl.jena.util.FileUtils;
 public class RuleExecuter {
 
 	static Map<String, String> originalToClone = new HashMap<String, String>();
-
 	static Map<String, String> cloneToOriginal = new HashMap<String, String>();
 
+	static List<SimpleRulePair> ruleList = new ArrayList<SimpleRulePair>();
 
-	private static void exhaustQuery(InfModel wfdescModel,
-			String queryFileName, String primitive) throws IOException {
+	private static boolean exhaustQuery(InfModel wfdescModel,
+			String queryString, String primitive) throws IOException {
 
-		String queryStr = readFromFile(new File(queryFileName));
-		Query query = QueryFactory.create(queryStr);
+		// String queryStr = readFromFile(new File(queryFileName));
+		Query query = QueryFactory.create(queryString);
+		// System.out.println(queryString);
 
+		boolean anyChanges = false;
 		boolean queryExhausted = false;
-		while (!queryExhausted) {
+
+		do {
+
 			QueryExecution qexec = QueryExecutionFactory.create(query,
 					wfdescModel);
 			try {
 
 				ResultSet results = qexec.execSelect();
-				if (results.hasNext()) {
+				boolean actedUpon = false;
+				while (results.hasNext()) {
 					System.out.println("\n PATTERN MATCH for QUERY :"
-							+ queryFileName + " \n");
+							+ queryString + " \n");
 
 					QuerySolution soln = results.nextSolution();
-					RuleConstants.getHandlers().get(primitive)
-							.handleSummaryRuleSparql(soln, wfdescModel);
+					
+					boolean res = RuleConstants.getHandlers().get(primitive).handleSummaryRuleSparql(soln, wfdescModel);
+					
+					if (res) {
 
-				} else {
-					queryExhausted = true;
+						actedUpon = true;
+						anyChanges = true;
+						break;
+					}
+
 				}
+
+				queryExhausted = !actedUpon;
 
 			} finally {
 				qexec.close();
 			}
-		}
+		} while (!queryExhausted);
 
-	}
-
-	private static String readFromFile(File file) throws IOException {
-		FileInputStream fis = new FileInputStream(file);
-		BufferedReader in = new BufferedReader(new InputStreamReader(fis,
-				"UTF-8"));
-		String queryStr = "";
-		String line = "";
-
-		while ((line = in.readLine()) != null) {
-			queryStr = queryStr + line;
-		}
-
-		fis.close();
-		return queryStr;
+		return anyChanges;
 	}
 
 	public static void main(String[] args) {
 		RuleConfigurationReader reader = new RuleConfigurationReader();
 
-		 
 		List<ConfigurationNode> children = reader.getConfigurations();
+		Set<String> actionableMotifSet = new HashSet<String>();
 
-		Map<String, String> map = new HashMap<String, String>();
 		for (ConfigurationNode child : children) {
-			map.put((String) child.getAttributes("queryFilePath").get(0)
-					.getValue(),
-					(String) child.getAttributes("primitive").get(0).getValue());
+			ruleList.add(new SimpleRulePair((String) child
+					.getAttributes("motif").get(0).getValue(), (String) child
+					.getAttributes("primitive").get(0).getValue()));
+			actionableMotifSet.add((String) child.getAttributes("motif").get(0)
+					.getValue());
 		}
-		Iterator iterator = map.entrySet().iterator();
 
 		File dataset_dir = new File(args[0]);
 
@@ -118,87 +127,104 @@ public class RuleExecuter {
 		for (int i = 0; i < file_array.length; i++) {
 			String wfdescFileName = file_array[i].getPath();
 
-			if (wfdescFileName.endsWith("-motifs.wfdesc.ttl")) {
+			if (wfdescFileName.endsWith(".wfdesc.ttl")) {
 				try {
-				System.out.println("Summarizing:" + wfdescFileName);
-				File wfdescfile = new File(wfdescFileName);
-				Model baseModel = ModelFactory
-						.createDefaultModel(ReificationStyle.Minimal);
+					System.out.println("Summarizing:" + wfdescFileName);
+					File wfdescfile = new File(wfdescFileName);
+					Model baseModel = ModelFactory
+							.createDefaultModel(ReificationStyle.Minimal);
 
-				InputStream is = new FileInputStream(wfdescFileName);
-				String lang = FileUtils.guessLang(wfdescFileName);
+					InputStream is = new FileInputStream(wfdescFileName);
+					String lang = FileUtils.guessLang(wfdescFileName);
 
-				baseModel.read(is, null, lang);
+					baseModel.read(is, null, lang);
 
-				Model motifsModel = ModelFactory
-						.createDefaultModel(ReificationStyle.Minimal);
+					Model motifsModel = ModelFactory
+							.createDefaultModel(ReificationStyle.Minimal);
 
-				motifsModel
-						.read("file:///Users/pinarpink/Desktop/SummarizationRules/ontology/motifs_palper.owl",
-								"http://purl.org/wf4ever/motifs.owl#",
-								"RDF/XML");
-				InfModel wfdescModel = ModelFactory.createRDFSModel(
-						motifsModel, baseModel);
-				String destFilename = wfdescFileName.replaceFirst("\\..*",
-						"") + "-"+reader.getConfigName()+".wfdesc.ttl";
+					motifsModel
+							.read("file:///Users/pinarpink/Desktop/SummarizationRules/ontology/motifs_palper.owl",
+									"http://purl.org/wf4ever/motifs.owl#",
+									"RDF/XML");
+					InfModel wfdescModel = ModelFactory.createRDFSModel(motifsModel, baseModel);
+					String destFilename = wfdescFileName.replaceFirst("\\..*","") + "-" + reader.getConfigName() + ".wfdesc.ttl";
 
-				String summarizationStatisticsFileName = destFilename
-						.replaceFirst("\\..*", "")
-						+ "stats.txt";
-				File statsFile = new File(summarizationStatisticsFileName);
-				Writer statWriter = new FileWriter(statsFile);
+					String summarizationStatisticsFileName = destFilename.replaceFirst("\\..*", "") + "stats.txt";
+					File statsFile = new File(summarizationStatisticsFileName);
+					Writer statWriter = new FileWriter(statsFile);
 
-				WorkflowStatisticsCollector stats = new WorkflowStatisticsCollector(
-						wfdescModel.getRawModel());
-				statWriter.write(stats.toString());
-				statWriter.write("*******************************\n");
-				
-				while (iterator.hasNext()) {
-			
-					Map.Entry mapEntry = (Map.Entry) iterator.next();
+					WfdescStatistics stats = new WfdescStatistics(wfdescModel.getRawModel());
+					statWriter.write(stats.toString());
+					statWriter.write("*******************************\n");
 
-					String queryFileName = (String) mapEntry.getKey();
-					String primitive = (String) mapEntry.getValue();
-					exhaustQuery(wfdescModel, queryFileName, primitive);
+					Resource wfResource = WfDescRdfUtils.getWorkflowResource(wfdescModel);
 
-	
-					// // Iterator it = cloneToOriginal.entrySet().iterator();
-					// // for (String key : cloneToOriginal.keySet()) {
-					// // System.out.println(key + " = >" +
-					// cloneToOriginal.get(key));
-					// // }
-					// }
-				
+					Set<Resource> processorList = WfDescRdfUtils.getProcessors(wfdescModel, wfResource);
+					Set<Resource> processorsWithActionableMotifs = WfDescRdfUtils.getMotifAnnotatedProcessors(wfdescModel,wfResource, actionableMotifSet);
+					processorList.removeAll(processorsWithActionableMotifs);
 
-				}//end while
-				
-				//there is no rewind method for the iterator hence we reassign
-				iterator = map.entrySet().iterator();
+					WorkflowInfo wi = new WorkflowInfo();
+					wi.setStatistics(stats);
+					wi.setWfdescModel(wfdescModel);
+					
+					StringWriter strwrtr = new StringWriter();
+					
+					wfdescModel.getRawModel().write(strwrtr, "TURTLE", null);
+					wi.setWfdescAsString(strwrtr.toString());
+					
+					List<String> unactionableProcessors = new ArrayList<String>();
+					for (Resource res : processorList) {
+						unactionableProcessors.add(res.getURI());
+					}
+					wi.setUnactionableProcessUris(unactionableProcessors);
 
-				stats = new WorkflowStatisticsCollector(
-						wfdescModel.getRawModel());
-				statWriter.write(stats.toString());
-				statWriter.close();
+					OriginalWfdescModelsRepo.getInstance()
+							.getWorkflowDatabase().put(wfResource.getURI(), wi);
 
-				String graphMlFileName = file_array[i].getName();
-				graphMlFileName = graphMlFileName.replaceFirst("\\..*", "")
-						+"-"+reader.getConfigName()+ ".graphml";
-				File graphMlFile = new File(file_array[i].getParentFile(),
-						graphMlFileName);
-				Writer fw = new FileWriter(graphMlFile);
-				GraphmlWriter gw = new GraphmlWriter(fw,
-						wfdescModel.getRawModel());
+					boolean changesMade = false;
+					do {
+						changesMade = false;
+						for (SimpleRulePair rulePair : ruleList) {
 
-				gw.write();
+							
+							boolean changesMadePerRule = exhaustQuery(wfdescModel,
+									QueryTemplates
+									.getParameterizedQuery(rulePair
+											.getMotifURI()),
+							rulePair.getPrimitive());
+							if (changesMadePerRule) {
+								
+								changesMade = true;
+							}
+						}
 
-//				MappingTableToWfdesc.decoratePortsWithMappings(wfdescModel,
-//						cloneToOriginal);
+					} while (changesMade);// end for
 
-				File wfdescSummarized = new File(destFilename);
+					stats = new WfdescStatistics(
+							wfdescModel.getRawModel());
+					statWriter.write(stats.toString());
+					statWriter.close();
 
-				OutputStream oss = new FileOutputStream(wfdescSummarized);
+					String graphMlFileName = file_array[i].getName();
+					graphMlFileName = graphMlFileName.replaceFirst("\\..*", "")
+							+ "-" + reader.getConfigName() + ".graphml";
+					File graphMlFile = new File(file_array[i].getParentFile(),
+							graphMlFileName);
+					Writer fw = new FileWriter(graphMlFile);
+					GraphmlWriter gw = new GraphmlWriter(fw,
+							wfdescModel.getRawModel());
 
-				wfdescModel.getRawModel().write(oss, "TURTLE", null);
+					gw.write();
+
+					// MappingTableToWfdesc.decoratePortsWithMappings(wfdescModel,
+					// cloneToOriginal);
+
+					File wfdescSummarized = new File(destFilename);
+
+					OutputStream oss = new FileOutputStream(wfdescSummarized);
+
+					wfdescModel.getRawModel().write(oss, "TURTLE", null);
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -209,8 +235,8 @@ public class RuleExecuter {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}//end if
-		}//end for
+			}// end if
+		}// end for
 
 	}
 

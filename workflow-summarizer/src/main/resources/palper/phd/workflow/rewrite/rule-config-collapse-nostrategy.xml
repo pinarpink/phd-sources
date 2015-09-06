@@ -1,0 +1,18 @@
+<rewriteRules configName="collapseNoStrategy">
+
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataPreparation"
+		primitive="collapseDown" />
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataPreparation"
+		primitive="collapseUp" />
+
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataOrganization"
+		primitive="collapseUp" />
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataOrganization"
+		primitive="collapseDown" />
+
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataMovement"
+		primitive="collapseUp" />
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataMovement"
+		primitive="collapseDown" />
+
+</rewriteRules>

@@ -1,8 +1,0 @@
-<rewriteRules configName="composeShims">
- <rule queryFilePath="1" primitive="collapse"/>
- <rule queryFilePath="2" primitive="collapse"/>
- <rule queryFilePath="3" primitive="collapse"/>
- <rule queryFilePath="4" primitive="collapse"/>
- <rule queryFilePath="5" primitive="collapse"/>
- <rule queryFilePath="6" primitive="collapse"/>
-</rewriteRules>

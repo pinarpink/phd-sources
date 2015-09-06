@@ -1,3 +1,9 @@
 <rewriteRules configName="elimShims">
- <rule queryFilePath="/Users/pinarpink/Desktop/SummarizationRules/queries/selectAllShims.txt" primitive="eliminate"/>
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataPreparation"
+		primitive="eliminate" />
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataOrganization"
+		primitive="eliminate" />
+	<rule motif="http://purl.org/wf4ever/motifs.owl#DataMovement"
+		primitive="eliminate" />
+
 </rewriteRules>

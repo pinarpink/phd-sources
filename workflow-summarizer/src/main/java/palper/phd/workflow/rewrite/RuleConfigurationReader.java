@@ -23,7 +23,7 @@ public class RuleConfigurationReader {
 		
 
 		try {
-			config = new XMLConfiguration(RuleConfigurationReader.class.getResource("rule-config-collapse-shims.xml"));
+			config = new XMLConfiguration(RuleConfigurationReader.class.getResource("rule-config-collapse-nostrategy.xml"));
 			config.setExpressionEngine(new XPathExpressionEngine());
 			
 		} catch (ConfigurationException e) {

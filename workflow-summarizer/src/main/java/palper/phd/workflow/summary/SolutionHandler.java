@@ -13,6 +13,6 @@ import com.hp.hpl.jena.rdf.model.Model;
  */
 public interface SolutionHandler {
 	
-	Model handleSummaryRuleSparql(QuerySolution soln, InfModel model);
+	boolean handleSummaryRuleSparql(QuerySolution soln, InfModel model);
 
 }

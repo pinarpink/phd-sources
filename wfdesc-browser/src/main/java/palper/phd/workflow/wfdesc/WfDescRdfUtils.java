@@ -3,7 +3,10 @@
  */
 package palper.phd.workflow.wfdesc;
 
+
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import palper.phd.workflow.wfdesc.SummarizerNamespaces;
@@ -19,6 +22,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 /**
@@ -72,6 +76,78 @@ public class WfDescRdfUtils {
 		return result;
 	}
 	
+	public static Resource getSpecializedWorkflowDefinition(Resource wfProcessorResource,
+        Model model) {
+
+    String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " SELECT DISTINCT ?wfDef  \n"
+            + " WHERE { \n"
+            + " <"
+            + wfProcessorResource.getURI()
+            + "> prov:specializationOf ?wfDef . \n"
+            + " } \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+        ResultSet results = qexec.execSelect();
+
+        if (results.hasNext()) {
+
+            QuerySolution soln = results.nextSolution();
+
+            return soln.getResource("wfDef");
+
+        }else {
+          
+          return null;
+        }
+    } finally {
+        qexec.close();
+    }
+ 
+}
+
+	
+	public static Set<Resource> getNonStrConstantDependencyOperations(Resource opA,
+			Model model) {
+
+		Set<Resource> result = new HashSet<Resource>();
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " PREFIX lblwf: <http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#>\n"
+				+ " SELECT DISTINCT ?opB  \n"
+				+ " WHERE { \n"
+				+ " ?opB wfdesc:hasOutput ?outB . \n"
+				+ " ?link a wfdesc:DataLink . \n"
+				+ " ?link wfdesc:hasSource ?outB . \n"
+				+ " ?link wfdesc:hasSink ?inA . \n"
+				+ " <"
+				+ opA.getURI()
+				+ ">"+" wfdesc:hasInput ?inA . \n" 
+				+ " FILTER (NOT EXISTS { ?opB a lblwf:StringConstant }) \n"
+				+ " } \n";
+	
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result.add(soln.getResource("opB"));
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return result;
+	}
 	public static Set<Resource> getDependencyOperations(Resource opA,
 			Model model) {
 
@@ -211,6 +287,19 @@ public class WfDescRdfUtils {
 	}
 	
 	
+	public static String getLabel(Resource element, Model model){
+	     
+      StmtIterator iter = model.listStatements(element,
+              model.getProperty(SummarizerNamespaces.rdfsNS, "label"),
+              (RDFNode)null);
+
+      if (iter.hasNext()){
+          return iter.next().getLiteral().getString();
+      }else {
+          return null;
+      }
+	}
+	
 	public static Set<Resource> getOutputPorts(Resource op, Model model) {
 		Set<Resource> res = new HashSet<Resource>();
 		for (RDFNode nd : model.listObjectsOfProperty(op,
@@ -287,8 +376,83 @@ public class WfDescRdfUtils {
 		}
 		return result;
 	}
+	public static Set<Resource> getSubWorkflows(Model model,Resource workflowResource) {
 
+		Set<Resource> result = new HashSet<Resource>();
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " SELECT DISTINCT ?subWf  \n"
+				+ " WHERE { \n"
+				+ " <"
+				+ workflowResource.getURI()
+				+ "> wfdesc:hasSubProcess ?subWf . \n"
+				+ " ?subWf a wfdesc:Workflow . \n" + " } \n";
+
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result.add(soln.getResource("subWf"));
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return result;
+	}
 	
+	public static Set<Resource> getMotifAnnotatedProcessors(Model model,
+			Resource workflowResource, Set<String> motifSet) {
+
+		Set<Resource> result = new HashSet<Resource>();
+
+		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+				+ " PREFIX motifs:  <http://purl.org/wf4ever/motifs.owl#>\n"
+				+ " SELECT DISTINCT ?op  \n"
+				+ " WHERE { \n";
+		int count =1;
+		for(String mtf:motifSet){
+			queryStr = queryStr 
+					+ "{ <"
+					+ workflowResource.getURI()
+					+ "> wfdesc:hasSubProcess ?op . \n"
+					+ " ?op a wfdesc:Process . \n" 
+					+ " ?op motifs:hasOperationMotif ?mtf . \n" 
+					+ " ?mtf a "+"<"+mtf+"> } \n";
+			
+			if (count<motifSet.size()){
+				queryStr = queryStr + " UNION \n";
+			}
+			count++;
+		}
+				
+		queryStr = queryStr +	"} \n";
+	
+		Query query = QueryFactory.create(queryStr);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		try {
+			ResultSet results = qexec.execSelect();
+
+			for (; results.hasNext();) {
+
+				QuerySolution soln = results.nextSolution();
+
+				result.add(soln.getResource("op"));
+
+			}
+		} finally {
+			qexec.close();
+		}
+		return result;
+	}
+
 	
 	public static Set<Resource> getDataLinks(Model model,
 			Resource workflowResource) {
@@ -398,7 +562,6 @@ public class WfDescRdfUtils {
 
 		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
 				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " PREFIX motifs:  <http://purl.org/wf4ever/motifs.owl#>\n"
 				+ " SELECT DISTINCT ?link  \n"
 				+ " WHERE { \n"
 				+ " ?link a wfdesc:DataLink . \n"
@@ -430,7 +593,6 @@ public class WfDescRdfUtils {
 
 		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
 				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " PREFIX motifs:  <http://purl.org/wf4ever/motifs.owl#>\n"
 				+ " SELECT DISTINCT ?link  \n"
 				+ " WHERE { \n"
 				+ " ?link a wfdesc:DataLink . \n"
@@ -744,13 +906,26 @@ public class WfDescRdfUtils {
 		return result;
 	}
 	public static Resource getWorkflowResource(Model model) {
+		
+		Resource result = null;
 		StmtIterator iter = model.listStatements(null,
 				model.getProperty(SummarizerNamespaces.rdfNS, "type"),
 				model.getResource(SummarizerNamespaces.wfdescNS + "Workflow"));
+		
+			
+		Map<String, String> mp = model.getNsPrefixMap();
+		String baseURI = model.getNsPrefixURI("");
+		//remove the trailing # character
+		baseURI = baseURI.substring(0, baseURI.length()-1);
+		
 
-		Resource wfResource = iter.next().getSubject();
-
-		return wfResource;
+		while(iter.hasNext()){
+			Statement st = iter.next();
+			Resource wfResource = st.getSubject();
+			if (wfResource.getURI().equals(baseURI)) result =  wfResource;
+			
+		}
+		return result;
 	}
 
 	public static boolean isWorkflowInputPort(Resource resource, Model model) {
@@ -782,6 +957,36 @@ public class WfDescRdfUtils {
 		}
 		return result;
 	}
+	
+	public static boolean isNestedWorkflow(Resource wfResource, Model model) {
+
+      boolean result = false;
+
+      String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+              + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+              + " PREFIX motifs:  <http://purl.org/wf4ever/motifs.owl#>\n"
+              + " SELECT DISTINCT ?wf  \n"
+              + " WHERE { \n"
+              + "?wf a wfdesc:Workflow .\n" 
+              + "?wf wfdesc:hasSubProcess ?sub . \n"
+              + "?sub a wfdesc:Workflow . \n"
+              + " } \n";
+
+      Query query = QueryFactory.create(queryStr);
+      QueryExecution qexec = QueryExecutionFactory.create(query, model);
+      try {
+          ResultSet results = qexec.execSelect();
+
+          if (results.hasNext()) {
+              result = true;
+          } else {
+              //not a workflow input
+          }
+      } finally {
+          qexec.close();
+      }
+      return result;
+  }
 
 	public static boolean isHybridPort(Resource resource, Model model) {
 
@@ -1032,6 +1237,70 @@ public class WfDescRdfUtils {
 		return (String)result.getValue();
 
 	}
+  public static Resource getInputWithLabel(String wfInPortName, Resource operation, Model model) {
+
+    String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " SELECT DISTINCT ?inp  \n"
+            + " WHERE { \n"
+            + " <"
+            + operation.getURI()
+            + "> wfdesc:hasInput  ?inp . \n" 
+            + "?inp rdfs:label \""+wfInPortName+"\". \n"
+            + "} \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+        ResultSet results = qexec.execSelect();
+
+        if (results.hasNext()) {
+
+            QuerySolution soln = results.nextSolution();
+
+            return soln.getResource("inp");
+
+        }else {
+          
+          return null;
+        }
+    } finally {
+        qexec.close();
+    }
+  }
 	
-	
+  public static Resource getOutputWithLabel(String wfOutPortName, Resource operation, Model model) {
+
+    String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " SELECT DISTINCT ?out  \n"
+            + " WHERE { \n"
+            + " <"
+            + operation.getURI()
+            + "> wfdesc:hasOutput  ?out . \n"
+           + "?out rdfs:label \""+wfOutPortName+"\". \n"
+            + "  } \n";
+ //   
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+        ResultSet results = qexec.execSelect();
+
+        if (results.hasNext()) {
+
+            QuerySolution soln = results.nextSolution();
+
+            return soln.getResource("out");
+
+        }else {
+          
+          return null;
+        }
+    } finally {
+        qexec.close();
+    }
+  }
+    
 }

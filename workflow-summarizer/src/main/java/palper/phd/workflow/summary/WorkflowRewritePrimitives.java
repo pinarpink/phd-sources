@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import palper.phd.workflow.db.OriginalWfdescModelsRepo;
 import palper.phd.workflow.wfdesc.SummarizerNamespaces;
 import palper.phd.workflow.wfdesc.URIUtils;
 import palper.phd.workflow.wfdesc.WfDescRdfUtils;
@@ -31,103 +32,116 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
  */
 public class WorkflowRewritePrimitives {
 
-	static Model diffuseOperationDownStream(InfModel model, Resource op) {
+	static boolean diffuseOperationDownStream(InfModel model, Resource op,
+			Resource wf) {
 
-		Set<Resource> dependentOps = getDependentOperations(op, model);
+		Set<Resource> dependentOps = WfDescRdfUtils.getDependentOperations(op,
+				model);
 
+		if (dependentOps.isEmpty()) {
+			return false;
+		}
+		if(OriginalWfdescModelsRepo.getInstance()
+				.getWorkflowDatabase().get(wf.getURI())
+				.getUnactionableProcessUris().contains(op.getURI())){
+			return false;
+		}
+		if (checkNACExists(dependentOps, model)) {
+			System.out.println("******************************");
+			System.out.println("NEGATIVE APPLICATION CONDITION ENCOUNTERED :"
+					+ WfDescRdfUtils.getWorkflowResource(model).getURI()
+					+ "Operation" + URIUtils.lastBit(op.getURI()));
+			System.out.println("******************************");
+			return false;
+			// stripMotifAnnotations(op, model);
+
+		} else {
+
+			for (Resource dep : dependentOps) {
+
+				Resource composite = composeOperations(model, op, dep,
+						MotifPropagationPolicy.BOTH, dependentOps);
+				System.out.println("Added: " + composite.getURI());
+
+				if (OriginalWfdescModelsRepo.getInstance()
+						.getWorkflowDatabase().get(wf.getURI())
+						.getUnactionableProcessUris().contains(dep.getURI())) {
+					OriginalWfdescModelsRepo.getInstance()
+							.getWorkflowDatabase().get(wf.getURI())
+							.getUnactionableProcessUris()
+							.add(composite.getURI());
+				}
+
+				removeOperation(dep, model);
+				System.out.println("Removed: " + dep.getURI());
+			}
+
+			removeOperation(op, model);
+			System.out.println("Removed: " + op.getURI());
+			return true;
+		}
+
+	}
+
+	private static boolean checkNACExists(Set<Resource> dependentOps,
+			InfModel model) {
 		Set<Resource> combinedLineage = new HashSet<Resource>();
 
 		for (Resource dp : dependentOps) {
 			getDownStreamLineage(combinedLineage, dp, model);
 		}
 		combinedLineage.retainAll(dependentOps);
-		if (combinedLineage.isEmpty()) {
+		return !combinedLineage.isEmpty();
+	}
 
-			for (Resource dep : dependentOps) {
+	static boolean diffuseOperationUpStream(InfModel model, Resource op,
+			Resource wf) {
 
-				composeOperations(model, op, dep,
-						MotifPropagationPolicy.LATTER, dependentOps);
-				removeOperation(dep, model);
-			}
+		Set<Resource> dependencyOps = WfDescRdfUtils.getNonStrConstantDependencyOperations(
+				op, model);
 
-			removeOperation(op, model);
+		if (dependencyOps.isEmpty()) {
+			return false;
+		}
+		if(OriginalWfdescModelsRepo.getInstance()
+				.getWorkflowDatabase().get(wf.getURI())
+				.getUnactionableProcessUris().contains(op.getURI())){
+			return false;
+		}
+		if (dependencyOps.size() > 1) {
+			System.out
+					.println("########NEGATIVE APPLICAITON CONDITION CANNOT COLLAPSE ON TO MULTIPLE UPSTREAM HOSTS ");
+
+			System.out
+					.println("#####################################################");
+			return false;
+
 		} else {
-			System.out.println("******************************");
-			System.out.println("VIOLATION :"
-					+ WfDescRdfUtils.getWorkflowResource(model).getURI()
-					+ "Operation" + URIUtils.lastBit(op.getURI()));
-			System.out.println("******************************");
-			stripMotifAnnotations(op, model);
-		}
-		return model;
-	}
-
-	private static InfModel stripMotifAnnotations(Resource op, InfModel model) {
-
-		StmtIterator iter = model.listStatements(
-				op,
-				model.getProperty(SummarizerNamespaces.motifsNS
-						+ "hasOperationMotif"), (RDFNode) null);
-
-		List<Statement> stmtList = new ArrayList<Statement>();
-		while (iter.hasNext()) {
-			stmtList.add(iter.next());
-		}
-		for (Statement st : stmtList) {
-			model.remove(st);
-		}
-		return model;
-	}
-
-	static Model diffuseOperationUpStream(InfModel model, Resource op) {
-
-		Set<Resource> dependencyOps = getDependencyOperations(op, model);
-
-		Set<Resource> combinedLineage = new HashSet<Resource>();
-
-		for (Resource dp : dependencyOps) {
-			getUpStreamLineage(combinedLineage, dp, model);
-		}
-		combinedLineage.retainAll(dependencyOps);
-		if (combinedLineage.isEmpty()) {
-			
-			if (dependencyOps.size()>1){
-			System.out.println("#####################################################");
-			System.out.println("############### MULTI-OP COLLAPSE UPSTREAM#######");
-			System.out.println("#####################################################");
-			
-			}
 			for (Resource dep : dependencyOps) {
 
-				composeOperations(model, dep, op, MotifPropagationPolicy.FORMER, dependencyOps);
+				Resource composite = composeOperations(model, dep, op,
+						MotifPropagationPolicy.BOTH, dependencyOps);
+				System.out.println("Added: " + composite.getURI());
+
+				if (OriginalWfdescModelsRepo.getInstance()
+						.getWorkflowDatabase().get(wf.getURI())
+						.getUnactionableProcessUris().contains(dep.getURI())) {
+					OriginalWfdescModelsRepo.getInstance()
+							.getWorkflowDatabase().get(wf.getURI())
+							.getUnactionableProcessUris()
+							.add(composite.getURI());
+				}
+
 				removeOperation(dep, model);
+				System.out.println("Removed: " + dep.getURI());
 			}
 			removeOperation(op, model);
-		} else {
-
-			System.out.println("******************************");
-			System.out.println("VIOLATION :"
-					+ WfDescRdfUtils.getWorkflowResource(model).getURI()
-					+ "Operation" + URIUtils.lastBit(op.getURI()));
-			System.out.println("******************************");
-			stripMotifAnnotations(op, model);
-		
+			System.out.println("Removed: " + op.getURI());
+			return true;
 		}
 
-		return model;
 	}
 
-	static Model combineOperations(InfModel model, Resource opA, Resource opB,
-			MotifPropagationPolicy policy) {
-
-		composeOperations(model, opA, opB, policy, new HashSet<Resource>());
-
-		removeOperation(opA, model);
-		removeOperation(opB, model);
-
-		return model;
-
-	}
 
 	private static Resource composeOperations(InfModel model, Resource opA,
 			Resource opB, MotifPropagationPolicy policy,
@@ -191,7 +205,8 @@ public class WorkflowRewritePrimitives {
 
 		for (Resource externalLink : setAllOutLinks) {
 
-			Resource extSink = WfDescRdfUtils.getOperationWithInput(model, WfDescRdfUtils.getSink(model, externalLink));
+			Resource extSink = WfDescRdfUtils.getOperationWithInput(model,
+					WfDescRdfUtils.getSink(model, externalLink));
 			if (!ignoreList.contains(extSink)) {
 				cloneOutLinkAndAttach(externalLink, compositeOp, model);
 			}
@@ -211,7 +226,8 @@ public class WorkflowRewritePrimitives {
 
 		for (Resource externalLink : setAllInlinks) {
 
-			Resource extSource = WfDescRdfUtils.getOperationWithOutput(model,WfDescRdfUtils.getSource(model, externalLink));
+			Resource extSource = WfDescRdfUtils.getOperationWithOutput(model,
+					WfDescRdfUtils.getSource(model, externalLink));
 			if (!ignoreList.contains(extSource)) {
 				cloneInlinkAndAttach(externalLink, compositeOp, model);
 			}
@@ -301,8 +317,9 @@ public class WorkflowRewritePrimitives {
 
 			RuleExecuter.getOriginalToClone().put(
 					oldSinkPort.getURI() + newOp.getURI(), newPort.getURI());
-			
-			RuleExecuter.getCloneToOriginal().put(newPort.getURI(), oldSinkPort.getURI());
+
+			RuleExecuter.getCloneToOriginal().put(newPort.getURI(),
+					oldSinkPort.getURI());
 
 		}
 
@@ -360,8 +377,9 @@ public class WorkflowRewritePrimitives {
 							+ "hasOutput"), newPort);
 			RuleExecuter.getOriginalToClone().put(
 					oldSorcePort.getURI() + newOp.getURI(), newPort.getURI());
-			
-			RuleExecuter.getCloneToOriginal().put(newPort.getURI(), oldSorcePort.getURI());
+
+			RuleExecuter.getCloneToOriginal().put(newPort.getURI(),
+					oldSorcePort.getURI());
 
 		}
 
@@ -395,11 +413,11 @@ public class WorkflowRewritePrimitives {
 
 	}
 
-	private static void getDownStreamLineage(Set<Resource> lineage, Resource opA,
-			InfModel model) {
+	private static void getDownStreamLineage(Set<Resource> lineage,
+			Resource opA, InfModel model) {
 
-		
-		Set<Resource> immediate = getDependentOperations(opA, model);
+		Set<Resource> immediate = WfDescRdfUtils.getDependentOperations(opA,
+				model);
 		lineage.addAll(immediate);
 
 		for (Resource dep : immediate) {
@@ -412,96 +430,6 @@ public class WorkflowRewritePrimitives {
 
 	}
 
-	private static void getUpStreamLineage(Set<Resource> lineage, Resource opA, InfModel model) {
-
-		
-		Set<Resource> immediate = getDependencyOperations(opA, model);
-		lineage.addAll(immediate);
-
-		for (Resource dep : immediate) {
-
-			
-			getUpStreamLineage(lineage, dep, model);
-			//lineage.addAll(getDependencyOperations(dep, model));
-
-		}
-
-		return;
-
-	}
-
-	private static Set<Resource> getDependentOperations(Resource opA,
-			InfModel model) {
-
-		Set<Resource> result = new HashSet<Resource>();
-
-		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?opB  \n"
-				+ " WHERE { \n"
-				+ " <"
-				+ opA.getURI()
-				+ "> wfdesc:hasOutput ?outA . \n"
-				+ " ?link a wfdesc:DataLink . \n"
-				+ " ?link wfdesc:hasSource ?outA . \n"
-				+ " ?link wfdesc:hasSink ?inB . \n"
-				+ " ?opB  wfdesc:hasInput ?inB . \n" + " } \n";
-
-		Query query = QueryFactory.create(queryStr);
-		QueryExecution qexec = QueryExecutionFactory.create(query, model);
-		try {
-			ResultSet results = qexec.execSelect();
-
-			for (; results.hasNext();) {
-
-				QuerySolution soln = results.nextSolution();
-
-				result.add(soln.getResource("opB"));
-
-			}
-		} finally {
-			qexec.close();
-		}
-		return result;
-	}
-
-	private static Set<Resource> getDependencyOperations(Resource opA,
-			InfModel model) {
-
-		Set<Resource> result = new HashSet<Resource>();
-
-		String queryStr = " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
-				+ " PREFIX wf4ever: <http://purl.org/wf4ever/wf4ever#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?opD  \n"
-				+ " WHERE { \n"
-				+ " ?opD wfdesc:hasOutput ?outD . \n"
-				+ " <"
-				+ opA.getURI()
-				+ "> wfdesc:hasInput ?inA . \n"
-				+ " ?link a wfdesc:DataLink . \n"
-				+ " ?link wfdesc:hasSource ?outD . \n"
-				+ " ?link wfdesc:hasSink ?inA . \n"
-				+ "FILTER (NOT EXISTS { ?opD a wf4ever:StringConstant } ) \n"
-				+ " } \n";
-
-		Query query = QueryFactory.create(queryStr);
-		QueryExecution qexec = QueryExecutionFactory.create(query, model);
-		try {
-			ResultSet results = qexec.execSelect();
-
-			for (; results.hasNext();) {
-
-				QuerySolution soln = results.nextSolution();
-
-				result.add(soln.getResource("opD"));
-
-			}
-		} finally {
-			qexec.close();
-		}
-		return result;
-	}
 
 	private static void removeOperation(Resource op, InfModel model) {
 
@@ -535,8 +463,9 @@ public class WorkflowRewritePrimitives {
 		model.removeAll(null, null, op);
 		model.removeAll(op, null, null);
 	}
-	///////////////////////////////////////////////////////////////////////////////
-	static Model eliminateOperation(InfModel model, Resource op) {
+
+	// /////////////////////////////////////////////////////////////////////////////
+	static boolean eliminateOperation(InfModel model, Resource op) {
 
 		Set<Resource> inLinks = WfDescRdfUtils.getInlinks(op, model);
 		Set<Resource> outLinks = WfDescRdfUtils.getOutlinks(op, model);
@@ -551,8 +480,9 @@ public class WorkflowRewritePrimitives {
 		}
 
 		removeOperation(op, model);
-		return model;
+		return true;
 	}
+
 	private static Resource linkPorts(InfModel model, Resource portA,
 			Resource portB) {
 		Resource newLink = model.createResource("http://cloneLink/"
@@ -573,7 +503,9 @@ public class WorkflowRewritePrimitives {
 		model.add(newLink,
 				model.getProperty(SummarizerNamespaces.wfdescNS + "hasSink"),
 				portB);
-		model.addLiteral(newLink, model.getProperty(SummarizerNamespaces.rdfsNS + "comment"), "tracelink");
+		model.addLiteral(newLink,
+				model.getProperty(SummarizerNamespaces.rdfsNS + "comment"),
+				"tracelink");
 		return newLink;
 
 	}
