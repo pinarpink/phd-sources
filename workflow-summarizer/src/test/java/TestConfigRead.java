@@ -14,7 +14,7 @@ public class TestConfigRead {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		RuleConfigurationReader reader = new RuleConfigurationReader();
+		//RuleConfigurationReader reader = new RuleConfigurationReader();
 		
 
 	}

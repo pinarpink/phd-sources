@@ -17,13 +17,14 @@ import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 public class RuleConfigurationReader {
 
 	private 	XMLConfiguration config =null;
-	public RuleConfigurationReader() {
+	public RuleConfigurationReader(String ruleConfigFileName) {
 
 		super();
 		
 
 		try {
-			config = new XMLConfiguration(RuleConfigurationReader.class.getResource("rule-config-collapse-nostrategy.xml"));
+			config = new XMLConfiguration(RuleConfigurationReader.class.getResource(ruleConfigFileName));
+			 //   "rule-config-collapse-nostrategy.xml"));
 			config.setExpressionEngine(new XPathExpressionEngine());
 			
 		} catch (ConfigurationException e) {

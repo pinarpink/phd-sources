@@ -226,7 +226,7 @@ public class LabelingOperHandler {
 		List<LabelInstanceBean> results = new ArrayList<LabelInstanceBean>();
 
 		Set<Resource> instantiations = ProvRdfUtils
-				.getInstantiationsOfOperation(command.getWfElementUriString(),
+				.getInstantiationsOfOperation(command.getWfElementUriStringList().get(0),
 						RdfProvenanceConfig.getInstance().getProvTraceModel());
 		List<String> sinkPortUriStringList = command.getSinkPortUriStringList();
 		List<String> sourcePortUriStringList = command
@@ -311,7 +311,7 @@ public class LabelingOperHandler {
 		List<LabelInstanceBean> results = new ArrayList<LabelInstanceBean>();
 
 		Set<Resource> instantiations = ProvRdfUtils
-				.getInstantiationsOfOperation(command.getWfElementUriString(),
+				.getInstantiationsOfOperation(command.getWfElementUriStringList().get(0),
 						RdfProvenanceConfig.getInstance().getProvTraceModel());
 
 		// for each invocation of that operation
@@ -323,7 +323,7 @@ public class LabelingOperHandler {
 			// for each sink port create labels and associate
 			for (String sinkPortUriString : sinkPortUriStringList) {
 				List<LabelInstanceBean> allresultsForOnesink = MintingStubs
-						.invokeMintingFunction(command.getWfElementUriString(),
+						.invokeMintingFunction(command.getWfElementUriStringList().get(0),
 								inst.getURI());
 
 				Set<Resource> dataArtifacts = ProvRdfUtils

@@ -10,7 +10,10 @@ package palper.phd.workflow.wfdesc;
 public class SummarizerNamespaces {
 
 	
-	public static final String motifsNS = "http://purl.org/wf4ever/motifs.owl#";
+	//public static final String motifsNS = "http://purl.org/wf4ever/motifs.owl#";
+  public static final String motifsNS = "http://purl.org/net/wf-motifs#";
+  
+	
 	public static final String wfdescNS = "http://purl.org/wf4ever/wfdesc#";
 	public static final String rdfNS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	public static String wf4everNS = "http://purl.org/wf4ever/wf4ever#";

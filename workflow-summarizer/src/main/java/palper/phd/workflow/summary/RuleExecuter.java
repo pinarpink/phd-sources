@@ -3,24 +3,18 @@
  */
 package palper.phd.workflow.summary;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,7 +29,6 @@ import palper.phd.workflow.rewrite.QueryTemplates;
 import palper.phd.workflow.rewrite.RuleConfigurationReader;
 import palper.phd.workflow.rewrite.SimpleRulePair;
 import palper.phd.workflow.wfdesc.WfDescRdfUtils;
-import palper.phd.workflow.wfdesc.WfdescStatistics;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -46,7 +39,6 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.ReificationStyle;
 import com.hp.hpl.jena.util.FileUtils;
@@ -57,8 +49,8 @@ import com.hp.hpl.jena.util.FileUtils;
  */
 public class RuleExecuter {
 
-	static Map<String, String> originalToClone = new HashMap<String, String>();
-	static Map<String, String> cloneToOriginal = new HashMap<String, String>();
+//	static Map<String, String> originalToClone = new HashMap<String, String>();
+//	static Map<String, String> cloneToOriginal = new HashMap<String, String>();
 
 	static List<SimpleRulePair> ruleList = new ArrayList<SimpleRulePair>();
 
@@ -107,8 +99,9 @@ public class RuleExecuter {
 		return anyChanges;
 	}
 
-	public static void main(String[] args) {
-		RuleConfigurationReader reader = new RuleConfigurationReader();
+
+  public static void main(String[] args) {
+		RuleConfigurationReader reader = new RuleConfigurationReader( "rule-config-collapse-nostrategy.xml");
 
 		List<ConfigurationNode> children = reader.getConfigurations();
 		Set<String> actionableMotifSet = new HashSet<String>();
@@ -153,10 +146,10 @@ public class RuleExecuter {
 					File statsFile = new File(summarizationStatisticsFileName);
 					Writer statWriter = new FileWriter(statsFile);
 
-					WfdescStatistics stats = new WfdescStatistics(wfdescModel.getRawModel());
-					statWriter.write(stats.toString());
-					statWriter.write("*******************************\n");
-
+//					WfdescStatistics stats = new WfdescStatistics(wfdescModel.getRawModel());
+//					statWriter.write(stats.toString());
+//					statWriter.write("*******************************\n");
+//
 					Resource wfResource = WfDescRdfUtils.getWorkflowResource(wfdescModel);
 
 					Set<Resource> processorList = WfDescRdfUtils.getProcessors(wfdescModel, wfResource);
@@ -164,14 +157,14 @@ public class RuleExecuter {
 					processorList.removeAll(processorsWithActionableMotifs);
 
 					WorkflowInfo wi = new WorkflowInfo();
-					wi.setStatistics(stats);
-					wi.setWfdescModel(wfdescModel);
-					
+//					wi.setStatistics(stats);
+//					wi.setWfdescModel(wfdescModel);
+//					
 					StringWriter strwrtr = new StringWriter();
 					
 					wfdescModel.getRawModel().write(strwrtr, "TURTLE", null);
-					wi.setWfdescAsString(strwrtr.toString());
-					
+//					wi.setWfdescAsString(strwrtr.toString());
+//					
 					List<String> unactionableProcessors = new ArrayList<String>();
 					for (Resource res : processorList) {
 						unactionableProcessors.add(res.getURI());
@@ -190,7 +183,7 @@ public class RuleExecuter {
 							boolean changesMadePerRule = exhaustQuery(wfdescModel,
 									QueryTemplates
 									.getParameterizedQuery(rulePair
-											.getMotifURI()),
+											.getMotifURI(), wfResource.getURI()),
 							rulePair.getPrimitive());
 							if (changesMadePerRule) {
 								
@@ -200,10 +193,10 @@ public class RuleExecuter {
 
 					} while (changesMade);// end for
 
-					stats = new WfdescStatistics(
-							wfdescModel.getRawModel());
-					statWriter.write(stats.toString());
-					statWriter.close();
+//					stats = new WfdescStatistics(
+//							wfdescModel.getRawModel());
+//					statWriter.write(stats.toString());
+//					statWriter.close();
 
 					String graphMlFileName = file_array[i].getName();
 					graphMlFileName = graphMlFileName.replaceFirst("\\..*", "")
@@ -240,20 +233,20 @@ public class RuleExecuter {
 
 	}
 
-	public static Map<String, String> getOriginalToClone() {
-		return originalToClone;
-	}
-
-	public static void setOriginalToClone(Map<String, String> originalToClone) {
-		RuleExecuter.originalToClone = originalToClone;
-	}
-
-	public static Map<String, String> getCloneToOriginal() {
-		return cloneToOriginal;
-	}
-
-	public static void setCloneToOriginal(Map<String, String> cloneToOriginal) {
-		RuleExecuter.cloneToOriginal = cloneToOriginal;
-	}
+//	public static Map<String, String> getOriginalToClone() {
+//		return originalToClone;
+//	}
+//
+//	public static void setOriginalToClone(Map<String, String> originalToClone) {
+//		RuleExecuter.originalToClone = originalToClone;
+//	}
+//
+//	public static Map<String, String> getCloneToOriginal() {
+//		return cloneToOriginal;
+//	}
+//
+//	public static void setCloneToOriginal(Map<String, String> cloneToOriginal) {
+//		RuleExecuter.cloneToOriginal = cloneToOriginal;
+//	}
 
 }

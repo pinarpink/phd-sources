@@ -1,0 +1,13 @@
+<rewriteRules configName="collapseWithStrategy">
+
+
+	<rule motif="http://purl.org/net/wf-motifs#OutputExtraction"
+		primitive="collapseUp" />
+	<rule motif="http://purl.org/net/wf-motifs#Flatten"
+		primitive="collapseUp" />
+
+	<rule motif="http://purl.org/net/wf-motifs#InputAugmentation"
+		primitive="collapseDown" />
+	<rule motif="http://purl.org/net/wf-motifs#Split"
+		primitive="collapseDown" />
+</rewriteRules>

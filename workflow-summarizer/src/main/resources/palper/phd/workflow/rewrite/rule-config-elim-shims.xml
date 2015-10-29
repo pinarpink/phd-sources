@@ -1,9 +1,7 @@
 <rewriteRules configName="elimShims">
-	<rule motif="http://purl.org/wf4ever/motifs.owl#DataPreparation"
+	<rule motif="http://purl.org/net/wf-motifs#DataPreparation"
 		primitive="eliminate" />
-	<rule motif="http://purl.org/wf4ever/motifs.owl#DataOrganization"
-		primitive="eliminate" />
-	<rule motif="http://purl.org/wf4ever/motifs.owl#DataMovement"
+	<rule motif="http://purl.org/net/wf-motifs#DataMovement"
 		primitive="eliminate" />
 
 </rewriteRules>

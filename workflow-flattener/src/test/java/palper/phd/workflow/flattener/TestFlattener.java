@@ -1,7 +1,5 @@
 package palper.phd.workflow.flattener;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -51,6 +52,8 @@ public class TestFlattener {
               WfDescRdfUtils.isNestedWorkflow(WfDescRdfUtils.getWorkflowResource(baseModel),
                   baseModel);
 
+
+          
           if (isnested) {
             System.out.println("Flattening:" + wfdescFileName);
 
@@ -72,6 +75,28 @@ public class TestFlattener {
             OutputStream oss = new FileOutputStream(wfdescFlattened);
 
             ft.getFlattenedWfdesc().write(oss, "TURTLE", null);
+            
+
+            String flattenedGroupsFileName = destFilename.replaceFirst("\\..*", "") + "flattenGroups.csv";
+    
+            File groupsFIle = new File(flattenedGroupsFileName);
+            Writer groupWrite = new FileWriter(groupsFIle);
+
+           Map<String, Set<String>> userGroupings = ft.getFlattenedProcessorGroupings();
+            for (Map.Entry<String, Set<String>> entry : userGroupings.entrySet()) {
+              String line = entry.getKey()+";";
+              Set<String> group = entry.getValue();
+              Iterator iter2 = group.iterator();
+              
+              while (iter2.hasNext()) {
+                line = line+(String)iter2.next();
+              }
+              
+              groupWrite.write(line+"\n");
+       
+            }
+            
+            groupWrite.close();
           }
         } catch (ParserConfigurationException e) {
           // TODO Auto-generated catch block

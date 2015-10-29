@@ -4,8 +4,8 @@
 package palper.phd.workflow.wfdesc;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
-
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -14,130 +14,100 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * @author pinarpink
  * 
  */
-public class WfdescStatistics  implements Serializable{
+public abstract class WfdescStatistics implements Serializable {
 
-	private int numOfProcs = 0;
-	private int numOfLinks = 0;
+  Set<String> procList = new HashSet<String>();
+  Set<String> linkList = new HashSet<String>();
 
-	
-	private int numOfConstantInputs = 0;
-	private int numOfWfInputs = 0;
-	private int numOfWfOutputs = 0;
+  Set<String> strConsProcList = new HashSet<String>();
+  Set<String> wfInList = new HashSet<String>();
+  Set<String> wfOutList = new HashSet<String>();
 
-	private int numOfInternalInputPorts = 0;
-	private int numOfInternalOutputPorts = 0;
+  Set<String> nonStrProcessorOutputs = new HashSet<String>();
 
-	
 
-	public WfdescStatistics() {
-		super();
-	}
-		
-	public WfdescStatistics(Model model) {
-		
-		
-		super();
-		Resource wfResource =  WfDescRdfUtils.getWorkflowResource(model);
-		Set<Resource> procs = WfDescRdfUtils.getProcessors(model,wfResource);
-		numOfProcs = procs.size();
-		
-		for (Resource proc:procs){
-			
-			if (WfDescRdfUtils.isStringConstant(model, proc)){
-				numOfProcs = numOfProcs -1;
-				numOfConstantInputs = numOfConstantInputs +1;	
-			}
-		}
-		
-		
-		Set<Resource> wfInputs = WfDescRdfUtils.getInputPorts(wfResource, model);
-		Set<Resource> wfOutputs = WfDescRdfUtils.getOutputPorts(wfResource, model);
-		
-		numOfWfInputs = wfInputs.size();
-		numOfWfOutputs = wfOutputs.size();
-		
-		Set<Resource>  links = WfDescRdfUtils.getDataLinks(model, wfResource);
-		numOfLinks = links.size();
-		
-		for (Resource proc:procs){
-			Set<Resource> inputs = WfDescRdfUtils.getInputPorts(proc, model);
-			numOfInternalInputPorts=numOfInternalInputPorts+inputs.size();
-			
-			Set<Resource>  outputs=WfDescRdfUtils.getOutputPorts(proc, model);
-			numOfInternalOutputPorts=numOfInternalOutputPorts + outputs.size();
-		}
-	
-		
-	}
 
-	@Override
-	public String toString() {
-		String result = "\n"
-	            +"numOfProcs: " +numOfProcs+"\n"
-				+"numOfLinks: " +numOfLinks+"\n"
-				+"numOfConstantInputs: " +numOfConstantInputs +"\n"
-				+"numOfWfInputs: " +numOfWfInputs +"\n"
-				+"numOfWfOutputs: " +numOfWfOutputs+"\n"
-				+"numOfInternalInputPorts: " +numOfInternalInputPorts +"\n"
-				+"numOfInternalOutputPorts: " +numOfInternalOutputPorts +"\n";
-		return result;
-	}
-	
-	public int getNumOfProcs() {
-		return numOfProcs;
-	}
+  public WfdescStatistics(Model model) {
 
-	public void setNumOfProcs(int numOfProcs) {
-		this.numOfProcs = numOfProcs;
-	}
 
-	public int getNumOfLinks() {
-		return numOfLinks;
-	}
+    super();
+    Resource wfResource = WfDescRdfUtils.getWorkflowResource(model);
+    Set<Resource> procs = WfDescRdfUtils.getProcessors(model, wfResource);
 
-	public void setNumOfLinks(int numOfLinks) {
-		this.numOfLinks = numOfLinks;
-	}
+    for (Resource proc : procs) {
 
-	public int getNumOfConstantInputs() {
-		return numOfConstantInputs;
-	}
+      if (WfDescRdfUtils.isStringConstant(model, proc)) {
+        strConsProcList.add(proc.getURI());
+      } else {
+        procList.add(proc.getURI());
+      }
+    }
 
-	public void setNumOfConstantInputs(int numOfConstantInputs) {
-		this.numOfConstantInputs = numOfConstantInputs;
-	}
 
-	public int getNumOfWfInputs() {
-		return numOfWfInputs;
-	}
+    Set<Resource> wfInputs = WfDescRdfUtils.getInputPorts(wfResource, model);
+    Set<Resource> wfOutputs = WfDescRdfUtils.getOutputPorts(wfResource, model);
 
-	public void setNumOfWfInputs(int numOfWfInputs) {
-		this.numOfWfInputs = numOfWfInputs;
-	}
+    for (Resource inp : wfInputs) {
+      wfInList.add(inp.getURI());
 
-	public int getNumOfWfOutputs() {
-		return numOfWfOutputs;
-	}
+    }
+    for (Resource out : wfOutputs) {
 
-	public void setNumOfWfOutputs(int numOfWfOutputs) {
-		this.numOfWfOutputs = numOfWfOutputs;
-	}
+      wfOutList.add(out.getURI());
+    }
 
-	public int getNumOfInternalInputPorts() {
-		return numOfInternalInputPorts;
-	}
+    Set<Resource> links = WfDescRdfUtils.getDataLinks(model, wfResource);
 
-	public void setNumOfInternalInputPorts(int numOfInternalInputPorts) {
-		this.numOfInternalInputPorts = numOfInternalInputPorts;
-	}
+    for (Resource link : links) {
+      linkList.add(link.getURI());
+    }
+    for (String noStrProcId : procList) {
+      Set<Resource> outputs = WfDescRdfUtils.getOutputPorts(model.getResource(noStrProcId), model);
 
-	public int getNumOfInternalOutputPorts() {
-		return numOfInternalOutputPorts;
-	}
+      for (Resource outport : outputs) {
+        nonStrProcessorOutputs.add(outport.getURI());
 
-	public void setNumOfInternalOutputPorts(int numOfInternalOutputPorts) {
-		this.numOfInternalOutputPorts = numOfInternalOutputPorts;
-	}
-	
-	
+      }
+
+    }
+
+  }
+
+  @Override
+  public String toString() {
+    String result =
+        "numOfProcs: " + procList.size() + "\n" + "numOfLinks: " + linkList.size() + "\n"
+            + "numOfConstantInputs: " + strConsProcList.size() + "\n" + "numOfWfInputs: "
+            + wfInList.size() + "\n" + "numOfWfOutputs: " + wfOutList.size() + "\n"
+            + "num Of Internal Pocessor Outputs: " + nonStrProcessorOutputs.size() + "\n";
+
+    return result;
+  }
+
+
+  public Set<String> getProcList() {
+    return procList;
+  }
+
+  public Set<String> getLinkList() {
+    return linkList;
+  }
+
+  public Set<String> getStrConsProcList() {
+    return strConsProcList;
+  }
+
+  public Set<String> getWfInList() {
+    return wfInList;
+  }
+
+  public Set<String> getWfOutList() {
+    return wfOutList;
+  }
+
+  public Set<String> getNonStrProcessorOutputs() {
+    return nonStrProcessorOutputs;
+  }
+
+
 }

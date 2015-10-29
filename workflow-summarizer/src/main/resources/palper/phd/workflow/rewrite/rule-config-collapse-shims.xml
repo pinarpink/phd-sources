@@ -1,4 +1,0 @@
-<rewriteRules configName="collapseShims">
- <rule queryFilePath="/Users/pinarpink/Desktop/SummarizationRules/queries/selectPrecedingShims.txt" primitive="collapseDown"/>
- <rule queryFilePath="/Users/pinarpink/Desktop/SummarizationRules/queries/selectSucceedingShims.txt" primitive="collapseUp"/>
-</rewriteRules>

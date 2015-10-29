@@ -13,14 +13,7 @@ import palper.phd.workflow.wfdesc.SummarizerNamespaces;
 import palper.phd.workflow.wfdesc.URIUtils;
 import palper.phd.workflow.wfdesc.WfDescRdfUtils;
 
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -60,7 +53,7 @@ public class WorkflowRewritePrimitives {
 			for (Resource dep : dependentOps) {
 
 				Resource composite = composeOperations(model, op, dep,
-						MotifPropagationPolicy.BOTH, dependentOps);
+						MotifPropagationPolicy.BOTH, dependentOps,wf);
 				System.out.println("Added: " + composite.getURI());
 
 				if (OriginalWfdescModelsRepo.getInstance()
@@ -120,7 +113,7 @@ public class WorkflowRewritePrimitives {
 			for (Resource dep : dependencyOps) {
 
 				Resource composite = composeOperations(model, dep, op,
-						MotifPropagationPolicy.BOTH, dependencyOps);
+						MotifPropagationPolicy.BOTH, dependencyOps,wf);
 				System.out.println("Added: " + composite.getURI());
 
 				if (OriginalWfdescModelsRepo.getInstance()
@@ -145,7 +138,7 @@ public class WorkflowRewritePrimitives {
 
 	private static Resource composeOperations(InfModel model, Resource opA,
 			Resource opB, MotifPropagationPolicy policy,
-			Set<Resource> ignoreList) {
+			Set<Resource> ignoreList, Resource wfResource) {
 
 		String comOpName = null;
 
@@ -180,13 +173,13 @@ public class WorkflowRewritePrimitives {
 
 		for (Resource inL : WfDescRdfUtils.getInlinks(opA, model)) {
 
-			cloneInlinkAndAttach(inL, compositeOp, model);
+			cloneInlinkAndAttach(inL, compositeOp, model, wfResource);
 
 		}
 
 		for (Resource outL : WfDescRdfUtils.getOutlinks(opB, model)) {
 
-			cloneOutLinkAndAttach(outL, compositeOp, model);
+			cloneOutLinkAndAttach(outL, compositeOp, model, wfResource);
 
 		}
 
@@ -208,7 +201,7 @@ public class WorkflowRewritePrimitives {
 			Resource extSink = WfDescRdfUtils.getOperationWithInput(model,
 					WfDescRdfUtils.getSink(model, externalLink));
 			if (!ignoreList.contains(extSink)) {
-				cloneOutLinkAndAttach(externalLink, compositeOp, model);
+				cloneOutLinkAndAttach(externalLink, compositeOp, model,wfResource);
 			}
 		}
 
@@ -229,7 +222,7 @@ public class WorkflowRewritePrimitives {
 			Resource extSource = WfDescRdfUtils.getOperationWithOutput(model,
 					WfDescRdfUtils.getSource(model, externalLink));
 			if (!ignoreList.contains(extSource)) {
-				cloneInlinkAndAttach(externalLink, compositeOp, model);
+				cloneInlinkAndAttach(externalLink, compositeOp, model, wfResource);
 			}
 		}
 
@@ -291,15 +284,19 @@ public class WorkflowRewritePrimitives {
 	}
 
 	private static InfModel cloneInlinkAndAttach(Resource oldLink,
-			Resource newOp, InfModel model) {
+			Resource newOp, InfModel model, Resource wfResource) {
 
 		Resource newPort = null;
 		Resource oldSinkPort = WfDescRdfUtils.getSink(model, oldLink);
 
-		if (RuleExecuter.getOriginalToClone().containsKey(
+		
+		
+		if (OriginalWfdescModelsRepo.getInstance()
+	        .getWorkflowDatabase().get(wfResource.getURI()).getOriginalToClone().containsKey(
 				oldSinkPort.getURI() + newOp.getURI())) {
 
-			newPort = model.getResource(RuleExecuter.getOriginalToClone().get(
+			newPort = model.getResource(OriginalWfdescModelsRepo.getInstance()
+		        .getWorkflowDatabase().get(wfResource.getURI()).getOriginalToClone().get(
 					oldSinkPort.getURI() + newOp.getURI()));
 
 		} else {
@@ -315,10 +312,12 @@ public class WorkflowRewritePrimitives {
 					model.getProperty(SummarizerNamespaces.wfdescNS
 							+ "hasInput"), newPort);
 
-			RuleExecuter.getOriginalToClone().put(
+			OriginalWfdescModelsRepo.getInstance()
+	        .getWorkflowDatabase().get(wfResource.getURI()).getOriginalToClone().put(
 					oldSinkPort.getURI() + newOp.getURI(), newPort.getURI());
 
-			RuleExecuter.getCloneToOriginal().put(newPort.getURI(),
+			OriginalWfdescModelsRepo.getInstance()
+	        .getWorkflowDatabase().get(wfResource.getURI()).getCloneToOriginal().put(newPort.getURI(),
 					oldSinkPort.getURI());
 
 		}
@@ -354,14 +353,17 @@ public class WorkflowRewritePrimitives {
 	}
 
 	private static InfModel cloneOutLinkAndAttach(Resource oldLink,
-			Resource newOp, InfModel model) {
+			Resource newOp, InfModel model, Resource wfResource) {
 
 		Resource newPort = null;
 		Resource oldSorcePort = WfDescRdfUtils.getSource(model, oldLink);
-		if (RuleExecuter.getOriginalToClone().containsKey(
+		
+		if (OriginalWfdescModelsRepo.getInstance()
+	        .getWorkflowDatabase().get(wfResource.getURI()).getOriginalToClone().containsKey(
 				oldSorcePort.getURI() + newOp.getURI())) {
 
-			newPort = model.getResource(RuleExecuter.getOriginalToClone().get(
+			newPort = model.getResource(OriginalWfdescModelsRepo.getInstance()
+		        .getWorkflowDatabase().get(wfResource.getURI()).getOriginalToClone().get(
 					oldSorcePort.getURI() + newOp.getURI()));
 
 		} else {
@@ -375,10 +377,12 @@ public class WorkflowRewritePrimitives {
 					newOp,
 					model.getProperty(SummarizerNamespaces.wfdescNS
 							+ "hasOutput"), newPort);
-			RuleExecuter.getOriginalToClone().put(
+			OriginalWfdescModelsRepo.getInstance()
+	        .getWorkflowDatabase().get(wfResource.getURI()).getOriginalToClone().put(
 					oldSorcePort.getURI() + newOp.getURI(), newPort.getURI());
 
-			RuleExecuter.getCloneToOriginal().put(newPort.getURI(),
+			OriginalWfdescModelsRepo.getInstance()
+	        .getWorkflowDatabase().get(wfResource.getURI()).getCloneToOriginal().put(newPort.getURI(),
 					oldSorcePort.getURI());
 
 		}

@@ -35,51 +35,6 @@ public class DesignLineageTraversal {
 	
 	
 
-//	public DesignLineageTraversal( String wfdescFilePath, String portUriString) {
-//		
-//		
-//		super();
-//		
-//	try {
-//
-//			
-//			Model wfdescModel = ModelFactory
-//					.createDefaultModel(ReificationStyle.Minimal);
-//
-//			InputStream is;
-//
-//			is = new FileInputStream(wfdescFilePath);
-//
-//			wfdescModel.read(is, null, FileUtils.guessLang(wfdesc_file_path.getName()));
-//			
-//			Model provModel = ModelFactory
-//					.createDefaultModel(ReificationStyle.Minimal);
-//
-//			InputStream is2 =new FileInputStream(prov_file_path);
-//
-//			
-//			provModel.read(is2,"file:/Users/pinarpink/Desktop/UTILIZING_SUMMARIES/2920_WF_RUN-4/workflowrun.prov.ttl/" ,FileUtils.langTurtle);
-//
-////			List<List<PortBean>> results = downstreamLineagePorts(wfdescModel, "http://ns.taverna.org.uk/2010/workflowBundle/1b2dee3b-3556-4706-86fd-e417705f20c8/workflow/Workflow4/in/list_cig_name");
-//			
-//
-////			List<List<WorkflowElementBean>> results = upstreamLineagePorts(wfdescModel, "http://ns.taverna.org.uk/2010/workflowBundle/1b2dee3b-3556-4706-86fd-e417705f20c8/workflow/Workflow4/out/logr25");
-//			                                                        
-//	
-//
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-////			catch (MalformedURLException e) {
-////			// TODO Auto-generated catch block
-////			e.printStackTrace();
-////		}
-//
-//		
-//	}
-
-
 
 	public static List<List<PortBean>> downstreamLineagePorts(Model wfdescModel,
 			String portURIAsString) {

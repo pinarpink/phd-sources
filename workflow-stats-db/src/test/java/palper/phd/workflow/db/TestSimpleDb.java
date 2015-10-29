@@ -30,17 +30,17 @@ public class TestSimpleDb {
 		WorkflowInfo wi = new WorkflowInfo();
 		wi.setUnactionableProcessUris(new ArrayList<String>(
 			    Arrays.asList("zozo", "zuzu", "zaza")));
-		wi.setStatistics(new WfdescStatistics());
-		wi.setWfdescAsString("BLA BLA BLA WFDESC AS TURTLE");
-	
+//		wi.setStatistics(new WfdescStatistics());
+//		wi.setWfdescAsString("BLA BLA BLA WFDESC AS TURTLE");
+//	
 		
 		
 		WorkflowInfo wi2 = new WorkflowInfo();
 		wi2.setUnactionableProcessUris(new ArrayList<String>(
 			    Arrays.asList("bobo", "bubu", "baba")));
-		wi2.setStatistics(new WfdescStatistics());
-		wi2.setWfdescAsString("HO HO HO HO WFDESC AS TURTLE");
-		
+//		wi2.setStatistics(new WfdescStatistics());
+//		wi2.setWfdescAsString("HO HO HO HO WFDESC AS TURTLE");
+//		
 
 	
 		map.put("wf1", wi); 
@@ -64,7 +64,7 @@ public class TestSimpleDb {
 	        	System.out.println(current);
 
 	        	System.out.println(map2.get(current).getUnactionableProcessUris());
-	        	System.out.println(map2.get(current).getWfdescAsString());
+//	        	System.out.println(map2.get(current).getWfdescAsString());
 	        	
 		 }
 		 
