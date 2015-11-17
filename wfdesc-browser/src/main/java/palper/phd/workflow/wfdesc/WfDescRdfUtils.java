@@ -1197,8 +1197,11 @@ public class WfDescRdfUtils {
     StmtIterator iter =
         model.listStatements(processor, model.getProperty(SummarizerNamespaces.rdfNS, "type"),
             model.getResource(SummarizerNamespaces.labelingExtNS + "StringConstant"));
+    StmtIterator iter2 =
+        model.listStatements(processor, model.getProperty(SummarizerNamespaces.rdfNS, "type"),
+            model.getResource(SummarizerNamespaces.wf4everNS + "StringConstant"));
 
-    if (iter.hasNext()) {
+    if (iter.hasNext() || iter2.hasNext()) {
       return true;
 
     } else {

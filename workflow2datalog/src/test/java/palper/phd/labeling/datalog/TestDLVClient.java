@@ -12,7 +12,7 @@ public class TestDLVClient {
 	public void test() {
 		DLVClient cli;
 		try {
-			cli = new DLVClient();
+			cli = new DLVClient("prog-input");
 
 			cli.invokeDlv(null, null);
 			

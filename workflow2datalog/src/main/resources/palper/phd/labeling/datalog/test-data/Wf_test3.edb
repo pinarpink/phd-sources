@@ -1,0 +1,59 @@
+
+% RESOURCE DEFINITIONS.
+resource(testresource).
+resInput(testresource,a,0).
+resInput(testresource,b,0).
+resOutput(testresource,out1,1).
+
+resource(flattn).
+resInput(flattn,in1,1).
+resOutput(flattn,out1,0).
+
+workflow(w1).
+
+workflowInput(w1,win1).
+definedDepth(w1, win1,1).
+predictedDepth(w1, win1,1).
+
+workflowInput(w1,win2).
+definedDepth(w1,win2,0).
+predictedDepth(w1,win2,0).
+
+workflowOutput(w1,wout1).
+
+process(p1).
+hasLhbRoot(p1,uid1).
+realizedBy(p1,testresource).
+processInput(p1,a).
+processInput(p1,b).
+processOutput(p1,c).
+
+
+process(p2).
+hasLhbRoot(p2,uid2).
+realizedBy(p2,flattn).
+processInput(p2,in1).
+processOutput(p2,out1).
+
+dataLink(dl1,w1,win1,p1,a).
+dataLink(dl2,w1,win2,p1,b).
+dataLink(dl3,p1,c,p2,in1).
+dataLink(dl4,p2,out1,w1,wout1).
+
+%LHB DEFINITIONS
+lhbNode(uid1, cross, p1).
+lhbNode(uid11, a, p1).
+lhbNode(uid12, b, p1).
+
+lhbNode(uid2, cross, p2).
+lhbNode(uid21, in1, p2).
+
+
+hasChild(uid1, uid11,0).
+hasChild(uid1, uid12, 1).
+hasChild(uid2, uid21,0).
+
+
+%CONTEXT DEFINITIONS
+context(ctxList,w1,win1,1).
+context(ctxCons,w1,win2,0).

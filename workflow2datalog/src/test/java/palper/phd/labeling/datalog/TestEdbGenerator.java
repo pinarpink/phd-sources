@@ -21,9 +21,9 @@ public class TestEdbGenerator {
 	@Test
 	public void test() {
 
-		// /Users/pinarpink/Desktop/SummarizationRules/dataset
-
-		String dataSetDirStr = "/Users/pinarpink/Desktop/SummarizationRules/dataset";
+		 
+	  String dataSetDirStr = "/Users/pinarpink/Desktop/Labeling_Workflows/dataset";
+		//String dataSetDirStr = "/Users/pinarpink/Desktop/SummarizationRules/dataset";
 
 		File dataset_dir = new File(dataSetDirStr);
 		File[] file_array = dataset_dir.listFiles();
@@ -32,8 +32,8 @@ public class TestEdbGenerator {
 				try {
 					Wfdesc2Datalog ext;
 					ext = new Wfdesc2Datalog(file_array[i]);
-					ext.writeEdbToFile();
-					System.out.println(ext.getEdbAsDLVString());
+					File res = ext.writeEdbToDlvFile();
+					System.out.println("Written to:" + res);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

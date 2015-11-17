@@ -106,7 +106,7 @@ public class WorkflowRewritePrimitives {
 					.println("########NEGATIVE APPLICAITON CONDITION CANNOT COLLAPSE ON TO MULTIPLE UPSTREAM HOSTS ");
 
 			System.out
-					.println("#####################################################");
+					.println("#############"+op.getURI()+"######################");
 			return false;
 
 		} else {

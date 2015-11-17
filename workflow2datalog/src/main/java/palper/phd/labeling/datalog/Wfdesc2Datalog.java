@@ -80,7 +80,7 @@ public class Wfdesc2Datalog {
 
 	}
 
-	public File writeEdbToFile() throws IOException {
+	public File writeEdbToDlvFile() throws IOException {
 		String edbFilename = wfdescFile.getName();
 		edbFilename = edbFilename.replaceFirst("\\..*", "") + ".edb";
 
@@ -88,7 +88,7 @@ public class Wfdesc2Datalog {
 				+ edbFilename);
 
 		FileWriter fr = new FileWriter(destinationFile);
-		fr.write(base.toString());
+		fr.write(this.getEdbAsDLVString());
 		fr.close();
 		return destinationFile;
 	}

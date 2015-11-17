@@ -85,6 +85,14 @@ public abstract class WfdescStatistics implements Serializable {
   }
 
 
+  public String toCsvString() {
+    String result =
+         procList.size() + ";" +  linkList.size() + ";";
+
+    return result;
+  }
+
+
   public Set<String> getProcList() {
     return procList;
   }

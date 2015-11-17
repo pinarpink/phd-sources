@@ -1,0 +1,4 @@
+differenceVAl(NAME,NAME2, Z):- firstNum(NAME, VAL), secondNum(NAME2, VAL2), Z= VAL - VAL2.
+
+firstNum(bir,"-1").
+secondNum(iki,"-2").

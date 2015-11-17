@@ -1,0 +1,32 @@
+
+#const sttasserted = asserted.
+#const sttaggregated = aggregated.
+#const sttpropagated = propagated.
+
+
+%Bootstrap axiom
+reaches(CTX,PRO, PORT,Z, sttasserted):- context(CTX,PRO,PORT,RMPOS), predictedDepth(PRO,PORT,PRED_DEP), Z=PRED_DEP - RMPOS.
+
+
+%Datalink axiom
+% there should be 2  other variants for iterated and wrapped links
+reaches(CTX,SNKPRO, SNKPOR,Z,STATUS):- reaches(CTX, SRCPRO, SRCPOR, Z,STATUS), smooth(DL1), dataLink(DL1, SRCPRO,SRCPOR, SNKPRO, SNKPOR).
+reaches(CTX,SNKPRO, SNKPOR,Z,STATUS):- reaches(CTX, SRCPRO, SRCPOR, Z,STATUS), iterated(DL1,_), dataLink(DL1, SRCPRO,SRCPOR, SNKPRO, SNKPOR).
+reaches(CTX,SNKPRO, SNKPOR,Y,STATUS):- reaches(CTX, SRCPRO, SRCPOR, Z,STATUS), wrapped(DL1,X), dataLink(DL1, SRCPRO,SRCPOR, SNKPRO, SNKPOR),  Y=X+Z.
+
+
+
+%The depthwise distance between the reach of a context and the data that will be consumed bythe input port of activity.
+contextDeltaInner(CTX,PRO, PORT,Z):- reaches(CTX, PRO, PORT, CTX_POS,_), leftmostPosition(PRO, PORT, LMPOS),CTX_POS > LMPOS, Z= CTX_POS - LMPOS.
+contextDeltaZeroOrOuter(CTX,PRO, PORT,Z):- reaches(CTX, PRO, PORT, CTX_POS,_), leftmostPosition(PRO, PORT, LMPOS),CTX_POS <= LMPOS, Z= LMPOS - CTX_POS.
+
+
+%Activity Axiom
+%Propagate context from inputs of an activity to its outputs
+reaches(CTX,P1, OUT1,FFAC,sttaggregated):-  processInput(P1,IN1), processOutput(P1,OUT1), contextDeltaInner(CTX,P1,IN1,CDEL), formulaFactor(P1,IN1,FFAC).
+reaches(CTX,P1, OUT1,Z,sttpropagated):-  processInput(P1,IN1), processOutput(P1,OUT1), reaches(CTX,P1, IN1,_,sttasserted), contextDeltaZeroOrOuter(CTX,P1,IN1,CDEL), formulaFactor(P1,IN1,FFAC), Z= FFAC-CDEL.
+reaches(CTX,P1, OUT1,Z,sttpropagated):-  processInput(P1,IN1), processOutput(P1,OUT1), reaches(CTX,P1, IN1,_,sttpropagated), contextDeltaZeroOrOuter(CTX,P1,IN1,CDEL), formulaFactor(P1,IN1,FFAC), Z= FFAC-CDEL.
+reaches(CTX,P1, OUT1,Z,sttaggregated):-  processInput(P1,IN1), processOutput(P1,OUT1), reaches(CTX,P1, IN1,_,sttaggregated), contextDeltaZeroOrOuter(CTX,P1,IN1,CDEL), formulaFactor(P1,IN1,FFAC), Z= FFAC-CDEL.
+
+
+

@@ -1,0 +1,20 @@
+#const dotnode = dot.
+#const crossnode = cross.
+
+
+lhf(R,0):-  hasLhbRoot(P,R), R != null.
+
+lhf(FIRSTCHILD,VAL) :- lhbNode(PARENT,_,_), hasChild(PARENT, FIRSTCHILD, 0), lhf(PARENT,VAL).
+
+runningTotal(NODEID,Z) :- lhbNode(NODEID, NAME, PROC), NAME != dotnode, NAME != crossnode, lhf(NODEID,VAL),  deltaDepth(PROC, NAME, NDEL), Z=NDEL+VAL.
+
+lhf(SIBLING2, VAL):- lhbNode(PARENT,dotnode,_), hasChild(PARENT, SIBLING1, N), hasChild(PARENT, SIBLING2, NEXT), lhf(SIBLING1,VAL), NEXT= N+1.
+ 
+lhf(SIBLING2, VAL):- lhbNode(PARENT,crossnode,_), hasChild(PARENT, SIBLING1, N), hasChild(PARENT, SIBLING2, NEXT), runningTotal(SIBLING1,VAL), NEXT= N+1.
+
+runningTotal(PARENT, VAL):- hasChild(PARENT, LASTCHILD, X), #max{V : hasChild(PARENT,_,V)} =Y, runningTotal(LASTCHILD,VAL), X==Y.
+
+
+%Formula Factor which makes use of LHB formula orderings
+formulaFactor(PROC, PORT, 0):-  lhbNode(NODEID,PORT,PROC), runningTotal(NODEID, VAL), deltaDepth(PROC, PORT, 0).
+formulaFactor(PROC, PORT, VAL):-  lhbNode(NODEID,PORT,PROC), runningTotal(NODEID, VAL), deltaDepth(PROC, PORT, ND), ND>0.

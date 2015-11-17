@@ -73,6 +73,11 @@ public class PreSummaryStatistics extends WfdescStatistics {
     return result;
   }
 
+  @Override
+  public String toCsvString() {
+
+    return super.toCsvString();
+  }
   public Set<String> getGroundTruthImportant() {
     return groundTruthImportant;
   }
