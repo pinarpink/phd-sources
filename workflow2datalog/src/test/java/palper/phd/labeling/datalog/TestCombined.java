@@ -22,19 +22,19 @@ public class TestCombined {
 	public void test() {
 	
 		try {
-			DLVClient cli = new DLVClient();
+			DLVClient cli = new DLVClient("prog-input");
 
-			String workflowPath = "/Users/pinarpink/Desktop/SummarizationRules/dataset/2920_portname_fixed.wfdesc.ttl";
+			String workflowPath = "/Users/pinarpink/Desktop/Labeling_Workflows/dataset/2920_portname_fixed.wfdesc.ttl";
 
 			File workflowFile = new File(workflowPath);
 			Wfdesc2Datalog ext = new Wfdesc2Datalog(workflowFile);
 			// ext.writeEdbToFile();
 			
-			//System.out.println(ext.getEdbAsDLVString());
+			System.out.println(ext.getEdbAsDLVString());
 			cli.addWorkflowDescription(ext.getEdbAsDLVString());
 			cli.invokeDlv(null, null);
 
-			//System.out.println(cli.getWorkflowIDB().toString());
+			System.out.println(cli.getWorkflowIDB().toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

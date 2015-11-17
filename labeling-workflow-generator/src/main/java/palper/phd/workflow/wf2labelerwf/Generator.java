@@ -42,7 +42,7 @@ public class Generator {
 
 	public void run() {
 		try {
-			DLVClient cli = new DLVClient();
+			DLVClient cli = new DLVClient("prog-input-2");
 
 			Wfdesc2Datalog ext = new Wfdesc2Datalog(wfdescFile);
 			System.out.println(ext.getEdbAsDLVString());

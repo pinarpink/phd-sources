@@ -1,1 +1,1 @@
-dlv -silent ./DLV_/axioms_formula_factor
+dlv -silent  -N=99999  ./DLV_/axioms_formula_factor

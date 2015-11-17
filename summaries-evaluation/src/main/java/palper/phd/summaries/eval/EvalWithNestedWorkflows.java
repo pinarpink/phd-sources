@@ -45,10 +45,12 @@ public class EvalWithNestedWorkflows {
    */
   public static void main(String[] args) {
 
-    File dataset_dir = new File("/Users/pinarpink/Desktop/SummarizationRules/dataset/NESTED/");
-
+  //  File dataset_dir = new File("/Users/pinarpink/Desktop/SummarizationRules/dataset/NESTED/");
+    File dataset_dir = new File(args[0]);
     File[] file_array = dataset_dir.listFiles();
 
+ 
+    String strategy = args[1];
     StatisticsMap statsMap = new StatisticsMap();
 
 
@@ -110,31 +112,10 @@ public class EvalWithNestedWorkflows {
              * 
              * THIS IS WHERE THE MAGIC HAPPENS
              */
-
-            WorkflowSummarizer summarizer1 =
-                new WorkflowSummarizer("rule-config-collapse-nostrategy.xml",
-                    unnestedUnbookmarkedWfdescFieName);
-
-            Model summarizedModel = summarizer1.getSummarizedWfdescModel();
+            Model result = summarize(unnestedUnbookmarkedWfdescFieName, strategy);
 
 
-            String summarizedWfGraphMlFileName = graphMlFileName;
-            summarizedWfGraphMlFileName =
-                graphMlFileName.replaceFirst("\\..*", "") + "-" + "collapse-nostrategy.graphml";
-
-            Writer fw2 = new FileWriter(new File(summarizedWfGraphMlFileName));
-            GraphmlWriter gw2 = new GraphmlWriter(fw2, summarizedModel);
-            gw2.write();
-
-
-            String summarizedWfdescFileName =
-                unnestedUnbookmarkedWfdescFieName.replaceFirst("\\..*", "")
-                    + "-collapse-nostrategy.wfdesc.ttl";
-            File wfdescSummarized = new File(summarizedWfdescFileName);
-            OutputStream oss2 = new FileOutputStream(wfdescSummarized);
-            summarizedModel.write(oss2, "TURTLE", null);
-
-            PostSummaryStatistics postSummaryStats = new PostSummaryStatistics(summarizedModel);
+            PostSummaryStatistics postSummaryStats = new PostSummaryStatistics(result);
             System.out.println(postSummaryStats.toString());
             statsMap.getPostSummaryMap().put(wfdescShortName, postSummaryStats);
 
@@ -162,7 +143,7 @@ public class EvalWithNestedWorkflows {
     }// for
 
     try {
-      File resultStatsFile = new File(dataset_dir.getAbsolutePath() + "/SummarizationStats.csv");
+      File resultStatsFile = new File(dataset_dir.getAbsolutePath() + "/By_"+strategy+"_Stats.csv");
 
       FileWriter filewr = new FileWriter(resultStatsFile);
 
@@ -174,5 +155,32 @@ public class EvalWithNestedWorkflows {
       e.printStackTrace();
     }
   }
+  private static Model summarize(String sourceWfdescFileName, String strategy) throws IOException,
+  ParserConfigurationException, TransformerException {
 
+
+WorkflowSummarizer summarizer1 =
+    new WorkflowSummarizer("rule-config-" + strategy + ".xml", sourceWfdescFileName);
+
+Model summarizedModel = summarizer1.getSummarizedWfdescModel();
+
+
+String summarizedWfGraphMlFileName =
+    sourceWfdescFileName.replaceFirst("\\..*", "") + "-" + strategy + ".graphml";
+
+Writer fw2 = new FileWriter(new File(summarizedWfGraphMlFileName));
+GraphmlWriter gw2 = new GraphmlWriter(fw2, summarizedModel);
+gw2.write();
+
+
+String summarizedWfdescFileName =
+    sourceWfdescFileName.replaceFirst("\\..*", "") + "-" + strategy + ".wfdesc.ttl";
+File wfdescSummarized = new File(summarizedWfdescFileName);
+OutputStream oss2 = new FileOutputStream(wfdescSummarized);
+summarizedModel.write(oss2, "TURTLE", null);
+
+
+return summarizedModel;
+
+}
 }

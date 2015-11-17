@@ -1,0 +1,42 @@
+
+%#const dotnode = dot.
+%#const crossnode = cross.
+
+
+
+process(p1).
+hasLhbRoot(p1,uid1).
+
+deltaDepth(p1,a,0).
+deltaDepth(p1,b,0).
+deltaDepth(p1,x,1).
+deltaDepth(p1,y,1).
+deltaDepth(p1,z,1).
+deltaDepth(p1,t,2).
+
+
+
+%LHB DEFINITIONS
+lhbNode(uid1, cross, p1).
+lhbNode(uid2, dot, p1).
+lhbNode(uid3, dot, p1).
+lhbNode(uid4, t, p1).
+lhbNode(uid5, a, p1).
+lhbNode(uid9, b, p1).
+lhbNode(uid6, x, p1).
+lhbNode(uid7, y, p1).
+lhbNode(uid8, z, p1).
+
+hasChild(uid1, uid2,0).
+hasChild(uid1, uid3, 1).
+hasChild(uid1, uid4,2).
+
+hasChild(uid2, uid5,0).
+hasChild(uid2, uid9,1).
+
+hasChild(uid3, uid6,0).
+hasChild(uid3, uid7,1).
+hasChild(uid3, uid8,2).
+
+
+
