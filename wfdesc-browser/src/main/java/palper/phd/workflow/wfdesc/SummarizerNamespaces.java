@@ -11,7 +11,9 @@ public class SummarizerNamespaces {
 
 	
 	//public static final String motifsNS = "http://purl.org/wf4ever/motifs.owl#";
-  public static final String motifsNS = "http://purl.org/net/wf-motifs#";
+  
+    public static final String motifsNS = "http://purl.org/net/wf-motifs#";
+    public static final String wfprovNS = "http://purl.org/wf4ever/wfprov#";
   
 	
 	public static final String wfdescNS = "http://purl.org/wf4ever/wfdesc#";

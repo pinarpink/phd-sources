@@ -13,6 +13,7 @@ import java.util.Set;
 import palper.phd.labeling.model.LabelDefinitonBean;
 import palper.phd.labeling.model.LabelInstanceBean;
 import palper.phd.labeling.model.XSDatatypeEnum;
+import palper.phd.workflow.wfdesc.SummarizerNamespaces;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -32,470 +33,832 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
  */
 public class ProvRdfUtils {
 
-	
-	
-	public static Set<Resource> getArtifactsDescribedByParameter (String parameterNameUriString, Model model) {
 
-		Set<Resource> result = new HashSet<Resource>();
 
-		String usageQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX wfprov:    <http://purl.org/wf4ever/wfprov#> \n"
-				+ " SELECT DISTINCT ?entit1  \n" + " WHERE { \n"
-				+ " ?entit1 wfprov:describedByParameter"
-				+ " <" + parameterNameUriString + "> . \n" + " } \n";
+  public static Set<Resource> getArtifactsDescribedByParameter(String parameterNameUriString,
+      Model model) {
 
-		Query usageQuery = QueryFactory.create(usageQueryStr);
+    Set<Resource> result = new HashSet<Resource>();
 
-		QueryExecution usageQueryExec = QueryExecutionFactory.create(
-				usageQuery, model);
+    String usageQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX wfprov:    <http://purl.org/wf4ever/wfprov#> \n"
+            + " SELECT DISTINCT ?entit1  \n" 
+            + " WHERE { \n"
+            + " ?entit1 wfprov:describedByParameter" 
+            + " <" + parameterNameUriString + "> . \n"
+            + " } \n";
 
-		try {
-			ResultSet results = usageQueryExec.execSelect();
+    Query usageQuery = QueryFactory.create(usageQueryStr);
 
-			for (; results.hasNext();) {
+    QueryExecution usageQueryExec = QueryExecutionFactory.create(usageQuery, model);
 
-				QuerySolution soln = results.nextSolution();
+    try {
+      ResultSet results = usageQueryExec.execSelect();
 
-				result.add(soln.getResource("entit1"));
-			}
+      for (; results.hasNext();) {
 
-		} finally {
-			usageQueryExec.close();
+        QuerySolution soln = results.nextSolution();
 
-		}
-		return result;
-	}
-	
-	
-	
-	
-	public static Set<Resource> getAllUsageInstances(String portUriString,
-			Model model) {
+        result.add(soln.getResource("entit1"));
+      }
 
-		Set<Resource> result = new HashSet<Resource>();
+    } finally {
+      usageQueryExec.close();
 
-		String usageQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1  \n" + " WHERE { \n"
-				+ " ?actvty prov:qualifiedUsage ?usg1 . \n"
-				+ " ?usg1 prov:entity ?entit1 .\n" + " ?usg1 prov:hadRole"
-				+ " <" + portUriString + "> . \n" + " } \n";
+    }
+    return result;
+  }
 
-		Query usageQuery = QueryFactory.create(usageQueryStr);
+  
+  public static String getInlineContentforDataArtifact(String dataArtifactUriString, Model model){
+    String result = null;
 
-		QueryExecution usageQueryExec = QueryExecutionFactory.create(
-				usageQuery, model);
+    String contentQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX tavernaprov:  <http://ns.taverna.org.uk/2012/tavernaprov/> \n"
+            + " PREFIX cnt: <http://www.w3.org/2011/content#>"
+            + " SELECT DISTINCT ?contenttext  \n" 
+            + " WHERE { \n" 
+            + " <" 
+            + dataArtifactUriString
+            + "> tavernaprov:content  ?cont . \n" 
+            + "?cont a  cnt:ContentAsText . \n"
+            + "?cont cnt:chars ?contenttext . \n"
+            + " } \n";
 
-		try {
-			ResultSet results = usageQueryExec.execSelect();
+    Query generationQuery = QueryFactory.create(contentQueryStr);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
 
-			for (; results.hasNext();) {
+    try {
 
-				QuerySolution soln = results.nextSolution();
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
 
-				result.add(soln.getResource("entit1"));
-			}
+      if (resultsGeneration.hasNext()) {
 
-		} finally {
-			usageQueryExec.close();
+        QuerySolution soln = resultsGeneration.nextSolution();
 
-		}
-		return result;
-	}
+        result = (String)(soln.getLiteral("contenttext").getValue());
+      }
 
-	public static Set<Resource> getAllGenerationInstances(String portUriString,
-			Model model) {
+    } finally {
 
-		Set<Resource> result = new HashSet<Resource>();
+      generationQueryExec.close();
+    }
+    return result;
 
-		String generationQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1  \n"
-				+ " WHERE { \n"
-				+ " ?entit1 prov:qualifiedGeneration ?gen1 . \n"
-				+ " ?gen1 prov:hadRole"
-				+ " <"
-				+ portUriString
-				+ "> . \n"
-				+ " } \n";
+  }
+public static Resource getGenerationRole(String dataArtifactUriString, String activityUriString, Model model){
+  
+  Resource result = null;
+  
+  String generationQueryStr =
+      " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+          + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+          + " SELECT DISTINCT ?role  \n" 
+          + " WHERE { \n"
+          + " <"+dataArtifactUriString+">  prov:qualifiedGeneration ?gen1  . \n" 
+          + " ?gen1 prov:hadRole  ?role . \n "
+          + " ?gen1 prov:activity <"+activityUriString+"> . \n" 
+          + " } \n";
 
-		Query generationQuery = QueryFactory.create(generationQueryStr);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+  Query generationQuery = QueryFactory.create(generationQueryStr);
+  QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
 
-		try {
+  try {
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
+    ResultSet resultsGeneration = generationQueryExec.execSelect();
 
-			for (; resultsGeneration.hasNext();) {
+    if (resultsGeneration.hasNext()) {
 
-				QuerySolution soln = resultsGeneration.nextSolution();
+      QuerySolution soln = resultsGeneration.nextSolution();
 
-				result.add(soln.getResource("entit1"));
-			}
+      result = soln.getResource("role");
+    }
 
-		} finally {
+  } finally {
 
-			generationQueryExec.close();
-		}
-		return result;
-	}
+    generationQueryExec.close();
+  }
+  return result;
+}
+public static Resource getUsageRole(String dataArtifactUriString, String activityUriString, Model model){
+  
+  Resource result = null;
+  String usageQueryStr =
+      " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+          + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+          + " SELECT DISTINCT ?role  \n" 
+          + " WHERE { \n"
+          + " <"+activityUriString+ "> prov:qualifiedUsage ?usg1 . \n" 
+          + " ?usg1 prov:hadRole ?role .\n"
+          + " ?usg1 prov:entity" + " <" + dataArtifactUriString + "> . \n" + " } \n";
+  
+  Query usageQuery = QueryFactory.create(usageQueryStr);
 
-	public static Map<String, String> getPortArtefactMapForActivity(String activityInstanceUri,Model model) {
+  QueryExecution usageQueryExec = QueryExecutionFactory.create(usageQuery, model);
 
-		Map<String, String> result = new HashMap<String, String>();
+  try {
+    ResultSet results = usageQueryExec.execSelect();
 
-		String usageQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1 ?role1  \n" 
-				+ " WHERE { \n"
-				+ " <"+activityInstanceUri+"> prov:qualifiedUsage ?usg1 . \n"
-				+ " ?usg1 prov:entity ?entit1 .\n" 
-				+ " ?usg1 prov:hadRole ?role1 .\n"
-				+ " } \n";
+    if (results.hasNext()) {
 
-		Query usageQuery = QueryFactory.create(usageQueryStr);
+      QuerySolution soln = results.nextSolution();
 
-		QueryExecution usageQueryExec = QueryExecutionFactory.create(
-				usageQuery, model);
+      result = soln.getResource("role");
+    }
 
-		try {
-			ResultSet results = usageQueryExec.execSelect();
+  } finally {
+    usageQueryExec.close();
 
-			for (; results.hasNext();) {
+  }
+  return result;
+}
+  public static Set<Resource> getAllUsageInstances(String portUriString, Model model) {
 
-				QuerySolution soln = results.nextSolution();
+    Set<Resource> result = new HashSet<Resource>();
 
-				result.put(soln.getResource("role1").getURI(),soln.getResource("entit1").getURI());
-			}
+    String usageQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1  \n" 
+            + " WHERE { \n"
+            + " ?usg1 a prov:Usage . \n" 
+            + " ?usg1 prov:entity ?entit1 .\n"
+            + " ?usg1 prov:hadRole" 
+            + " <" + portUriString + "> . \n" 
+            + " } \n";
 
-		} finally {
-			usageQueryExec.close();
+    Query usageQuery = QueryFactory.create(usageQueryStr);
 
-		}
+    QueryExecution usageQueryExec = QueryExecutionFactory.create(usageQuery, model);
 
-		String generationQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1 ?role1 \n"
-				+ " WHERE { \n"
-				+ " ?entit1 prov:qualifiedGeneration ?gen1 . \n"
-				+ " ?gen1 prov:hadRole ?role1 . \n"
-				+ " ?gen1 prov:activity <"+activityInstanceUri+"> .\n"
-				+ " } \n";
+    try {
+      ResultSet results = usageQueryExec.execSelect();
 
+      for (; results.hasNext();) {
 
-		Query generationQuery = QueryFactory.create(generationQueryStr);
+        QuerySolution soln = results.nextSolution();
 
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+        result.add(soln.getResource("entit1"));
+      }
 
-		try {
-			ResultSet results = generationQueryExec.execSelect();
+    } finally {
+      usageQueryExec.close();
 
-			for (; results.hasNext();) {
+    }
+    return result;
+  }
 
-				QuerySolution soln = results.nextSolution();
+  public static Set<Resource> getAllGenerationInstances(String portUriString, Model model) {
 
-				result.put(soln.getResource("role1").getURI(),soln.getResource("entit1").getURI());
-			}
+    Set<Resource> result = new HashSet<Resource>();
 
-		} finally {
-			generationQueryExec.close();
-		}
-		
-		return result;
-	}
+    String generationQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1  \n" + " WHERE { \n"
+            + " ?entit1 prov:qualifiedGeneration ?gen1 . \n" + " ?gen1 prov:hadRole" + " <"
+            + portUriString + "> . \n" + " } \n";
 
-	
-	public static Resource getDataContentPath (String artefactId, Model model){
-		Resource result = null;
+    Query generationQuery = QueryFactory.create(generationQueryStr);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
 
-		String contentQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX tavernaprov:  <http://ns.taverna.org.uk/2012/tavernaprov/> \n"
-				+ " SELECT DISTINCT ?cont  \n"
-				+ " WHERE { \n"
-				+ " <"+artefactId+"> tavernaprov:content  ?cont . \n"
-				+ " } \n";
+    try {
 
-		Query generationQuery = QueryFactory.create(contentQueryStr);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
 
-		try {
+      for (; resultsGeneration.hasNext();) {
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
+        QuerySolution soln = resultsGeneration.nextSolution();
 
-			for (; resultsGeneration.hasNext();) {
+        result.add(soln.getResource("entit1"));
+      }
 
-				QuerySolution soln = resultsGeneration.nextSolution();
+    } finally {
 
-				result = soln.getResource("cont");
-			}
+      generationQueryExec.close();
+    }
+    return result;
+  }
 
-		} finally {
+  public static Map<String, String> getPortArtefactMapForActivity(String activityInstanceUri,
+      Model model) {
 
-			generationQueryExec.close();
-		}
-		return result;
-		
-		
-	}
-	public static Set<Resource> getInstantiationsOfOperation(
-			String operationUriString, Model model) {
+    Map<String, String> result = new HashMap<String, String>();
 
-		Set<Resource> result = new HashSet<Resource>();
+    String usageQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1 ?role1  \n" + " WHERE { \n" + " <" + activityInstanceUri
+            + "> prov:qualifiedUsage ?usg1 . \n" + " ?usg1 prov:entity ?entit1 .\n"
+            + " ?usg1 prov:hadRole ?role1 .\n" + " } \n";
 
-		String generationQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1  \n"
-				+ " WHERE { \n"
-				+ " ?entit1 prov:qualifiedAssociation ?assoc1 . \n"
-				+ " ?assoc1 prov:hadPlan"
-				+ " <"
-				+ operationUriString
-				+ "> . \n" + " } \n";
+    Query usageQuery = QueryFactory.create(usageQueryStr);
 
-		Query generationQuery = QueryFactory.create(generationQueryStr);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+    QueryExecution usageQueryExec = QueryExecutionFactory.create(usageQuery, model);
 
-		try {
+    try {
+      ResultSet results = usageQueryExec.execSelect();
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
+      for (; results.hasNext();) {
 
-			for (; resultsGeneration.hasNext();) {
+        QuerySolution soln = results.nextSolution();
 
-				QuerySolution soln = resultsGeneration.nextSolution();
+        result.put(soln.getResource("role1").getURI(), soln.getResource("entit1").getURI());
+      }
 
-				result.add(soln.getResource("entit1"));
-			}
+    } finally {
+      usageQueryExec.close();
 
-		} finally {
+    }
 
-			generationQueryExec.close();
-		}
-		return result;
-	}
+    String generationQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1 ?role1 \n" + " WHERE { \n"
+            + " ?entit1 prov:qualifiedGeneration ?gen1 . \n" + " ?gen1 prov:hadRole ?role1 . \n"
+            + " ?gen1 prov:activity <" + activityInstanceUri + "> .\n" + " } \n";
 
-	public static List<LabelInstanceBean> getLabelsOfArtifacts(
-			String labelURIString, String artifactId, Model model) {
 
-		List<LabelInstanceBean> result = new ArrayList<LabelInstanceBean>();
+    Query generationQuery = QueryFactory.create(generationQueryStr);
 
-		LabelDefinitonBean def = new LabelDefinitonBean();
-		def.setLabelNameURIString(labelURIString);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
 
-		// TODO do a lookup for the actual type here!!!!
-		def.setDataTypeEnum(XSDatatypeEnum.XS_STRING);
+    try {
+      ResultSet results = generationQueryExec.execSelect();
 
-		StmtIterator iter = model.listStatements(model.getResource(artifactId),
-				model.getProperty(labelURIString), (RDFNode) null);
+      for (; results.hasNext();) {
 
-		while (iter.hasNext()) {
+        QuerySolution soln = results.nextSolution();
 
-			Statement stmt = iter.next();
-			LabelInstanceBean ins = new LabelInstanceBean();
-			ins.setDefiniton(def);
+        result.put(soln.getResource("role1").getURI(), soln.getResource("entit1").getURI());
+      }
 
-			
-			ins.setLabelTargetURIString(stmt.getSubject().getURI());
-			ins.setValue(stmt.getLiteral().getValue());
+    } finally {
+      generationQueryExec.close();
+    }
 
-			result.add(ins);
-		}
+    return result;
+  }
 
-		return result;
-	}
 
-	public static Resource getContainerAtDepth(String itemArtifactUriString,
-			int depth, Model model) {
+  public static Resource getDataContentPath(String artefactId, Model model) {
+    Resource result = null;
 
-		Resource result = null;
+    String contentQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX tavernaprov:  <http://ns.taverna.org.uk/2012/tavernaprov/> \n"
+            + " SELECT DISTINCT ?cont  \n" + " WHERE { \n" + " <" + artefactId
+            + "> tavernaprov:content  ?cont . \n" + " } \n";
 
-		String queryString = "";
-		String generationQueryPrefix = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT REPLACEME  \n"
-				+ " WHERE { \n"
-				+ " REPLACEME a prov:Collection . \n"
-				+ " ?item prov:hadMember <"+itemArtifactUriString+ "> . \n";
+    Query generationQuery = QueryFactory.create(contentQueryStr);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
 
-		String remember = " ?item ";
-		String generationQueryMiddle = " ";
-		int i = 1;
-		depth--;
-		
-		while (depth > 0) {
+    try {
 
-			generationQueryMiddle =  " ?m" + i + " prov:hadMember " + remember
-					+ " . \n" + generationQueryMiddle;
-			remember = " ?m" + i + " ";
-			depth--;
-			i++;
-		}
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
 
-		queryString = generationQueryPrefix + generationQueryMiddle+ " } \n";
-		queryString = queryString.replaceAll("REPLACEME", remember);
+      for (; resultsGeneration.hasNext();) {
 
-		Query generationQuery = QueryFactory.create(queryString);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+        QuerySolution soln = resultsGeneration.nextSolution();
 
-		try {
+        result = soln.getResource("cont");
+      }
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
+    } finally {
 
-			for (; resultsGeneration.hasNext();) {
+      generationQueryExec.close();
+    }
+    return result;
 
-				QuerySolution soln = resultsGeneration.nextSolution();
 
-				String varName = remember.trim();
-				varName = varName.substring(1);
-				result = soln.getResource(varName);
-			}
+  }
 
-		} finally {
+  public static Set<Resource> getInstantiationsOfOperation(String operationUriString, Model model) {
 
-			generationQueryExec.close();
-		}
-		return result;
-	}
+    Set<Resource> result = new HashSet<Resource>();
 
-	public static Set<Resource> getCollectionMembersAtDepth(
-			String collectionArtifactUriString, int depth, Model model) {
+    String generationQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1  \n" 
+            + " WHERE { \n"
+            + " ?entit1 prov:qualifiedAssociation ?assoc1 . \n" 
+            + " ?assoc1 prov:hadPlan" + " <"
+            + operationUriString + "> . \n" + " } \n";
 
-		Set<Resource> result = new HashSet<Resource>();
+    Query generationQuery = QueryFactory.create(generationQueryStr);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
 
-		String queryString = "";
-		String generationQueryPrefixStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT REPLACEME  \n"
-				+ " WHERE { \n"
-				+ " ?col a prov:Collection . \n";
+    try {
 
-		String remember = " ?col ";	
-		String generationQueryMiddle=" ";
-				
-				int i = 1;
-		while (depth > 0) {
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
 
-			generationQueryMiddle =  generationQueryMiddle + remember
-					+ "prov:hadMember ?m" + i + " . \n";
-			remember = " ?m" + i + " ";
-			depth--;
-			i++;
-		}
+      for (; resultsGeneration.hasNext();) {
 
-		queryString = generationQueryPrefixStr+ generationQueryMiddle + " } \n";
+        QuerySolution soln = resultsGeneration.nextSolution();
 
-		queryString = queryString.replaceAll("REPLACEME", remember);
+        result.add(soln.getResource("entit1"));
+      }
 
-		Query generationQuery = QueryFactory.create(queryString);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+    } finally {
 
-		try {
+      generationQueryExec.close();
+    }
+    return result;
+  }
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
+  public static List<LabelInstanceBean> getLabelsOfArtifacts(String labelURIString,
+      String artifactId, Model model) {
 
-			for (; resultsGeneration.hasNext();) {
+    List<LabelInstanceBean> result = new ArrayList<LabelInstanceBean>();
 
-				QuerySolution soln = resultsGeneration.nextSolution();
-				
-				String varName = remember.trim();
-				varName = varName.substring(1);
-				
-				result.add(soln.getResource(varName));
-			}
+    LabelDefinitonBean def = new LabelDefinitonBean();
+    def.setLabelNameURIString(labelURIString);
 
-		} finally {
+    // TODO do a lookup for the actual type here!!!!
+    def.setDataTypeEnum(XSDatatypeEnum.XS_STRING);
 
-			generationQueryExec.close();
-		}
-		return result;
-	}
+    StmtIterator iter =
+        model.listStatements(model.getResource(artifactId), model.getProperty(labelURIString),
+            (RDFNode) null);
 
-	public static Set<Resource> getGenerationsWithRoleAndActivity(
-			String activityUriString, String portUriString, Model model) {
+    while (iter.hasNext()) {
 
-		Set<Resource> result = new HashSet<Resource>();
+      Statement stmt = iter.next();
+      LabelInstanceBean ins = new LabelInstanceBean();
+      ins.setDefiniton(def);
 
 
-		String generationQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1  \n"
-				+ " WHERE { \n"
-				+ " ?entit1 prov:qualifiedGeneration ?gen1 . \n"
-				+ " ?gen1 prov:hadRole"
-				+ " <"
-				+ portUriString
-				+ "> . \n"
-				+ " ?gen1 prov:activity"
-				+ " <"
-				+ activityUriString
-				+ "> . \n"
-				+ " } \n";
+      ins.setLabelTargetURIString(stmt.getSubject().getURI());
+      ins.setValue(stmt.getLiteral().getValue());
 
-		Query generationQuery = QueryFactory.create(generationQueryStr);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+      result.add(ins);
+    }
 
-		try {
+    return result;
+  }
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
 
-			for (; resultsGeneration.hasNext();) {
 
-				QuerySolution soln = resultsGeneration.nextSolution();
+  public static Set<Resource> getAllContainedItems(String containerArtifactUriString,
+      Model provModel) {
 
-				result.add(soln.getResource("entit1"));
-			}
+    Set<Resource> result = new HashSet<Resource>();
 
-		} finally {
+    if (hasItem(containerArtifactUriString, provModel)) {
+      Set<Resource> items = getCollectionMembersAtDepth(containerArtifactUriString, 1, provModel);
 
-			generationQueryExec.close();
-		}
-		return result;
-	}
+      for (Resource item : items) {
+        result.add(item);
+        Set<Resource> itemSubHierarchy = getAllContainedItems(item.getURI(), provModel);
+        result.addAll(itemSubHierarchy);
 
-	public static Set<Resource> getUsagesWithRoleAndActivity(
-			String activityUriString, String portUriString, Model model) {
+      }
 
-		Set<Resource> result = new HashSet<Resource>();
+    }
 
-		String generationQueryStr = " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
-				+ " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-				+ " SELECT DISTINCT ?entit1  \n"
-				+ " WHERE { \n"
-				+ " <"
-				+ activityUriString
-				+ "> prov:qualifiedUsage ?usg1 . \n"
-			    + " ?usg1 prov:entity ?entit1 . \n"
-				+ " ?usg1 prov:hadRole"
-				+ " <"
-				+ portUriString
-				+ "> . \n"
-				+ " } \n";
+    return result;
+  }
 
-		Query generationQuery = QueryFactory.create(generationQueryStr);
-		QueryExecution generationQueryExec = QueryExecutionFactory.create(
-				generationQuery, model);
+  public static boolean hasItem(String containerArtifactUriString, Model model) {
 
-		try {
+    boolean result = false;
 
-			ResultSet resultsGeneration = generationQueryExec.execSelect();
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?item  \n" + " WHERE { \n" + "<" + containerArtifactUriString
+            + ">  prov:hadMember  ?item . \n" + "} \n";
 
-			for (; resultsGeneration.hasNext();) {
 
-				QuerySolution soln = resultsGeneration.nextSolution();
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+      ResultSet results = qexec.execSelect();
 
-				result.add(soln.getResource("entit1"));
-			}
+      if (results.hasNext()) {
+        result = true;
+      } else {
+        // not a hybrid
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+  }
 
-		} finally {
+  public static boolean hasContainer(String itemArtifactUriString, Model model) {
 
-			generationQueryExec.close();
-		}
-		return result;
-	}
+    boolean result = false;
+
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?coll  \n" + " WHERE { \n" + " ?coll a prov:Collection . \n"
+            + " ?coll prov:hadMember <" + itemArtifactUriString + "> . \n" + " } \n";
+
+
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      if (results.hasNext()) {
+        result = true;
+      } else {
+        // not a hybrid
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+  }
+
+  public static Set<Resource> getAllContainers(String itemArtifactUriString, Model model) {
+
+    Set<Resource> result = new HashSet<Resource>();
+    String pointer = itemArtifactUriString;
+
+    if (hasContainer(pointer, model)) {
+
+      do {
+
+        Resource container = getContainer(pointer, model);
+        result.add(container);
+        pointer = container.getURI();
+
+
+
+      } while (hasContainer(pointer, model));
+
+
+    }
+
+    return result;
+  }
+
+  public static Resource getContainer(String itemArtifactUriString, Model model) {
+
+    Resource result = null;
+
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?coll  \n" + " WHERE { \n" + " ?coll a prov:Collection . \n"
+            + " ?coll prov:hadMember <" + itemArtifactUriString + "> . \n" + " } \n";
+
+
+    Query generationQuery = QueryFactory.create(queryString);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
+
+    try {
+
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
+
+      for (; resultsGeneration.hasNext();) {
+
+        QuerySolution soln = resultsGeneration.nextSolution();
+
+        result = soln.getResource("coll");
+      }
+
+    } finally {
+
+      generationQueryExec.close();
+    }
+    return result;
+  }
+
+  public static Resource getContainerAtDepth(String itemArtifactUriString, int depth, Model model) {
+
+    Resource result = null;
+
+    String queryString = "";
+    String generationQueryPrefix =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT REPLACEME  \n" + " WHERE { \n"
+            + " REPLACEME a prov:Collection . \n" + " ?item prov:hadMember <"
+            + itemArtifactUriString + "> . \n";
+
+    String remember = " ?item ";
+    String generationQueryMiddle = " ";
+    int i = 1;
+    depth--;
+
+    while (depth > 0) {
+
+      generationQueryMiddle =
+          " ?m" + i + " prov:hadMember " + remember + " . \n" + generationQueryMiddle;
+      remember = " ?m" + i + " ";
+      depth--;
+      i++;
+    }
+
+    queryString = generationQueryPrefix + generationQueryMiddle + " } \n";
+    queryString = queryString.replaceAll("REPLACEME", remember);
+
+    Query generationQuery = QueryFactory.create(queryString);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
+
+    try {
+
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
+
+      for (; resultsGeneration.hasNext();) {
+
+        QuerySolution soln = resultsGeneration.nextSolution();
+
+        String varName = remember.trim();
+        varName = varName.substring(1);
+        result = soln.getResource(varName);
+      }
+
+    } finally {
+
+      generationQueryExec.close();
+    }
+    return result;
+  }
+
+  public static Set<Resource> getCollectionMembersAtDepth(String collectionArtifactUriString,
+      int depth, Model model) {
+    
+    if ((depth == 0)||(depth<0)){
+      throw new IllegalArgumentException("depth should be greater than zero!");
+    }
+
+    Set<Resource> result = new HashSet<Resource>();
+
+    String queryString = "";
+    String generationQueryPrefixStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT REPLACEME  \n" 
+            + " WHERE { \n" 
+            + " <" +collectionArtifactUriString+ "> a prov:Collection . \n";
+
+    String remember = " <" +collectionArtifactUriString+"> ";
+    String generationQueryMiddle = " ";
+
+    int i = 1;
+    while (depth > 0) {
+
+      generationQueryMiddle = generationQueryMiddle + remember + "prov:hadMember ?m" + i + " . \n";
+      remember = " ?m" + i + " ";
+      depth--;
+      i++;
+    }
+
+    queryString = generationQueryPrefixStr + generationQueryMiddle  + " } \n";
+
+
+    queryString = queryString.replaceAll("REPLACEME", remember);
+
+    Query generationQuery = QueryFactory.create(queryString);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
+
+    try {
+
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
+
+      for (; resultsGeneration.hasNext();) {
+
+        QuerySolution soln = resultsGeneration.nextSolution();
+
+        String varName = remember.trim();
+        varName = varName.substring(1);
+
+        result.add(soln.getResource(varName));
+      }
+
+    } finally {
+
+      generationQueryExec.close();
+    }
+    return result;
+  }
+
+  public static Set<Resource> getGenerationsWithRoleAndActivity(String activityUriString,
+      String portUriString, Model model) {
+
+    Set<Resource> result = new HashSet<Resource>();
+
+
+    String generationQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1  \n" + " WHERE { \n"
+            + " ?entit1 prov:qualifiedGeneration ?gen1 . \n" + " ?gen1 prov:hadRole" + " <"
+            + portUriString + "> . \n" + " ?gen1 prov:activity" + " <" + activityUriString
+            + "> . \n" + " } \n";
+
+    Query generationQuery = QueryFactory.create(generationQueryStr);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
+
+    try {
+
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
+
+      for (; resultsGeneration.hasNext();) {
+
+        QuerySolution soln = resultsGeneration.nextSolution();
+
+        result.add(soln.getResource("entit1"));
+      }
+
+    } finally {
+
+      generationQueryExec.close();
+    }
+    return result;
+  }
+
+  public static Set<Resource> getUsagesWithRoleAndActivity(String activityUriString,
+      String portUriString, Model model) {
+
+    Set<Resource> result = new HashSet<Resource>();
+
+    String generationQueryStr =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?entit1  \n" + " WHERE { \n" + " <" + activityUriString
+            + "> prov:qualifiedUsage ?usg1 . \n" + " ?usg1 prov:entity ?entit1 . \n"
+            + " ?usg1 prov:hadRole" + " <" + portUriString + "> . \n" + " } \n";
+
+    Query generationQuery = QueryFactory.create(generationQueryStr);
+    QueryExecution generationQueryExec = QueryExecutionFactory.create(generationQuery, model);
+
+    try {
+
+      ResultSet resultsGeneration = generationQueryExec.execSelect();
+
+      for (; resultsGeneration.hasNext();) {
+
+        QuerySolution soln = resultsGeneration.nextSolution();
+
+        result.add(soln.getResource("entit1"));
+      }
+
+    } finally {
+
+      generationQueryExec.close();
+    }
+    return result;
+  }
+
+
+
+  public static boolean isDataArtifact(Model model, Resource provNode) {
+    StmtIterator iter =
+        model.listStatements(provNode, model.getProperty(SummarizerNamespaces.rdfNS, "type"),
+            model.getResource(SummarizerNamespaces.wfprovNS + "Artifact"));
+
+    if (iter.hasNext()) {
+      return true;
+
+    } else {
+      return false;
+    }
+
+  }
+
+  public static boolean isActivity(Model model, Resource provNode) {
+    StmtIterator iter =
+        model.listStatements(provNode, model.getProperty(SummarizerNamespaces.rdfNS, "type"),
+            model.getResource(SummarizerNamespaces.wfprovNS + "ProcessRun"));
+
+    if (iter.hasNext()) {
+      return true;
+
+    } else {
+      return false;
+    }
+
+  }
+
+
+
+  public static boolean isDataUsed(Model provModel, Resource provNode) {
+
+    boolean result = false;
+
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?actvty  \n" + " WHERE { \n" + "?actvty prov:used <"
+            + provNode.getURI() + "> . \n" + "} \n";
+
+
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, provModel);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      if (results.hasNext()) {
+        result = true;
+      } else {
+     
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+  }
+
+
+  public static boolean hasGeneratedData(Model provModel, Resource provNode) {
+
+    boolean result = false;
+
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?dat  \n" 
+            + " WHERE { \n" 
+            + "?dat prov:wasGeneratedBy <"
+            + provNode.getURI() 
+            + "> . \n" + "} \n";
+
+
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, provModel);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      if (results.hasNext()) {
+        result = true;
+      } else {
+      
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+  }
+
+
+
+  public static Set<Resource> getUsingActivities(Model provModel, Resource provNode) {
+    Set<Resource> resultSet = new HashSet<Resource>();
+
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?actvty  \n" + " WHERE { \n" + "?actvty prov:used <"
+            + provNode.getURI() + "> . \n" + "} \n";
+
+
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, provModel);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        resultSet.add(soln.getResource("actvty"));
+      }
+    } finally {
+      qexec.close();
+    }
+    return resultSet;
+  }
+
+
+
+  public static Set<Resource> getDataGeneratedBy(Model provModel, Resource provNode) {
+    Set<Resource> resultSet = new HashSet<Resource>();
+
+
+    String queryString =
+        " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?dat  \n" 
+            + " WHERE { \n" 
+            + "?dat prov:wasGeneratedBy <"
+            + provNode.getURI() 
+            + "> . \n" + "} \n";
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, provModel);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        resultSet.add(soln.getResource("dat"));
+      }
+    } finally {
+      qexec.close();
+    }
+    return resultSet;
+  }
+
+
+
 }

@@ -1141,7 +1141,7 @@ public class WfDescRdfUtils {
   public static boolean isOperation(Model model, Resource processor) {
     StmtIterator iter =
         model.listStatements(processor,
-            model.getProperty(SummarizerNamespaces.labelingExtNS, "type"),
+            model.getProperty(SummarizerNamespaces.rdfNS, "type"),
             model.getResource(SummarizerNamespaces.wfdescNS + "Process"));
 
     if (iter.hasNext()) {
