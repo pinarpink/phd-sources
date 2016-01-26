@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M60</name>
+  <!-- Q437545 #1 -->
+  <Resolver name="N=NED"><!--delay: 639ms [2] -->
+    <otype>G</otype>
+    <jpos>12:43:39.97 +11:33:09.7</jpos>
+    <jradeg>190.9165641</jradeg>
+    <jdedeg>+11.5527062</jdedeg>
+    <refPos>2007SDSS6.C...0000.</refPos>
+    <errRAmas>500</errRAmas><errDEmas>500</errDEmas>
+    <Vel><v>1110.13163</v><e>5.09647</e><r>2011MNRAS.413..813C</r></Vel>
+    <MType>E2</MType>
+    <oname>MESSIER 060 </oname>
+    <alias>NGC 4649</alias>
+    <alias>UGC 07898</alias>
+    <alias>ARP 116 NED02</alias>
+    <alias>VV 206a</alias>
+    <alias>VCC 1978</alias>
+    <alias>CGCG 071-016</alias>
+    <alias>CGCG 1241.1+1150</alias>
+    <alias>MCG +02-33-002</alias>
+    <alias>2MASX J12434000+1133093</alias>
+    <alias>2MASS J12434000+1133099</alias>
+    <alias>SDSS J124339.97+113309.7</alias>
+    <alias>KPG 353B</alias>
+    <alias>WBL 421-002</alias>
+    <alias>LDCE 0904 NED237</alias>
+    <alias>HDCE 0720 NED193</alias>
+    <alias>USGC U490 NED39</alias>
+    <alias>ACSVCS 003</alias>
+    <alias>HOLM 448A</alias>
+    <alias>[BEC2010] HRS 245</alias>
+    <alias>PGC 042831</alias>
+    <alias>RBS 1150</alias>
+    <alias>UZC J124339.7+113307</alias>
+    <alias>NVSS J124340+113309</alias>
+    <alias>RGB J1243+115</alias>
+    <alias>CXOU J124339.9+113309</alias>
+    <alias>CXOU J124340.0+113311</alias>
+    <alias>CXOKMZ J124339.9+113310</alias>
+    <alias>RX J1243.6+1133</alias>
+    <alias>1RXS J124340.6+113309</alias>
+    <alias>RXC J1243.6+1133</alias>
+    <alias>2XMM J124339.9+113309</alias>
+    <alias>2XMMp J124339.9+113309</alias>
+    <alias>LGG 292:[G93] 026</alias>
+    <alias>[M98j] 174 NED202</alias>
+    <alias>[TH2002] 002</alias>
+    <alias>NGC 4649:[RSI2004] 001</alias>
+    <alias>NGC 4649:[LB2005] X01</alias>
+    <alias>[FCJ2006] 003</alias>
+    <alias>[JBB2007] J124339.97+113309.6</alias>
+    <alias>[MB2007] J190.9172+11.5526</alias>
+    <alias>NGC 4649:[KMZ2007] T14-001</alias>
+    <alias>[PJC2008] 003</alias>
+    <alias>[RG2008] J190.91656+11.55271</alias>
+    <alias>v2MCG 51:[DMP2012] 1</alias>
+    <alias>NGC 4649:[LFS2013] 253</alias>
+    <alias>LEDA 042831</alias>
+    <nrefs>852</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 109ms [2] -->
+    <oid>1961356</oid>
+    <otype>GiP</otype>
+    <jpos>12:43:40.00 +11:33:09.3</jpos>
+    <jradeg>190.9167</jradeg>
+    <jdedeg>11.55261111</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <Vel><v>1107.0</v><e>26.0</e><q>D</q><r>1999PASP..111..438F</r></Vel>
+    <spType>S0//E</spType><spNum>0.001AFF00.0000.0000000000000000</spNum>
+    <MType>E2(S02)</MType>
+    <oname>M  60</oname>
+    <alias>M 60</alias>
+    <alias>ACSVCS 3</alias>
+    <alias>2E 2835</alias>
+    <alias>2E 1241.1+1149</alias>
+    <alias>KPG 353b</alias>
+    <alias>LEDA 42831</alias>
+    <alias>2MASX J12434000+1133093</alias>
+    <alias>MCG+02-33-002</alias>
+    <alias>NGC 4649</alias>
+    <alias>NVSS B124108+114934</alias>
+    <alias>RBS 1150</alias>
+    <alias>RXC J1243.6+1133</alias>
+    <alias>RX J1243.6+1133</alias>
+    <alias>1RXS J124340.6+113309</alias>
+    <alias>SDSS J124339.97+113309.7</alias>
+    <alias>UGC 7898</alias>
+    <alias>UZC J124339.7+113307</alias>
+    <alias>VCC 1978</alias>
+    <alias>VV 206a</alias>
+    <alias>VV 206</alias>
+    <alias>Z 71-16</alias>
+    <alias>Z 1241.1+1150</alias>
+    <alias>[BEC2010] HRS 245</alias>
+    <alias>[CHM2007] LDC 904 J124340.00+1133093</alias>
+    <alias>[CHM2007] HDC 720 J124340.00+1133093</alias>
+    <alias>[DLB87] V19</alias>
+    <alias>[FWB89] Galaxy 284</alias>
+    <alias>[T76] 78B</alias>
+    <alias>[TH2002] 2</alias>
+    <alias>[ZEH2003] RX J1243.6+1133 1</alias>
+    <nrefs>1072</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 2ms [2] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-23,16:45:58z)==== -->

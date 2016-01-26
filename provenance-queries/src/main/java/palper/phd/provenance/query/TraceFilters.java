@@ -76,7 +76,7 @@ public class TraceFilters {
 
       }
     }
-
+ 
     return generatedEntities;
   }
   

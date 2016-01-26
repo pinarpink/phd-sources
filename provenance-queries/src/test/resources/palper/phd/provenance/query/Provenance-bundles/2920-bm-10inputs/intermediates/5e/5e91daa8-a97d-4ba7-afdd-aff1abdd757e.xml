@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M59</name>
+  <!-- Q358620 #1 -->
+  <Resolver name="N=NED"><!--delay: 617ms [2] -->
+    <otype>G</otype>
+    <jpos>12:42:02.24 +11:38:49.2</jpos>
+    <jradeg>190.5093479</jradeg>
+    <jdedeg>+11.6470269</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>420</errRAmas><errDEmas>420</errDEmas>
+    <Vel><v>467.07671</v><e>5.09647</e><r>2011MNRAS.413..813C</r></Vel>
+    <MType>E5</MType>
+    <oname>MESSIER 059 </oname>
+    <alias>NGC 4621</alias>
+    <alias>UGC 07858</alias>
+    <alias>VCC 1903</alias>
+    <alias>CGCG 070-223</alias>
+    <alias>CGCG 1239.5+1155</alias>
+    <alias>MCG +02-32-183</alias>
+    <alias>2MASX J12420232+1138489</alias>
+    <alias>SDSS J124202.25+113848.8</alias>
+    <alias>GALEXASC J124202.22+113849.5</alias>
+    <alias>GALEXMSC J124202.21+113848.3</alias>
+    <alias>LDCE 0904 NED225</alias>
+    <alias>HDCE 0720 NED185</alias>
+    <alias>USGC U490 NED55</alias>
+    <alias>ACSVCS 009</alias>
+    <alias>[BEC2010] HRS 236</alias>
+    <alias>PGC 042628</alias>
+    <alias>UZC J124202.4+113848</alias>
+    <alias>CXO J124202.2+113849</alias>
+    <alias>1WGA J1242.0+1139</alias>
+    <alias>CXO J124202.23+113849.1</alias>
+    <alias>[TSA98] J124202.86+113857.57</alias>
+    <alias>[TH2002] 008</alias>
+    <alias>[FCJ2006] 009</alias>
+    <alias>[PJC2008] 009</alias>
+    <alias>[RG2008] J190.50940+11.64691</alias>
+    <alias>NGC 4621:[L2011a] X0002</alias>
+    <alias>v2MCG 51:[DMP2012] 2</alias>
+    <alias>[PGM2014] J190.509335+11.64698</alias>
+    <alias>LEDA 042628</alias>
+    <nrefs>580</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 101ms [2] -->
+    <oid>1962013</oid>
+    <otype>GiG</otype>
+    <jpos>12:42:02.32 +11:38:48.9</jpos>
+    <jradeg>190.509675</jradeg>
+    <jdedeg>11.64693056</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <z><v>0.001438</v><e>0.000040</e><q>D</q><r>2002LEDA.........0P</r></z>
+    <MType>E5</MType>
+    <oname>M  59</oname>
+    <alias>M 59</alias>
+    <alias>ACSVCS 9</alias>
+    <alias>2E 2825</alias>
+    <alias>2E 1239.5+1155</alias>
+    <alias>LEDA 42628</alias>
+    <alias>2MASX J12420232+1138489</alias>
+    <alias>MCG+02-32-183</alias>
+    <alias>NGC 4621</alias>
+    <alias>SDSS J124202.25+113848.8</alias>
+    <alias>UGC 7858</alias>
+    <alias>UZC J124202.4+113848</alias>
+    <alias>VCC 1903</alias>
+    <alias>Z 70-223</alias>
+    <alias>Z 1239.5+1155</alias>
+    <alias>[BEC2010] HRS 236</alias>
+    <alias>[CHM2007] HDC 720 J124202.32+1138489</alias>
+    <alias>[CHM2007] LDC 904 J124202.32+1138489</alias>
+    <alias>[DLB87] V17</alias>
+    <alias>[FWB89] Galaxy 279</alias>
+    <alias>[M98c] 123931.2+115515</alias>
+    <alias>[TH2002] 8</alias>
+    <nrefs>576</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 2ms [2] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-22,08:04:07z)==== -->

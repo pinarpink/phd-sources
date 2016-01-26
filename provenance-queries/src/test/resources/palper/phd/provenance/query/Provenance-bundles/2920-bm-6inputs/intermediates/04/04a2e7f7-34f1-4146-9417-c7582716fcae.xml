@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M32</name>
+  <!-- Q358469 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>00:42:41.83 +40:51:55.0</jpos>
+    <jradeg>010.6743</jradeg>
+    <jdedeg>+40.8652869</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>260</errRAmas><errDEmas>260</errDEmas>
+    <Vel><v>-199.96160</v><e>5.99585</e><r>2000UZC...C......0F</r></Vel>
+    <MType>cE2</MType>
+    <oname>MESSIER 032 </oname>
+    <alias>NGC 0221</alias>
+    <alias>UGC 00452</alias>
+    <alias>ARP 168</alias>
+    <alias>ARK 012</alias>
+    <alias>CGCG 535-016</alias>
+    <alias>CGCG 0039.9+4036</alias>
+    <alias>MCG +07-02-015</alias>
+    <alias>2MASX J00424182+4051546</alias>
+    <alias>2MASXi J0042418+405154</alias>
+    <alias>IRAS  00399+4035</alias>
+    <alias>KTG 01B</alias>
+    <alias>LDCE 0031 NED006</alias>
+    <alias>HDCE 0029 NED002</alias>
+    <alias>BMW-HRI J004242.0+405154</alias>
+    <alias>HOLM 017B</alias>
+    <alias>PGC 002555</alias>
+    <alias>UZC J004241.8+405154</alias>
+    <alias>CXO J004241.8+405155</alias>
+    <alias>RX J0042.6+4052</alias>
+    <alias>RX J0042.7+4051</alias>
+    <alias>1RXS J004242.8+405156</alias>
+    <alias>[SPB93] 009</alias>
+    <alias>LGG 011:[G93] 008</alias>
+    <alias>[SHP97] 188</alias>
+    <alias>RX J0042.7+4051:[BEV98] 005</alias>
+    <alias>NGC 0221:[RW2000] X-02</alias>
+    <alias>LEDA 002555</alias>
+    <nrefs>998</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 128ms [2] -->
+    <oid>1569144</oid>
+    <otype>IG</otype>
+    <jpos>00:42:41.82 +40:51:54.6</jpos>
+    <jradeg>10.67427083</jradeg>
+    <jdedeg>40.86516944</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <pm>
+      <v>17.7</v><e>6.2</e><q>B</q><r>1988A&amp;AS...74..449R</r>
+      <pa>254</pa>
+      <pmRA>-17.0</pmRA><epmRA>4.5</epmRA>
+      <pmDE>-5.0</pmDE><epmDE>4.3</epmDE>
+    </pm>
+    <Vel><v>-199.0</v><e>6.0</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>cE2</MType>
+    <oname>M  32</oname>
+    <alias>M 32</alias>
+    <alias>AG+40 59</alias>
+    <alias>APG 168</alias>
+    <alias>Ark 12</alias>
+    <alias>BD+40 147</alias>
+    <alias>IRAS 00399+4035</alias>
+    <alias>K79 1B</alias>
+    <alias>LEDA 2555</alias>
+    <alias>2MASX J00424182+4051546</alias>
+    <alias>MCG+07-02-015</alias>
+    <alias>NGC 221</alias>
+    <alias>PPM 43225</alias>
+    <alias>RX J0042.6+4052</alias>
+    <alias>UGC 452</alias>
+    <alias>UZC J004241.8+405154</alias>
+    <alias>Z 535-16</alias>
+    <alias>Z 0039.9+4036</alias>
+    <alias>[CHM2007] LDC 31 J004241.82+4051546</alias>
+    <alias>[CHM2007] HDC 29 J004241.82+4051546</alias>
+    <alias>[FWB89] Galaxy 8</alias>
+    <alias>[M98c] 003957.7+403529</alias>
+    <nrefs>1764</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 2ms [2] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-22,07:56:29z)==== -->

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M110</name>
+  <!-- Q358456 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>00:40:22.08 +41:41:07.1</jpos>
+    <jradeg>010.092</jradeg>
+    <jdedeg>+41.6853056</jdedeg>
+    <refPos>20032MASX.C........</refPos>
+    <errRAmas>1250</errRAmas><errDEmas>1250</errDEmas>
+    <Vel><v>-241.03317</v><e>2.99793</e><r>1991A&amp;A...246..349B</r></Vel>
+    <MType>E5</MType>
+    <oname>MESSIER 110 </oname>
+    <alias>NGC 0205</alias>
+    <alias>UGC 00426</alias>
+    <alias>CGCG 535-014</alias>
+    <alias>CGCG 0037.6+4125</alias>
+    <alias>MCG +07-02-014</alias>
+    <alias>2MASX J00402207+4141070</alias>
+    <alias>IRAS  00376+4124</alias>
+    <alias>ISOSS J00403+4140</alias>
+    <alias>KTG 01A</alias>
+    <alias>LDCE 0031 NED005</alias>
+    <alias>HDCE 0029 NED001</alias>
+    <alias>HOLM 017C</alias>
+    <alias>PGC 002429</alias>
+    <alias>UZC J004022.0+414107</alias>
+    <alias>[SPB93] 008</alias>
+    <alias>LGG 011:[G93] 006</alias>
+    <alias>[SLK2004] 0093</alias>
+    <alias>KIG 0031:[VOV2007] 001</alias>
+    <alias>LEDA 002429</alias>
+    <nrefs>652</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 106ms [1] -->
+    <oid>1575545</oid>
+    <otype>GiG</otype>
+    <jpos>00:40:22.07 +41:41:07.0</jpos>
+    <jradeg>10.09197917</jradeg>
+    <jdedeg>41.6853</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <Vel><v>-246.0</v><e>1.0</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>E5pec</MType>
+    <oname>M 110</oname>
+    <alias>M 110</alias>
+    <alias>IRAS 00376+4124</alias>
+    <alias>ISOSS J00403+4140</alias>
+    <alias>LEDA 2429</alias>
+    <alias>2MASX J00402207+4141070</alias>
+    <alias>MCG+07-02-014</alias>
+    <alias>NGC 205</alias>
+    <alias>UGC 426</alias>
+    <alias>UZC J004022.0+414107</alias>
+    <alias>Z 535-14</alias>
+    <alias>Z 0037.6+4125</alias>
+    <alias>[CHM2007] LDC 31 J004022.07+4141070</alias>
+    <alias>[CHM2007] HDC 29 J004022.07+4141070</alias>
+    <alias>[FWB89] Galaxy 7</alias>
+    <alias>[M98c] 003738.7+412444</alias>
+    <alias>[SLK2004] 93</alias>
+    <nrefs>1072</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 1ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-22,07:55:25z)==== -->
