@@ -70,10 +70,10 @@ public class WfDescCrudUtils {
 		return sesameManager;
 	}
 
-	public WfDescCrudUtils(String namespace, String workflowURI) {
+	public WfDescCrudUtils(String namespace/*, String workflowURI*/) {
 
 		baseURIString = namespace;
-		wfQName = new QName(namespace, workflowURI);
+		wfQName = new QName(namespace, "" /*workflowURI*/);
 
 		getSesameManager().create(wfQName,
 				org.purl.wf4ever.wfdesc.Workflow.class);
@@ -209,6 +209,8 @@ public class WfDescCrudUtils {
 					.setNamespace("lblwf",
 							"http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#");
 
+            connection.setNamespace("", "#");
+		
 			connection.export(new OrganizedRDFWriter(new TurtleWriterWithBase(
 					output, new URI(baseURIString))));
 		} catch (OpenRDFException e) {

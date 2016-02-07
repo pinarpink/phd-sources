@@ -3,6 +3,7 @@
  */
 package palper.phd.workflow.wf2labelerwf;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,14 +40,14 @@ public class PipelineWfdescCreator {
 
 	}
 
-	public void run(Model sciWfWfdesc,
+	public String run(Model sciWfWfdesc,
 			Map<String, LabelingSpecBean> processorToSpec,
 			Map<String, List<LabelingSpecBean>> linkToSpec) throws Exception {
 
 		Resource wfResource = WfDescRdfUtils.getWorkflowResource(sciWfWfdesc);
 
-		WfDescCrudUtils util = new WfDescCrudUtils(wfResource.getNameSpace(),
-				URIUtils.lastBit(wfResource.getURI()) + "labelingPipeline");
+		WfDescCrudUtils util = new WfDescCrudUtils(wfResource.getNameSpace()+ "labelingPipeline/"/*,
+				 URIUtils.lastBit(wfResource.getURI()) + "labelingPipeline"*/);
 
 		for (Map.Entry<String, LabelingSpecBean> entry : processorToSpec
 				.entrySet()) {
@@ -144,8 +145,9 @@ public class PipelineWfdescCreator {
 			}
 		}
 		
-		
-		util.save(System.out);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		util.save(baos);
+		return baos.toString();
 	}
 
 	private LabelingSpecBean getTargettingAdjustment(String src) {
@@ -164,58 +166,65 @@ public class PipelineWfdescCreator {
 
 	}
 
-	private QName generateLabelingProcessor(LabelingSpecBean workflowEntity,
+	private QName generateLabelingProcessor(LabelingSpecBean spec,
 			WfDescCrudUtils util) throws Exception {
 		// return the processor id
 		QName result = null;
 
-		if (workflowEntity.getOperator().equals(LabelingOperatorEnum.MINT)) {
+	      StringWriter labelSpecAsJson = new StringWriter();
+	        ObjectMapper mapper = new ObjectMapper();
+
+	        mapper.writeValue(labelSpecAsJson, spec);
+
+	
+		
+		if (spec.getOperator().equals(LabelingOperatorEnum.MINT)) {
 
 			result = util.addBeanshellSubProcess("MINT_" + nextCounter(),
-					"BeanshellString...for minting label");
+			    labelSpecAsJson.toString());
 			System.out.println(result.getLocalPart() + " Mint for: "
-					+ workflowEntity.getWfElementUriStringList().get(0));
+					+ spec.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/);
 
-		} else if (workflowEntity.getOperator().equals(
+		} else if (spec.getOperator().equals(
 				LabelingOperatorEnum.PROPAGATE)) {
 
 			result = util.addBeanshellSubProcess("PROPAGATE_" + nextCounter(),
-					"BeanshellScript...for propagating label");
+			    labelSpecAsJson.toString());
 			System.out.println(result.getLocalPart() + " Propagate for: "
-					+ workflowEntity.getWfElementUriStringList().get(0));
+					+ spec.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/);
 
-		} else if (workflowEntity.getOperator().equals(
+		} else if (spec.getOperator().equals(
 				LabelingOperatorEnum.DISTRIBUTE)) {
 			result = util.addBeanshellSubProcess("DISTRIBUTE_" + nextCounter(),
-					"BeanshellScript...for distributing label");
+			    labelSpecAsJson.toString());
 			System.out.println(result.getLocalPart() + " Distribute for: "
-					+ workflowEntity.getWfElementUriStringList());
-		} else if (workflowEntity.getOperator().equals(
+					+ spec.getProcessorUriString() + " "+spec.getSourcePortUriStringList()+ " " +spec.getDataLinkDepthDifference()/*.getWfElementUriStringList()*/);
+		} else if (spec.getOperator().equals(
 				LabelingOperatorEnum.GENERALIZE)) {
 			result = util.addBeanshellSubProcess("GENERALIZE_" + nextCounter(),
-					"BeanshellScript....for generalizing");
+			    labelSpecAsJson.toString());
 			System.out.println(result.getLocalPart() + " Generalize for: "
-					+ workflowEntity.getWfElementUriStringList());
+					+ spec.getProcessorUriString()+ " "+spec.getSourcePortUriStringList()+ " " +spec.getDataLinkDepthDifference()/*.getWfElementUriStringList()*/);
 		}
 
 		// HOW and WHERE dowe fill in the actualizationn or GROUNDING forthe
 		// high level operators!!!!
-
-		QName in1 = util.addInputPortToProcess(result, "labelingSpec"
-				+ nextCounter());
-
-
-		StringWriter configString = new StringWriter();
-		ObjectMapper mapper = new ObjectMapper();
-
-		mapper.writeValue(configString, workflowEntity);
-
-		QName res = util.addStringConstantSubProcess("SC_" + nextCounter(),
-				configString.toString());
-		QName out1 = util.addOutputPortToProcess(res, "value" + nextCounter());
+//
+//		QName in1 = util.addInputPortToProcess(result, "labelingSpec"
+//				+ nextCounter());
 
 
-		util.addDataLink(out1, in1);
+//		StringWriter configString = new StringWriter();
+//		ObjectMapper mapper = new ObjectMapper();
+//
+//		mapper.writeValue(configString, workflowEntity);
+//
+//		QName res = util.addStringConstantSubProcess("SC_" + nextCounter(),
+//				configString.toString());
+//		QName out1 = util.addOutputPortToProcess(res, "value" + nextCounter());
+//
+//
+//		util.addDataLink(out1, in1);
 
 
 		return result;

@@ -67,6 +67,38 @@ public class WfDescRdfUtils {
     return result;
   }
 
+  public static  Set<Resource> getControlflowPredecessors(Resource processorResource, Model model){
+    Set<Resource> result = new HashSet<Resource>();
+
+    String queryStr =
+        " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " PREFIX motifs:  <http://purl.org/net/wf-motifs#>\n"
+            + " PREFIX lblwf: <http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#>\n"
+            + " SELECT DISTINCT ?pred   \n" + " WHERE { \n"
+            + " ?link a lblwf:BlockingControlLink . \n" 
+            + "?link lblwf:hasControlSource ?pred . \n"
+            + "?link lblwf:hasControlSink " 
+            + " <" + processorResource.getURI()
+            + "> . } \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        result.add(soln.getResource("pred"));
+
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+  }
   public static Resource getSpecializedWorkflowDefinition(Resource wfProcessorResource, Model model) {
 
     String queryStr =
@@ -354,7 +386,7 @@ public class WfDescRdfUtils {
     String queryStr =
         " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
             + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-            + " PREFIX motifs:  <http://purl.org/net/wf-motifs#>\n" + " SELECT DISTINCT ?op  \n"
+            + " SELECT DISTINCT ?op  \n"
             + " WHERE { \n" + " <" + workflowResource.getURI() + "> wfdesc:hasSubProcess ?op . \n"
             + " ?op a wfdesc:Process . \n" + " } \n";
 

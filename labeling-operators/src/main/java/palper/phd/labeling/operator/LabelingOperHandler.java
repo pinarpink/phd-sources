@@ -150,11 +150,11 @@ public class LabelingOperHandler {
 					resultsPerLabelDef.add(PropagationStubs.cloneLabelInstance(myLbl, targetArtifact.getURI()));
 				}
 			}
-			if (def.getAggregationFunction() != null){
-				allresults.addAll(def.getAggregationFunction().run(resultsPerLabelDef));
-			}else{
+//			if (def.getAggregationFunction() != null){
+//				allresults.addAll(def.getAggregationFunction().run(resultsPerLabelDef));
+//			}else{
 				allresults.addAll(resultsPerLabelDef);
-			}
+//			}
 
 		}
 		return allresults;
@@ -226,7 +226,7 @@ public class LabelingOperHandler {
 		List<LabelInstanceBean> results = new ArrayList<LabelInstanceBean>();
 
 		Set<Resource> instantiations = ProvRdfUtils
-				.getInstantiationsOfOperation(command.getWfElementUriStringList().get(0),
+				.getInstantiationsOfOperation(command.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/,
 						RdfProvenanceConfig.getInstance().getProvTraceModel());
 		List<String> sinkPortUriStringList = command.getSinkPortUriStringList();
 		List<String> sourcePortUriStringList = command
@@ -289,12 +289,12 @@ public class LabelingOperHandler {
 
 						}
 
-						if (def.getAggregationFunction() != null) {
-							results.addAll(def.getAggregationFunction().run(
-									allresultsForOnesink));
-						} else {
+//						if (def.getAggregationFunction() != null) {
+//							results.addAll(def.getAggregationFunction().run(
+//									allresultsForOnesink));
+//						} else {
 							results.addAll(allresultsForOnesink);
-						}
+//						}
 
 					}
 
@@ -311,7 +311,7 @@ public class LabelingOperHandler {
 		List<LabelInstanceBean> results = new ArrayList<LabelInstanceBean>();
 
 		Set<Resource> instantiations = ProvRdfUtils
-				.getInstantiationsOfOperation(command.getWfElementUriStringList().get(0),
+				.getInstantiationsOfOperation(command.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/,
 						RdfProvenanceConfig.getInstance().getProvTraceModel());
 
 		// for each invocation of that operation
@@ -323,7 +323,7 @@ public class LabelingOperHandler {
 			// for each sink port create labels and associate
 			for (String sinkPortUriString : sinkPortUriStringList) {
 				List<LabelInstanceBean> allresultsForOnesink = MintingStubs
-						.invokeMintingFunction(command.getWfElementUriStringList().get(0),
+						.invokeMintingFunction(command.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/,
 								inst.getURI());
 
 				Set<Resource> dataArtifacts = ProvRdfUtils

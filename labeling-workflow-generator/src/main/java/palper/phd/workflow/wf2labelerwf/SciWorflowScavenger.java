@@ -1,9 +1,5 @@
 package palper.phd.workflow.wf2labelerwf;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +12,7 @@ import palper.phd.workflow.annotation.MotifAnnotationsStub;
 import palper.phd.workflow.wfdesc.WfDescRdfUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.shared.ReificationStyle;
 
 /**
  * 
@@ -53,16 +47,16 @@ public class SciWorflowScavenger {
 		this.adjustmentSpecBag = adjustmentSpecBag;
 	}
 
-	private Map<String, Integer> predictedDepths;
+//	private Map<String, Integer> predictedDepths;
 
-	public SciWorflowScavenger(Model wfdescModel,
-			Map<String, Integer> predictedDepths) {
+	public SciWorflowScavenger(Model wfdescModel/*,
+			Map<String, Integer> predictedDepths*/) {
 
 		super();
 
 		sciWorkflowWfdesc = wfdescModel;
 
-		this.predictedDepths = predictedDepths;
+//		this.predictedDepths = predictedDepths;
 
 		obtainLabelingSpecs();
 
@@ -137,30 +131,36 @@ public class SciWorflowScavenger {
 				// put generalize specs that will
 				// label the enclosing lists all the way to the top.
 
-				Integer srcDepth = WfDescRdfUtils.getDepth(sourcePort,
-						sciWorkflowWfdesc);
-				Integer snkDepth = predictedDepths.get(sinkPort.getURI());
+			  
+			  //for the time being I have commented out the following generalization adjustment
+			  // 
+			  
+			  
+//				Integer srcDepth = WfDescRdfUtils.getDepth(sourcePort,
+//						sciWorkflowWfdesc);
+//				Integer snkDepth = predictedDepths.get(sinkPort.getURI());
+//
+//
+//				int depthDiff = srcDepth - snkDepth;
+//				while (depthDiff < 0) {
+//					LabelingSpecBean adjustedBefore = hasAssociatedLabelingSpec(
+//							sourcePort, depthDiff);
+//					if (adjustedBefore == null) {
+//					  
+//					 // Resource sourceOp = WfDescRdfUtils.getOperationWithOutput(sciWorkflowWfdesc, sourcePort);
+//						LabelingSpecBean spec = LabelSpecFactory.createAdjustmentSpec(sourcePort.getURI(),depthDiff);
+//						putToAdjustmentSpecBag(sourcePort, spec);
+//						
+//					} else {
+//						adjustedBefore.getWfElementUriStringList().add(
+//								link.getURI());
+//						// add it to the workflow elements list
+//					}
+//					depthDiff++;
+//				}
 
-
-				int depthDiff = srcDepth - snkDepth;
-				while (depthDiff < 0) {
-					LabelingSpecBean adjustedBefore = hasAssociatedLabelingSpec(
-							sourcePort, depthDiff);
-					if (adjustedBefore == null) {
-						LabelingSpecBean spec = LabelSpecFactory
-								.createAdjustmentSpec(link.getURI(),
-										sourcePort.getURI(), sinkPort.getURI(),
-										depthDiff);
-
-						putToAdjustmentSpecBag(sourcePort, spec);
-					} else {
-						adjustedBefore.getWfElementUriStringList().add(
-								link.getURI());
-						// add it to the workflowements list
-					}
-					depthDiff++;
-				}
-
+			  
+			  //Note that
 				// we also need to saturate the labels downwards to inner lists.
 				// think of a workflow that ends with a split operator!!!.
 
@@ -182,14 +182,16 @@ public class SciWorflowScavenger {
 					LabelingSpecBean adjustedBefore = hasAssociatedLabelingSpec(
 							sourcePort, depthDiff);
 					if (adjustedBefore == null) {
+					  
+					Resource operation = WfDescRdfUtils.getOperationWithOutput(sciWorkflowWfdesc, sourcePort);
 						LabelingSpecBean spec = LabelSpecFactory
-								.createAdjustmentSpec(link.getURI(),
-										sourcePort.getURI(), sinkPort.getURI(),
+								.createAdjustmentSpec(operation.getURI(),
+										sourcePort.getURI(), 
 										depthDiff);
 						putToAdjustmentSpecBag(sourcePort, spec);
 					} else {
-						adjustedBefore.getWfElementUriStringList().add(
-								link.getURI());
+//						adjustedBefore.getWfElementUriStringList().add(
+//								link.getURI());
 					}
 
 				} else {
