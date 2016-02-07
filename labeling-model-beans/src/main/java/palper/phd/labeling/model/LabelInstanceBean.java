@@ -4,7 +4,6 @@
 package palper.phd.labeling.model;
 
 import java.io.Serializable;
-import java.net.URI;
 
 /**
  * @author pinarpink

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import palper.phd.labeling.model.LabelingConstants;
 import palper.phd.labeling.model.LabelingSpecBean;
 import palper.phd.workflow.wf2labelerwf.LabelSpecFactory;
 
