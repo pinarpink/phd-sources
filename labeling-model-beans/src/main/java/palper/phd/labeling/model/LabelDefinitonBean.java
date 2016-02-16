@@ -22,15 +22,6 @@ public class LabelDefinitonBean implements Serializable {
 	
 	private XSDatatypeEnum dataTypeEnum;
 	
-//	private ILabelAggregationFunction aggregationFunction;
-//
-//	public ILabelAggregationFunction getAggregationFunction() {
-//		return aggregationFunction;
-//	}
-//
-//	public void setAggregationFunction(ILabelAggregationFunction aggregationFunction) {
-//		this.aggregationFunction = aggregationFunction;
-//	}
 
 	public String getLabelNameURIString() {
 		return labelNameURIString;

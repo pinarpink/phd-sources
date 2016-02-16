@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M33</name>
+  <!-- Q437533 #1 -->
+  <Resolver name="N=NED"><!--delay: 664ms [1] -->
+    <otype>G</otype>
+    <jpos>01:33:50.89 +30:39:36.7</jpos>
+    <jradeg>023.4620417</jradeg>
+    <jdedeg>+30.6602222</jdedeg>
+    <refPos>2008ApJS..174..366P</refPos>
+    <errRAmas>75</errRAmas><errDEmas>75</errDEmas>
+    <Vel><v>-178.97612</v><e>2.99793</e><r>1991RC3.9.C...0000d</r></Vel>
+    <MType>SA(s)cd</MType>
+    <oname>MESSIER 033 </oname>
+    <alias>NGC 0598</alias>
+    <alias>Triangulum Galaxy</alias>
+    <alias>UGC 01117</alias>
+    <alias>CGCG 502-110</alias>
+    <alias>CGCG 0131.0+3024</alias>
+    <alias>MCG +05-04-069</alias>
+    <alias>2MASX J01335090+3039357</alias>
+    <alias>IRAS  01310+3024</alias>
+    <alias>IRAS F01310+3024</alias>
+    <alias>LDCE 0160 NED001</alias>
+    <alias>PGC 005818</alias>
+    <alias>RBS 0214</alias>
+    <alias>UZC J013351.1+303922</alias>
+    <alias>11HUGS 027</alias>
+    <alias>NVSS J013351+303933</alias>
+    <alias>HIJASS J0133+30</alias>
+    <alias>ChASeM33F 318</alias>
+    <alias>ChASeM33F J013350.89+303936.6</alias>
+    <alias>ChASeM33 200</alias>
+    <alias>CXO J013350.9+303936</alias>
+    <alias>CXO J013351.0+303937</alias>
+    <alias>RX J0133.8+3039</alias>
+    <alias>1RXS J013350.9+303932</alias>
+    <alias>2XMM J013350.8+303937</alias>
+    <alias>2XMMp J013350.8+303937</alias>
+    <alias>1XMM J013350.9+303937</alias>
+    <alias>1AXG J013351+3039</alias>
+    <alias>1ES 0131+303</alias>
+    <alias>CXO J013350.91+303936.7</alias>
+    <alias>MESSIER 033:[LDC81] 08</alias>
+    <alias>MESSIER 033:[TFP88] X-08</alias>
+    <alias>[SPB93] 026</alias>
+    <alias>LGG 011:[G93] 002</alias>
+    <alias>MESSIER 033:[SB95] 16</alias>
+    <alias>[MHH96] J013351+303959</alias>
+    <alias>MESSIER 033:[LCB96] 28</alias>
+    <alias>NGC 0598:[RPS97] 21</alias>
+    <alias>[M98j] 104 NED02</alias>
+    <alias>RX J0133.8+3039:[BEV98] 004</alias>
+    <alias>MESSIER 033:[GDK99] 102</alias>
+    <alias>MESSIER 033:[HP2001] 102</alias>
+    <alias>MESSIER 033:[PMH2004] 211</alias>
+    <alias>NGC 0598:[FK2005] 03</alias>
+    <alias>NGC 0598:[LM2005] ULX01</alias>
+    <alias>MESSIER 033:[MPH2006] 182</alias>
+    <alias>[BWC2008] U02</alias>
+    <alias>NGC 0598:[L2011a] X0001</alias>
+    <alias>LEDA 005818</alias>
+    <nrefs>2134</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 157ms [1] -->
+    <oid>1522778</oid>
+    <otype>GiG</otype>
+    <jpos>01:33:50.90 +30:39:35.7</jpos>
+    <jradeg>23.4621</jradeg>
+    <jdedeg>30.65994167</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <Vel><v>-179.2</v><e>1.7</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>SA(s)cd</MType>
+    <oname>M  33</oname>
+    <alias>M 33</alias>
+    <alias>1AXG J013351+3039</alias>
+    <alias>2E 409</alias>
+    <alias>2E 0131.0+3024</alias>
+    <alias>1ES 0131+30.3</alias>
+    <alias>HIJASS J0133+30</alias>
+    <alias>LEDA 5818</alias>
+    <alias>2MASX J01335090+3039357</alias>
+    <alias>MCG+05-04-069</alias>
+    <alias>NAME TRIANGULUM PINWHEEL</alias>
+    <alias>NAME TRIANGULUM Galaxy</alias>
+    <alias>NGC 598</alias>
+    <alias>RBS 214</alias>
+    <alias>RX J013351+30399</alias>
+    <alias>1RXS J013350.9+303932</alias>
+    <alias>TC 906</alias>
+    <alias>UGC 1117</alias>
+    <alias>UZC J013351.1+303922</alias>
+    <alias>Z 0131.0+3024</alias>
+    <alias>Z 502-110</alias>
+    <alias>[CHM2007] LDC 160 J013350.90+3039357</alias>
+    <alias>[M98c] 013101.7+302415</alias>
+    <nrefs>4323</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 1ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-23,16:45:50z)==== -->

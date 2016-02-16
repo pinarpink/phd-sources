@@ -1,19 +1,25 @@
 package palper.phd.labeling.operator;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import palper.phd.labeling.api.ILabelMintingFunction;
+import palper.phd.labeling.astro.AstroLabelVectorStub;
 import palper.phd.labeling.model.LabelDefinitonBean;
 import palper.phd.labeling.model.LabelInstanceBean;
 import palper.phd.labeling.model.LabelingOperatorEnum;
 import palper.phd.labeling.model.LabelingSpecBean;
-import palper.phd.labeling.stubs.LabelVectorStub;
-import palper.phd.labeling.stubs.MintingStubs;
-import palper.phd.labeling.stubs.PropagationStubs;
-import palper.phd.labeling.stubs.RdfProvenanceConfig;
 import palper.phd.provenance.query.ProvRdfUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -75,31 +81,28 @@ public class LabelingOperHandler {
 
 	private boolean isValid(LabelingSpecBean command) {
 
-		if (command.getSinkPortUriStringList() == null) {
-			return false;
+	  if (command.getOperator().equals(LabelingOperatorEnum.MINT)){
+	     if ((command.getSinkPortUriStringList() == null) || (command.getLabelingFunctionIdentifier() == null) || (command.getProcessorUriString() == null)) {
+	          return false;
+	        }
+	        if ((command.getSinkPortUriStringList().size() == 0)) {
+	          return false;
+	        }
 
-		}
+	  }else if (command.getOperator().equals(LabelingOperatorEnum.PROPAGATE)){
+	    if ((command.getSinkPortUriStringList() == null) || (command.getSourcePortUriStringList() == null) || (command.getProcessorUriString() == null)) {
+	      return false;
+	    }
+	    if ((command.getSinkPortUriStringList().size() == 0) ||(command.getSourcePortUriStringList().size() == 0)) {
+	      return false;
+	    }
+	  }else if (command.getOperator().equals(LabelingOperatorEnum.GENERALIZE) || command.getOperator().equals(LabelingOperatorEnum.DISTRIBUTE)){
+	    if ((command.getProcessorUriString() == null) || (command.getSourcePortUriStringList() == null) || (command.getDataLinkDepthDifference() == 0)) {
+	      return false;
+	    }
+      }
+	  return true;
 
-		if (command.getSinkPortUriStringList().size() == 0) {
-			return false;
-
-		}
-
-		if (command.getOperator().equals(LabelingOperatorEnum.PROPAGATE)) {
-			if (command.getSourcePortUriStringList().size() == 0) {
-				return false;
-			}
-
-		} else if (command.getOperator()
-				.equals(LabelingOperatorEnum.GENERALIZE)) {
-			if ((command.getSinkPortUriStringList().size() != 1)
-					|| (command.getSourcePortUriStringList().size() != 1)) {
-				return false;
-			}
-
-		}
-
-		return true;
 	}
 
 	private List<LabelInstanceBean> executeGeneralize(LabelingSpecBean command) {
@@ -110,7 +113,7 @@ public class LabelingOperHandler {
 
 		Set<Resource> generationDataArtifacts = ProvRdfUtils
 				.getAllGenerationInstances(sourcePortUriString,
-						RdfProvenanceConfig.getInstance().getProvTraceModel());
+						LabellingExecutionConfig.getInstance().getProvTraceModel());
 
 		// only one of the source artifacts should suffice for finding its
 		// container
@@ -122,7 +125,7 @@ public class LabelingOperHandler {
 		 Resource targetArtifact = ProvRdfUtils.getContainerAtDepth(
 				 oneSourceArtifact.getURI(),
 		 Math.abs(command.getDataLinkDepthDifference()),
-		 RdfProvenanceConfig.getInstance().getProvTraceModel());
+		 LabellingExecutionConfig.getInstance().getProvTraceModel());
 
 		// TODO we need to check if the target artifacts do fill the sink
 		// role!!!.
@@ -136,18 +139,17 @@ public class LabelingOperHandler {
 		// clone the label instance, change its target to the data
 		// artifact at the sink port
 		// put it into the resulting label model.
-		for (LabelDefinitonBean def : LabelVectorStub.getInstance()
-				.getLabelDefinitions()) {
+		for (LabelDefinitonBean def : AstroLabelVectorStub.getLabelDefinitions()) {
 
 			List<LabelInstanceBean> resultsPerLabelDef = new ArrayList<LabelInstanceBean>();
 			for(Resource sourceArtefact:generationDataArtifacts){
 			
 				List<LabelInstanceBean> lblList = ProvRdfUtils
 						.getLabelsOfArtifacts(def.getLabelNameURIString(),
-								sourceArtefact.getURI(), RdfProvenanceConfig
+								sourceArtefact.getURI(), LabellingExecutionConfig
 										.getInstance().getLabelingResultModel());
 				for(LabelInstanceBean myLbl:lblList){
-					resultsPerLabelDef.add(PropagationStubs.cloneLabelInstance(myLbl, targetArtifact.getURI()));
+					resultsPerLabelDef.add(cloneLabelInstance(myLbl, targetArtifact.getURI()));
 				}
 			}
 //			if (def.getAggregationFunction() != null){
@@ -174,7 +176,7 @@ public class LabelingOperHandler {
 
 		Set<Resource> generationDataArtifacts = ProvRdfUtils
 				.getAllGenerationInstances(sourcePortUriString,
-						RdfProvenanceConfig.getInstance().getProvTraceModel());
+						LabellingExecutionConfig.getInstance().getProvTraceModel());
 		for (Resource sourceArtifact : generationDataArtifacts) {
 			// find the target data artifacts
 			// TODO we need to check if the target artifacts do fill the
@@ -184,7 +186,7 @@ public class LabelingOperHandler {
 			Set<Resource> targetArtifacts = ProvRdfUtils
 					.getCollectionMembersAtDepth(sourceArtifact.getURI(), Math
 							.abs(command.getDataLinkDepthDifference()),
-							RdfProvenanceConfig.getInstance()
+							LabellingExecutionConfig.getInstance()
 									.getProvTraceModel());
 
 
@@ -197,18 +199,16 @@ public class LabelingOperHandler {
 				// clone the label instance, change its target to the data
 				// artifact at the sink port
 				// put it into the resulting label model.
-				for (LabelDefinitonBean def : LabelVectorStub.getInstance()
-						.getLabelDefinitions()) {
+				for (LabelDefinitonBean def : AstroLabelVectorStub.getLabelDefinitions()) {
 
 					List<LabelInstanceBean> lblList = ProvRdfUtils
 							.getLabelsOfArtifacts(def.getLabelNameURIString(),
 									sourceArtifact.getURI(),
-									RdfProvenanceConfig.getInstance()
+									LabellingExecutionConfig.getInstance()
 											.getLabelingResultModel());
 					for (LabelInstanceBean myLbl : lblList) {
 
-						allresultsForOnesink.add(PropagationStubs
-								.cloneLabelInstance(myLbl, target.getURI()));
+						allresultsForOnesink.add(cloneLabelInstance(myLbl, target.getURI()));
 					}
 
 				}
@@ -227,15 +227,14 @@ public class LabelingOperHandler {
 
 		Set<Resource> instantiations = ProvRdfUtils
 				.getInstantiationsOfOperation(command.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/,
-						RdfProvenanceConfig.getInstance().getProvTraceModel());
+						LabellingExecutionConfig.getInstance().getProvTraceModel());
 		List<String> sinkPortUriStringList = command.getSinkPortUriStringList();
 		List<String> sourcePortUriStringList = command
 				.getSourcePortUriStringList();
 
 		// for each invocation of that operation
 		for (Resource inst : instantiations) {
-			for (LabelDefinitonBean def : LabelVectorStub.getInstance()
-					.getLabelDefinitions()) {
+			for (LabelDefinitonBean def : AstroLabelVectorStub.getLabelDefinitions()) {
 				// for each sink port create labels and associate it to the data
 				// artifact(s) at sink port
 				for (String sinkPortUriString : sinkPortUriStringList) {
@@ -243,7 +242,7 @@ public class LabelingOperHandler {
 					List<LabelInstanceBean> allresultsForOnesink = new ArrayList<LabelInstanceBean>();
 					Set<Resource> dataArtifacts = ProvRdfUtils
 							.getGenerationsWithRoleAndActivity(inst.getURI(),
-									sinkPortUriString, RdfProvenanceConfig
+									sinkPortUriString, LabellingExecutionConfig
 											.getInstance().getProvTraceModel());
 					if (dataArtifacts.size() > 1) {
 						System.out
@@ -256,7 +255,7 @@ public class LabelingOperHandler {
 							Set<Resource> usageDataArtifacts = ProvRdfUtils
 									.getUsagesWithRoleAndActivity(
 											inst.getURI(), sourcePortUriString,
-											RdfProvenanceConfig.getInstance()
+											LabellingExecutionConfig.getInstance()
 													.getProvTraceModel());
 
 							if (usageDataArtifacts.size() > 1) {
@@ -271,14 +270,13 @@ public class LabelingOperHandler {
 										.getLabelsOfArtifacts(
 												def.getLabelNameURIString(),
 												usageDataArtefact.getURI(),
-												RdfProvenanceConfig
+												LabellingExecutionConfig
 														.getInstance()
 														.getLabelingResultModel());
 
 								for (LabelInstanceBean labelAtSourceData : lblList) {
 
-									LabelInstanceBean propagatedLabelsForOneLabDef = PropagationStubs
-											.cloneLabelInstance(
+									LabelInstanceBean propagatedLabelsForOneLabDef = cloneLabelInstance(
 													labelAtSourceData,
 													dataArtefactAtSinkPort
 															.getURI());
@@ -312,7 +310,7 @@ public class LabelingOperHandler {
 
 		Set<Resource> instantiations = ProvRdfUtils
 				.getInstantiationsOfOperation(command.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/,
-						RdfProvenanceConfig.getInstance().getProvTraceModel());
+						LabellingExecutionConfig.getInstance().getProvTraceModel());
 
 		// for each invocation of that operation
 		for (Resource inst : instantiations) {
@@ -322,13 +320,12 @@ public class LabelingOperHandler {
 
 			// for each sink port create labels and associate
 			for (String sinkPortUriString : sinkPortUriStringList) {
-				List<LabelInstanceBean> allresultsForOnesink = MintingStubs
-						.invokeMintingFunction(command.getProcessorUriString()/*.getWfElementUriStringList().get(0)*/,
+				List<LabelInstanceBean> allresultsForOnesink = invokeMintingFunction(command.getLabelingFunctionIdentifier()/*.getWfElementUriStringList().get(0)*/,
 								inst.getURI());
 
 				Set<Resource> dataArtifacts = ProvRdfUtils
 						.getGenerationsWithRoleAndActivity(inst.getURI(),
-								sinkPortUriString, RdfProvenanceConfig
+								sinkPortUriString, LabellingExecutionConfig
 										.getInstance().getProvTraceModel());
 				if (dataArtifacts.size() > 1) {
 					System.out
@@ -353,7 +350,7 @@ public class LabelingOperHandler {
 
 	private void submitResultsToModel(List<LabelInstanceBean> results) {
 		if (results.size() > 0) {
-			Model mod = RdfProvenanceConfig.getInstance()
+			Model mod = LabellingExecutionConfig.getInstance()
 					.getLabelingResultModel();
 
 			List<Statement> sts = new ArrayList<Statement>();
@@ -376,4 +373,75 @@ public class LabelingOperHandler {
 			}
 		}
 	}
+	
+
+	  
+ private List<LabelInstanceBean> invokeMintingFunction(String functionName,
+	      String activityInstanceUriString) {
+	    List<LabelInstanceBean> resultLabels = null;
+	    try {
+	     resultLabels = new ArrayList<LabelInstanceBean>();
+
+	      Map<String, InputStream> results = new HashMap<String, InputStream>();
+	      Map<String, String> datarefsByPort =
+	          ProvRdfUtils.getPortArtefactMapForActivity(activityInstanceUriString,
+	              LabellingExecutionConfig.getInstance().getProvTraceModel());
+
+	      for (Map.Entry<String, String> entry : datarefsByPort.entrySet()) {
+	        String portNAme = entry.getKey();
+
+	        String dataRef = entry.getValue();
+
+	        Resource contentPath =
+	            ProvRdfUtils.getDataContentPath(dataRef, LabellingExecutionConfig.getInstance()
+	                .getProvTraceModel());
+
+	          File dataContentFile = new File(new URI(contentPath.getURI()));
+	          FileInputStream is = new FileInputStream(dataContentFile);
+
+
+	          // TODO
+	          // here we can check whether file contains binary or text
+	          // content by
+	          // checking file extension
+	          // for now we will assume it contains text.
+
+	          results.put(portNAme, is);
+
+
+	      }
+
+	      Class cls = Class.forName(functionName);
+	      Object obj = cls.newInstance();
+
+	      resultLabels.addAll(((ILabelMintingFunction)obj).run(results));
+	      
+	    } catch (URISyntaxException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    } catch (FileNotFoundException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    } catch (InstantiationException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    } catch (IllegalAccessException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    }
+	    return resultLabels;
+	  }
+ 
+ private static LabelInstanceBean cloneLabelInstance(
+     LabelInstanceBean original, String newTargetURIString) {
+
+ LabelInstanceBean clone = new LabelInstanceBean();
+ clone.setDefiniton(original.getDefiniton());
+ clone.setValue(original.getValue());
+ clone.setLabelTargetURIString(newTargetURIString);
+ return clone;
+}
 }

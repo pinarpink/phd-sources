@@ -37,7 +37,6 @@ public class LabelingSpecBean implements Serializable {
   private String processorUriString;
 
 
-
   @JsonProperty("operator")
   private LabelingOperatorEnum operator;
 

@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import palper.phd.labeling.operator.LabelingOperHandler;
-import palper.phd.labeling.stubs.RdfProvenanceConfig;
+import palper.phd.labeling.operator.LabellingExecutionConfig;
 
 
 public class TestLabelingOperHandler {
@@ -87,7 +87,7 @@ public class TestLabelingOperHandler {
 					"/Users/pinarpink/Desktop/SummarizationRules/dataset/labels-of-2920.wfdesc.ttl");
 			OutputStream oss;
 			oss = new FileOutputStream(labelFile);
-			RdfProvenanceConfig.getInstance().getLabelingResultModel()
+			LabellingExecutionConfig.getInstance().getLabelingResultModel()
 					.write(oss, "TURTLE", null);
 		} catch (FileNotFoundException e) {
 			
@@ -97,7 +97,7 @@ public class TestLabelingOperHandler {
 	}
 	@BeforeClass
 	public static void initialize(){
-		RdfProvenanceConfig.initialize("/Users/pinarpink/Desktop/SummarizationRules/dataset/2920-motifs.wfdesc.ttl","/Users/pinarpink/Desktop/Labeling_Workflows/2920_WF_RUN-4/workflowrun.prov.ttl");
+		LabellingExecutionConfig.initialize("/Users/pinarpink/Desktop/SummarizationRules/dataset/2920-motifs.wfdesc.ttl","/Users/pinarpink/Desktop/Labeling_Workflows/2920_WF_RUN-4/workflowrun.prov.ttl");
 	}
 
 }

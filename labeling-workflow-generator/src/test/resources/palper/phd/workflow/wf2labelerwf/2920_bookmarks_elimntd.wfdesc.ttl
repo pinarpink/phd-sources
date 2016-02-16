@@ -1,0 +1,514 @@
+@base <http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix wfdesc: <http://purl.org/wf4ever/wfdesc#> .
+@prefix wf4ever: <http://purl.org/wf4ever/wf4ever#> .
+@prefix roterms: <http://purl.org/wf4ever/roterms#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comp: <http://purl.org/DP/components#> .
+@prefix dep: <http://scape.keep.pt/vocab/dependencies#> .
+@prefix biocat: <http://biocatalogue.org/attribute/> .
+@prefix lblwf: <http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#> .
+@prefix : <#> .
+
+<../../annotation/34aca7a9-57bd-4e89-9e59-cd84b35a69ba.ttl0.7479490175956278> a <http://purl.org/net/wf-motifs#DataAnalysis> .
+
+<../../annotation/6a853858-8bc4-4097-ab25-777f4db606c1.ttl0.4200239839292079> a <http://purl.org/net/wf-motifs#DataRetrieval> .
+
+<../../annotation/7a64e0f6-17f2-4260-b910-096e07c77fdd.ttl0.9539538772735418> a <http://purl.org/net/wf-motifs#Filtering> .
+
+<../../annotation/6129b614-4352-447d-abf6-15a1a6ceb783.ttl0.8058881897645561> a <http://purl.org/net/wf-motifs#FormatTransformation> .
+
+<../../annotation/24abfb66-3f6d-4305-95ae-f0298605b37a.ttl0.9893676077475312> a <http://purl.org/net/wf-motifs#Merging> .
+
+<../../annotation/2699a14c-2dc8-4e0a-9baa-1f38ddd6c9d4.ttl0.8755308057197063> a <http://purl.org/net/wf-motifs#Merging> .
+
+<../../annotation/2f16e1ba-6c82-4ef6-994e-5d236b9070a9.ttl0.5845227869810394> a <http://purl.org/net/wf-motifs#OutputExtraction> .
+
+<../../annotation/5e7b74f9-0b88-46ac-9b3a-a27d1952bb21.ttl0.9408813860397858> a <http://purl.org/net/wf-motifs#OutputExtraction> .
+
+<../../annotation/85b16eb8-01c1-4c88-9fb5-44aa77370fbe.ttl0.9114130350796582> a <http://purl.org/net/wf-motifs#ReferenceGenerating> .
+
+<processor/Extracting_DEC/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:BeanshellScript ;
+	dcterms:description "new$hasOperationMotif$OutputExtraction#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/2f16e1ba-6c82-4ef6-994e-5d236b9070a9.ttl0.5845227869810394> ;
+	rdfs:label "Extracting_DEC" ;
+	wfdesc:hasInput <processor/Extracting_DEC/in/xml-text> , <processor/Extracting_DEC/in/xpath> ;
+	wfdesc:hasOutput <processor/Extracting_DEC/out/nodelist> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/in/xpath\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/in/xml-text\"}],\"portName\":null}" ;
+	wf4ever:script """import org.dom4j.Document;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
+
+SAXReader reader = new SAXReader(false);
+reader.setIncludeInternalDTDDeclarations(false);
+reader.setIncludeExternalDTDDeclarations(false);
+
+Document document = reader.read(new StringReader(xmltext));
+List nodelist = document.selectNodes(xpath);
+
+// Process the elements in the nodelist
+ArrayList outputList = new ArrayList();
+ArrayList outputXmlList = new ArrayList();
+
+String val = null;
+String xmlVal = null;
+for (Iterator iter = nodelist.iterator(); iter.hasNext();) {
+	Node element = (Node) iter.next();
+	xmlVal = element.asXML();
+	val = element.getStringValue();
+	if (val != null && !val.equals(\"\")) {
+		outputList.add(val);
+		outputXmlList.add(xmlVal);
+	}
+
+}
+
+List nodelist=outputList;
+List nodelistAsXML=outputXmlList;""" .
+
+<processor/Extracting_RA/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:BeanshellScript ;
+	dcterms:description "new$hasOperationMotif$OutputExtraction#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/5e7b74f9-0b88-46ac-9b3a-a27d1952bb21.ttl0.9408813860397858> ;
+	rdfs:label "Extracting_RA" ;
+	wfdesc:hasInput <processor/Extracting_RA/in/xml-text> , <processor/Extracting_RA/in/xpath> ;
+	wfdesc:hasOutput <processor/Extracting_RA/out/nodelist> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/in/xml-text\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/in/xpath\"}],\"portName\":null}" ;
+	wf4ever:script """import org.dom4j.Document;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
+
+SAXReader reader = new SAXReader(false);
+reader.setIncludeInternalDTDDeclarations(false);
+reader.setIncludeExternalDTDDeclarations(false);
+
+Document document = reader.read(new StringReader(xmltext));
+List nodelist = document.selectNodes(xpath);
+
+// Process the elements in the nodelist
+ArrayList outputList = new ArrayList();
+ArrayList outputXmlList = new ArrayList();
+
+String val = null;
+String xmlVal = null;
+for (Iterator iter = nodelist.iterator(); iter.hasNext();) {
+	Node element = (Node) iter.next();
+	xmlVal = element.asXML();
+	val = element.getStringValue();
+	if (val != null && !val.equals(\"\")) {
+		outputList.add(val);
+		outputXmlList.add(xmlVal);
+	}
+
+}
+
+List nodelist=outputList;
+List nodelistAsXML=outputXmlList;""" .
+
+<processor/Flatten_List/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:BeanshellScript ;
+	dcterms:description "new$hasOperationMotif$Merging#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/2699a14c-2dc8-4e0a-9baa-1f38ddd6c9d4.ttl0.8755308057197063> ;
+	rdfs:label "Flatten_List" ;
+	wfdesc:hasInput <processor/Flatten_List/in/inputlist> ;
+	wfdesc:hasOutput <processor/Flatten_List/out/outputlist> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List/in/inputlist\"}],\"portName\":null}" ;
+	wf4ever:script """flatten(inputs, outputs, depth) {
+	for (i = inputs.iterator(); i.hasNext();) {
+	    element = i.next();
+		if (element instanceof Collection && depth > 0) {
+			flatten(element, outputs, depth - 1);
+		} else {
+			outputs.add(element);
+		}
+	}
+}
+
+outputlist = new ArrayList();
+
+flatten(inputlist, outputlist, 1);""" .
+
+<processor/Flatten_List_2/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:BeanshellScript ;
+	dcterms:description "new$hasOperationMotif$Merging#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/24abfb66-3f6d-4305-95ae-f0298605b37a.ttl0.9893676077475312> ;
+	rdfs:label "Flatten_List_2" ;
+	wfdesc:hasInput <processor/Flatten_List_2/in/inputlist> ;
+	wfdesc:hasOutput <processor/Flatten_List_2/out/outputlist> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List_2/in/inputlist\"}],\"portName\":null}" ;
+	wf4ever:script """flatten(inputs, outputs, depth) {
+	for (i = inputs.iterator(); i.hasNext();) {
+	    element = i.next();
+		if (element instanceof Collection && depth > 0) {
+			flatten(element, outputs, depth - 1);
+		} else {
+			outputs.add(element);
+		}
+	}
+}
+
+outputlist = new ArrayList();
+
+flatten(inputlist, outputlist, 1);""" .
+
+<processor/Write_Text_File/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:BeanshellScript ;
+	dcterms:description "new$hasOperationMotif$ReferenceGenerating#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/85b16eb8-01c1-4c88-9fb5-44aa77370fbe.ttl0.9114130350796582> ;
+	rdfs:label "Write_Text_File" ;
+	wfdesc:hasInput <processor/Write_Text_File/in/encoding> , <processor/Write_Text_File/in/filecontents> , <processor/Write_Text_File/in/outputFile> ;
+	wfdesc:hasOutput <processor/Write_Text_File/out/outputFile> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Write_Text_File/in/encoding\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Write_Text_File/in/outputFile\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Write_Text_File/in/filecontents\"}],\"portName\":null}" ;
+	wf4ever:script """
+  BufferedWriter out;
+  if (encoding == void) {
+  	out = new BufferedWriter(new FileWriter(outputFile));
+  }
+  else {
+  	out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), encoding)); 
+  }
+out.write(filecontents);
+out.flush();
+out.close();
+outputFile = filecontents;
+""" .
+
+<processor/calculate_internal_extinction/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:CommandLineTool ;
+	dcterms:description "new$hasOperationMotif$DataAnalysis#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/34aca7a9-57bd-4e89-9e59-cd84b35a69ba.ttl0.7479490175956278> ;
+	rdfs:label "calculate_internal_extinction" ;
+	wfdesc:hasInput <processor/calculate_internal_extinction/in/dec> , <processor/calculate_internal_extinction/in/leda_file> , <processor/calculate_internal_extinction/in/ra> ;
+	wfdesc:hasOutput <processor/calculate_internal_extinction/out/STDOUT> ;
+	lblwf:lhbFormula "{\"nodeType\":\"DOT\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/calculate_internal_extinction/in/dec\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/calculate_internal_extinction/in/ra\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/calculate_internal_extinction/in/leda_file\"}],\"portName\":null}" .
+
+<processor/VII_237/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:RESTService ;
+	dcterms:description "new$hasOperationMotif$DataRetrieval#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/6a853858-8bc4-4097-ab25-777f4db606c1.ttl0.4200239839292079> ;
+	rdfs:label "VII_237" ;
+	wfdesc:hasInput <processor/VII_237/in/DEC> , <processor/VII_237/in/RA> , <processor/VII_237/in/SR> ;
+	wfdesc:hasOutput <processor/VII_237/out/responseBody> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/VII_237/in/SR\"},{\"nodeType\":\"DOT\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/VII_237/in/RA\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/VII_237/in/DEC\"}],\"portName\":null}],\"portName\":null}" ;
+	wf4ever:rootURI "http://vizier.u-strasbg.fr/"^^xsd:anyURI .
+
+<processor/SesameXML/> a wfdesc:Process , wfdesc:Description , owl:Thing , wf4ever:SOAPService ;
+	rdfs:label "SesameXML" ;
+	wfdesc:hasInput <processor/SesameXML/in/name> ;
+	wfdesc:hasOutput <processor/SesameXML/out/return> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/SesameXML/in/name\"}],\"portName\":null}" ;
+	wf4ever:wsdlURI "http://cdsws.u-strasbg.fr/axis/services/Sesame?wsdl"^^xsd:anyURI ;
+	wf4ever:wsdlOperationName "SesameXML" ;
+	wf4ever:rootURI "http://cdsws.u-strasbg.fr/"^^xsd:anyURI .
+
+<datalink?from=in/list_cig_name&to=processor/SesameXML/in/name> a wfdesc:DataLink ;
+	wfdesc:hasSource <in/list_cig_name> ;
+	wfdesc:hasSink <processor/SesameXML/in/name> .
+
+<datalink?from=processor/Extracting_DEC/out/nodelist&to=processor/Flatten_List_2/in/inputlist> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Extracting_DEC/out/nodelist> ;
+	wfdesc:hasSink <processor/Flatten_List_2/in/inputlist> .
+
+<datalink?from=processor/Extracting_RA/out/nodelist&to=processor/Flatten_List/in/inputlist> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Extracting_RA/out/nodelist> ;
+	wfdesc:hasSink <processor/Flatten_List/in/inputlist> .
+
+<datalink?from=processor/Flatten_List/out/outputlist&to=processor/VII_237/in/RA> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Flatten_List/out/outputlist> ;
+	wfdesc:hasSink <processor/VII_237/in/RA> .
+
+<datalink?from=processor/Flatten_List/out/outputlist&to=processor/calculate_internal_extinction/in/ra> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Flatten_List/out/outputlist> ;
+	wfdesc:hasSink <processor/calculate_internal_extinction/in/ra> .
+
+<datalink?from=processor/Flatten_List_2/out/outputlist&to=processor/VII_237/in/DEC> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Flatten_List_2/out/outputlist> ;
+	wfdesc:hasSink <processor/VII_237/in/DEC> .
+
+<datalink?from=processor/Flatten_List_2/out/outputlist&to=processor/calculate_internal_extinction/in/dec> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Flatten_List_2/out/outputlist> ;
+	wfdesc:hasSink <processor/calculate_internal_extinction/in/dec> .
+
+<datalink?from=processor/Format_conversion/out/outputTable&to=processor/Write_Text_File/in/filecontents> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Format_conversion/out/outputTable> ;
+	wfdesc:hasSink <processor/Write_Text_File/in/filecontents> .
+
+<datalink?from=processor/SR_0.001/out/value&to=processor/VII_237/in/SR> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/SR_0.001/out/value> ;
+	wfdesc:hasSink <processor/VII_237/in/SR> .
+
+<datalink?from=processor/Select_logr25_Mtype/out/outputTable&to=processor/Format_conversion/in/voTable> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Select_logr25_Mtype/out/outputTable> ;
+	wfdesc:hasSink <processor/Format_conversion/in/voTable> .
+
+<datalink?from=processor/SesameXML/out/return&to=processor/Extracting_DEC/in/xml-text> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/SesameXML/out/return> ;
+	wfdesc:hasSink <processor/Extracting_DEC/in/xml-text> .
+
+<datalink?from=processor/SesameXML/out/return&to=processor/Extracting_RA/in/xml-text> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/SesameXML/out/return> ;
+	wfdesc:hasSink <processor/Extracting_RA/in/xml-text> .
+
+<datalink?from=processor/VII_237/out/responseBody&to=processor/Select_logr25_Mtype/in/voTable> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/VII_237/out/responseBody> ;
+	wfdesc:hasSink <processor/Select_logr25_Mtype/in/voTable> .
+
+<datalink?from=processor/Write_Text_File/out/outputFile&to=processor/calculate_internal_extinction/in/leda_file> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/Write_Text_File/out/outputFile> ;
+	wfdesc:hasSink <processor/calculate_internal_extinction/in/leda_file> .
+
+<datalink?from=processor/calculate_internal_extinction/out/STDOUT&to=out/data_internal_extinction> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/calculate_internal_extinction/out/STDOUT> ;
+	wfdesc:hasSink <out/data_internal_extinction> .
+
+<datalink?from=processor/encoding_value/out/value&to=processor/Write_Text_File/in/encoding> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/encoding_value/out/value> ;
+	wfdesc:hasSink <processor/Write_Text_File/in/encoding> .
+
+<datalink?from=processor/filter_logr25_Mtype/out/value&to=processor/Select_logr25_Mtype/in/filter> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/filter_logr25_Mtype/out/value> ;
+	wfdesc:hasSink <processor/Select_logr25_Mtype/in/filter> .
+
+<datalink?from=processor/format_ascii/out/value&to=processor/Format_conversion/in/formatTableOut> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/format_ascii/out/value> ;
+	wfdesc:hasSink <processor/Format_conversion/in/formatTableOut> .
+
+<datalink?from=processor/format_votable/out/value&to=processor/Format_conversion/in/formatTableIn> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/format_votable/out/value> ;
+	wfdesc:hasSink <processor/Format_conversion/in/formatTableIn> .
+
+<datalink?from=processor/outputFile_value/out/value&to=processor/Write_Text_File/in/outputFile> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/outputFile_value/out/value> ;
+	wfdesc:hasSink <processor/Write_Text_File/in/outputFile> .
+
+<datalink?from=processor/xpath_for_DEC/out/value&to=processor/Extracting_DEC/in/xpath> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/xpath_for_DEC/out/value> ;
+	wfdesc:hasSink <processor/Extracting_DEC/in/xpath> .
+
+<datalink?from=processor/xpath_for_RA/out/value&to=processor/Extracting_RA/in/xpath> a wfdesc:DataLink ;
+	wfdesc:hasSource <processor/xpath_for_RA/out/value> ;
+	wfdesc:hasSink <processor/Extracting_RA/in/xpath> .
+
+<> a wfdesc:Workflow , wfdesc:Description , wfdesc:Process ;
+	rdfs:label "Workflow4" ;
+	wfdesc:hasInput <in/list_cig_name> ;
+	wfdesc:hasOutput <out/data_internal_extinction> ;
+	wfdesc:hasSubProcess <processor/Extracting_DEC/> , <processor/Extracting_RA/> , <processor/Flatten_List/> , <processor/Flatten_List_2/> , <processor/Format_conversion/> , <processor/SR_0.001/> , <processor/Select_logr25_Mtype/> , <processor/SesameXML/> , <processor/VII_237/> , <processor/Write_Text_File/> , <processor/calculate_internal_extinction/> , <processor/encoding_value/> , <processor/filter_logr25_Mtype/> , <processor/format_ascii/> , <processor/format_votable/> , <processor/outputFile_value/> , <processor/xpath_for_DEC/> , <processor/xpath_for_RA/> ;
+	wfdesc:hasDataLink <datalink?from=processor/Extracting_DEC/out/nodelist&to=processor/Flatten_List_2/in/inputlist> , <datalink?from=processor/Extracting_RA/out/nodelist&to=processor/Flatten_List/in/inputlist> , <datalink?from=processor/Flatten_List/out/outputlist&to=processor/VII_237/in/RA> , <datalink?from=processor/Flatten_List/out/outputlist&to=processor/calculate_internal_extinction/in/ra> , <datalink?from=processor/Flatten_List_2/out/outputlist&to=processor/VII_237/in/DEC> , <datalink?from=processor/Flatten_List_2/out/outputlist&to=processor/calculate_internal_extinction/in/dec> , <datalink?from=processor/Format_conversion/out/outputTable&to=processor/Write_Text_File/in/filecontents> , <datalink?from=processor/SR_0.001/out/value&to=processor/VII_237/in/SR> , <datalink?from=processor/Select_logr25_Mtype/out/outputTable&to=processor/Format_conversion/in/voTable> , <datalink?from=processor/SesameXML/out/return&to=processor/Extracting_DEC/in/xml-text> , <datalink?from=processor/SesameXML/out/return&to=processor/Extracting_RA/in/xml-text> , <datalink?from=processor/VII_237/out/responseBody&to=processor/Select_logr25_Mtype/in/voTable> , <datalink?from=processor/Write_Text_File/out/outputFile&to=processor/calculate_internal_extinction/in/leda_file> , <datalink?from=processor/calculate_internal_extinction/out/STDOUT&to=out/data_internal_extinction> , <datalink?from=processor/encoding_value/out/value&to=processor/Write_Text_File/in/encoding> , <datalink?from=processor/filter_logr25_Mtype/out/value&to=processor/Select_logr25_Mtype/in/filter> , <datalink?from=processor/format_ascii/out/value&to=processor/Format_conversion/in/formatTableOut> , <datalink?from=processor/format_votable/out/value&to=processor/Format_conversion/in/formatTableIn> , <datalink?from=processor/outputFile_value/out/value&to=processor/Write_Text_File/in/outputFile> , <datalink?from=processor/xpath_for_DEC/out/value&to=processor/Extracting_DEC/in/xpath> , <datalink?from=processor/xpath_for_RA/out/value&to=processor/Extracting_RA/in/xpath> , <datalink?from=in/list_cig_name&to=processor/SesameXML/in/name> .
+
+<in/list_cig_name> a lblwf:DepthInput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "1"^^xsd:integer ;
+	rdfs:label "list_cig_name" .
+
+<out/data_internal_extinction> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Input ;
+	rdfs:label "data_internal_extinction" .
+
+<processor/Extracting_DEC/in/xml-text> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "xml-text" .
+
+<processor/Extracting_DEC/in/xpath> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "xpath" .
+
+<processor/Extracting_DEC/out/nodelist> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "1"^^xsd:integer ;
+	rdfs:label "nodelist" .
+
+<processor/Extracting_RA/in/xml-text> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "xml-text" .
+
+<processor/Extracting_RA/in/xpath> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "xpath" .
+
+<processor/Extracting_RA/out/nodelist> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "1"^^xsd:integer ;
+	rdfs:label "nodelist" .
+
+<processor/Flatten_List/in/inputlist> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "2"^^xsd:integer ;
+	rdfs:label "inputlist" .
+
+<processor/Flatten_List/out/outputlist> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "1"^^xsd:integer ;
+	rdfs:label "outputlist" .
+
+<processor/Flatten_List_2/in/inputlist> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "2"^^xsd:integer ;
+	rdfs:label "inputlist" .
+
+<processor/Flatten_List_2/out/outputlist> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "1"^^xsd:integer ;
+	rdfs:label "outputlist" .
+
+<processor/Format_conversion/> a wfdesc:Process , wfdesc:Description , owl:Thing ;
+	dcterms:description "new$hasOperationMotif$FormatTransformation#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/6129b614-4352-447d-abf6-15a1a6ceb783.ttl0.8058881897645561> ;
+	rdfs:label "Format_conversion" ;
+	wfdesc:hasInput <processor/Format_conversion/in/formatTableIn> , <processor/Format_conversion/in/formatTableOut> , <processor/Format_conversion/in/voTable> ;
+	wfdesc:hasOutput <processor/Format_conversion/out/outputTable> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Format_conversion/in/formatTableIn\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Format_conversion/in/formatTableOut\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Format_conversion/in/voTable\"}],\"portName\":null}" .
+
+<processor/Format_conversion/in/formatTableIn> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "formatTableIn" .
+
+<processor/Format_conversion/in/formatTableOut> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "formatTableOut" .
+
+<processor/Format_conversion/in/voTable> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "voTable" .
+
+<processor/Format_conversion/out/outputTable> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "outputTable" .
+
+<processor/SR_0.001/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "SR_0.001" ;
+	wfdesc:hasOutput <processor/SR_0.001/out/value> ;
+	lblwf:constantValue "0.001" .
+
+<processor/SR_0.001/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/Select_logr25_Mtype/> a wfdesc:Process , wfdesc:Description , owl:Thing ;
+	dcterms:description "new$hasOperationMotif$Filtering#" ;
+	<http://purl.org/net/wf-motifs#hasOperationMotif> <../../annotation/7a64e0f6-17f2-4260-b910-096e07c77fdd.ttl0.9539538772735418> ;
+	rdfs:label "Select_logr25_Mtype" ;
+	wfdesc:hasInput <processor/Select_logr25_Mtype/in/filter> , <processor/Select_logr25_Mtype/in/voTable> ;
+	wfdesc:hasOutput <processor/Select_logr25_Mtype/out/outputTable> ;
+	lblwf:lhbFormula "{\"nodeType\":\"CROSS\",\"children\":[{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Select_logr25_Mtype/in/filter\"},{\"nodeType\":\"PORT\",\"children\":[],\"portName\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Select_logr25_Mtype/in/voTable\"}],\"portName\":null}" .
+
+<processor/Select_logr25_Mtype/in/filter> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "filter" .
+
+<processor/Select_logr25_Mtype/in/voTable> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "voTable" .
+
+<processor/Select_logr25_Mtype/out/outputTable> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "outputTable" .
+
+<processor/SesameXML/in/name> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "name" .
+
+<processor/SesameXML/out/return> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "return" .
+
+<processor/VII_237/in/DEC> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "DEC" .
+
+<processor/VII_237/in/RA> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "RA" .
+
+<processor/VII_237/in/SR> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "SR" .
+
+<processor/VII_237/out/responseBody> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "responseBody" .
+
+<processor/Write_Text_File/in/encoding> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "encoding" .
+
+<processor/Write_Text_File/in/filecontents> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "filecontents" .
+
+<processor/Write_Text_File/in/outputFile> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "outputFile" .
+
+<processor/Write_Text_File/out/outputFile> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "outputFile" .
+
+<processor/calculate_internal_extinction/in/dec> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "dec" .
+
+<processor/calculate_internal_extinction/in/leda_file> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "leda_file" .
+
+<processor/calculate_internal_extinction/in/ra> a lblwf:DepthInput , wfdesc:Description , wfdesc:Input ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "ra" .
+
+<processor/calculate_internal_extinction/out/STDOUT> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "STDOUT" .
+
+<processor/encoding_value/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "encoding_value" ;
+	wfdesc:hasOutput <processor/encoding_value/out/value> ;
+	lblwf:constantValue "utf-8" .
+
+<processor/encoding_value/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/filter_logr25_Mtype/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "filter_logr25_Mtype" ;
+	wfdesc:hasOutput <processor/filter_logr25_Mtype/out/value> ;
+	lblwf:constantValue "logR25 Mtype" .
+
+<processor/filter_logr25_Mtype/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/format_ascii/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "format_ascii" ;
+	wfdesc:hasOutput <processor/format_ascii/out/value> ;
+	lblwf:constantValue "ascii" .
+
+<processor/format_ascii/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/format_votable/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "format_votable" ;
+	wfdesc:hasOutput <processor/format_votable/out/value> ;
+	lblwf:constantValue "votable" .
+
+<processor/format_votable/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/outputFile_value/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "outputFile_value" ;
+	wfdesc:hasOutput <processor/outputFile_value/out/value> ;
+	lblwf:constantValue "leda_file.txt" .
+
+<processor/outputFile_value/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/xpath_for_DEC/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "xpath_for_DEC" ;
+	wfdesc:hasOutput <processor/xpath_for_DEC/out/value> ;
+	lblwf:constantValue "//jdedeg" .
+
+<processor/xpath_for_DEC/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .
+
+<processor/xpath_for_RA/> a wfdesc:Process , wfdesc:Description , owl:Thing , lblwf:StringConstant ;
+	rdfs:label "xpath_for_RA" ;
+	wfdesc:hasOutput <processor/xpath_for_RA/out/value> ;
+	lblwf:constantValue "//jradeg" .
+
+<processor/xpath_for_RA/out/value> a lblwf:DepthOutput , wfdesc:Description , wfdesc:Output ;
+	lblwf:definedDepth "0"^^xsd:integer ;
+	rdfs:label "value" .

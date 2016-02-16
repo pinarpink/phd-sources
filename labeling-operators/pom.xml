@@ -20,7 +20,11 @@
 		</plugins>
 	</build>
 	<dependencies>
-
+		<dependency>
+			<groupId>palper.phd.summarizer</groupId>
+			<artifactId>wfdesc-browser</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>palper.phd.labeler</groupId>
 			<artifactId>labeling-model-beans</artifactId>

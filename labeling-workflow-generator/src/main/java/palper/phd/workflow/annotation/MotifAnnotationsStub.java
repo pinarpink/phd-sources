@@ -34,7 +34,7 @@ public class MotifAnnotationsStub {
     List<String> sesameTargetPort = new ArrayList<String>();
     sesameTargetPort.add(proc1 + "out/return");
     cache.put(proc1, LabelSpecFactory.createMintSpec(proc1, sesameTargetPort,
-        "palper.phd.labeling.registry.SesameLabeler"));
+        "palper.phd.labeling.astro.SesameLabeler"));
 
     String proc2 = pref + "Extracting_DEC/";
     List<String> extractDecSourcePort = new ArrayList<String>();
@@ -76,7 +76,7 @@ public class MotifAnnotationsStub {
     List<String> vii237ListTargetPort = new ArrayList<String>();
     vii237ListTargetPort.add(proc6 + "out/responseBody");
     cache.put(proc6, LabelSpecFactory.createMintSpec(proc6, vii237ListTargetPort ,
-        "palper.phd.labeling.registry.VII_237Labeler"));
+        "palper.phd.labeling.astro.VizieRLabeler"));
     
     String proc7 = pref + "Select_logr25_Mtype/";
     List<String> selectLogrSourcePort = new ArrayList<String>();
@@ -110,7 +110,7 @@ public class MotifAnnotationsStub {
     List<String> calculateExtinctTargetPort = new ArrayList<String>();
     calculateExtinctTargetPort.add(proc10 + "out/STDOUT");
     cache.put(proc10, LabelSpecFactory.createMintSpec(proc10, calculateExtinctTargetPort,
-        "palper.phd.labeling.registry.Calculate_internal_extinctionLabeler"));
+        "palper.phd.labeling.astro.ExtinctionLabeler"));
 
 
   }

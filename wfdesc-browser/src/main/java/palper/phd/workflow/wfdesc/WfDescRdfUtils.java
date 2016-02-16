@@ -1366,4 +1366,98 @@ public class WfDescRdfUtils {
     return result;
   }
 
+  public static String getScriptValue(String activity, Model model) {
+  
+    Literal result = null;
+
+    String queryStr =
+        " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " PREFIX wf4ever: <http://purl.org/wf4ever/wf4ever#> \n"
+            + " SELECT  ?val \n" 
+            + " WHERE { \n"
+           
+            + "<" + activity + ">  wf4ever:script ?val . \n" 
+            + " } \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        result = soln.getLiteral("val");
+
+      }
+    } finally {
+      qexec.close();
+    }
+    return (String) result.getValue();
+
+  }
+
+  public static Resource getProcessorWithLabel(String label, Model wfdesc) {
+    String queryStr =
+        " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " SELECT DISTINCT ?proc  \n"
+            + " WHERE { ?proc rdfs:label \"" + label + "\". \n" 
+            +" ?proc a  wfdesc:Process . \n"
+            + "} \n";
+         
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, wfdesc);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      if (results.hasNext()) {
+
+        QuerySolution soln = results.nextSolution();
+
+        return soln.getResource("proc");
+
+      } else {
+
+        return null;
+      }
+    } finally {
+      qexec.close();
+    }
+  }
+
+  public static String getWsdlProcessorRootUri(Resource processor, Model wfdesc) {
+    Literal result = null;
+
+    String queryStr =
+        " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + " PREFIX wf4ever: <http://purl.org/wf4ever/wf4ever#> \n"
+            + " SELECT  ?rooturi \n" 
+            + " WHERE { \n"         
+            + "<" + processor.getURI() + ">  wf4ever:rootURI ?rooturi . \n" 
+            + " } \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, wfdesc);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        result = soln.getLiteral("rooturi");
+
+      }
+    } finally {
+      qexec.close();
+    }
+    return (String) result.getValue();
+
+  }
+
 }

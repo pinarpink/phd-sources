@@ -3,8 +3,10 @@
  */
 package palper.phd.labeling.operator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,18 +21,40 @@ import com.hp.hpl.jena.rdf.model.Resource;
  */
 public class LabelWfTopoSorter {
 
+  
+  private int maxOrder;
+  private  Map<String, Integer> activityOrders;
+  public Map<String, Integer> getActivityOrders() {
+    return activityOrders;
+  }
+
+  public Map<Integer, List<String>> getActivitiesByOrder() {
+    return activitiesByOrder;
+  }
+
+
+  private Map<Integer,List<String>> activitiesByOrder;
+  
   public LabelWfTopoSorter() {
     super();
     // TODO Auto-generated constructor stub
   }
+  
+  public int getMaxOrder() {
+    return maxOrder;
+  }
+
+
 
 
   /**
    * @param args
+   *  if a processor has no predecessors then its topo-order is 0
+   *  if it has processors then the order equals +1 of the max of order of preceeding processors
    */
-  public Map<String, Integer> sort(Model wfdescModel) {
+  public void sort(Model wfdescModel) {
 
-    Map<String, Integer> sorted = new HashMap<String, Integer>();
+    activityOrders = new HashMap<String, Integer>();
 
     Resource wfResource = WfDescRdfUtils.getWorkflowResource(wfdescModel);
     Set<Resource> procs = WfDescRdfUtils.getProcessors(wfdescModel, wfResource);
@@ -44,10 +68,12 @@ public class LabelWfTopoSorter {
         Set<Resource> predecessors = WfDescRdfUtils.getControlflowPredecessors(proc, wfdescModel);
         boolean allSorted = true;
         Integer max = 0;
+
+
         if (predecessors.size() > 0) {
           for (Resource pred : predecessors) {
-            if (sorted.containsKey(pred.getURI())) {
-              Integer predOrder = sorted.get(pred.getURI());
+            if (activityOrders.containsKey(pred.getURI())) {
+              Integer predOrder = activityOrders.get(pred.getURI());
               if (predOrder > max) {
                 max = predOrder;
               }
@@ -67,17 +93,43 @@ public class LabelWfTopoSorter {
         }
       }while (iter.hasNext());// while
       if (tobeTransferred != null) {
-        sorted.put(tobeTransferred.getRes().getURI(), tobeTransferred.getOrder());
+        activityOrders.put(tobeTransferred.getRes().getURI(), tobeTransferred.getOrder());
         procs.remove(tobeTransferred.getRes());
       }// if
     }// while
 
-    return sorted;
+    
+    calculateReverseMap();
+    
   }
 
 
-  // if a processor has no predecessors then its topo-order is 0
-  // if it has processors then the order equals +1 of the max of order of preceeding processors
+  private void calculateReverseMap() {
+    
+    maxOrder = 0;
+    
+    activitiesByOrder = new HashMap<Integer, List<String>>();
+    
+    for (Map.Entry<String, Integer> entry : activityOrders.entrySet()){
+      
+      if (activitiesByOrder.containsKey(entry.getValue())){
+        List<String> activities = activitiesByOrder.get(entry.getValue());
+        activities.add(entry.getKey());
+        activitiesByOrder.put(entry.getValue(),activities);
+      }else{
+        List<String> activities = new ArrayList<String>();
+        activities.add(entry.getKey());
+        activitiesByOrder.put(entry.getValue(), activities);
+        
+      }
+      if (entry.getValue()> maxOrder){
+        
+        maxOrder = entry.getValue();
+      }
+    }
+    
+  }
+
 
   class SimpleTuple {
     Resource res;

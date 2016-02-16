@@ -1,30 +1,20 @@
 package palper.phd.workflow.wf2labelerwf;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.Map;
 
-import org.deri.iris.EvaluationException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import palper.phd.labeling.operator.LabelWfTopoSorter;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.ReificationStyle;
-import com.hp.hpl.jena.util.FileUtils;
-
-import palper.phd.labeling.datalog.DLVClient;
-import palper.phd.labeling.datalog.Wfdesc2Datalog;
-import palper.phd.labeling.operator.LabelWfTopoSorter;
-import palper.phd.workflow.wf2labelerwf.SciWorflowScavenger;
-import sun.nio.cs.StandardCharsets;
 
 /**
  * 
@@ -71,14 +61,11 @@ public class TestGenerator {
       InputStream is2 = new FileInputStream(workflowFile);
       sciWfdesc.read(is2, null, "TURTLE");
 
-      Map<String, String> nspm1 = sciWfdesc.getNsPrefixMap();
-
-      
+    
       Generator gen = new Generator(workflowFile);
       
       String result = gen.getLabelingWorkflowAsString();
       System.out.println("-------------");
-
       System.out.println(result);
       System.out.println("-------------");
 
@@ -98,15 +85,14 @@ public class TestGenerator {
       fop.flush();
       fop.close();
 
-      System.out.println("Done");
 
       Model labelingWfdesc = ModelFactory.createDefaultModel(ReificationStyle.Minimal);
       InputStream is = new FileInputStream(file);
       labelingWfdesc.read(is, null, "TURTLE");
-      Map<String, String> nspm = labelingWfdesc.getNsPrefixMap();
 
       LabelWfTopoSorter sorter = new LabelWfTopoSorter();
-      Map<String, Integer> orders = sorter.sort(labelingWfdesc);
+      sorter.sort(labelingWfdesc);
+      Map<String, Integer> orders = sorter.getActivityOrders(); 
       System.out.println(orders);
 
     } catch (Exception e) {
