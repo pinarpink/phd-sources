@@ -1,0 +1,135 @@
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/c3bc86de-db21-4edb-b40d-319b42ac0bcd>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/bc8fe465-f140-4412-a7bd-d5b2e23024f1>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/80baac1a-c578-49f6-b534-28ea31e845b0>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/b3bc8680-37e0-486e-bd16-d3da17129024>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/aeb0eb49-aba2-4f0a-b5c3-7d35d2be18a9>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/1a81c6d5-5df7-43c2-b94e-6d84a9c58545>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/67c21578-e05b-4411-8a6a-810d6614b847>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/d655249d-e1a3-4bfc-b049-f9bac19447d3>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/d56bcbb1-53a2-4391-b460-13372a1b537e>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/list/cbbca7f6-23ec-43a4-96af-520320b6b176/false/1>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/list/97a29a00-f12b-4bef-afbb-37bcfd25af1f/false/2>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/list/838feb4a-a658-4d5c-84b8-17804bbeb295/false/1>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/3b3c0f16-63cf-4690-9bbe-845dbca3e819>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "GIN801"^^<http://www.w3.org/2001/XMLSchema#string> , "MCG7-02-016"^^<http://www.w3.org/2001/XMLSchema#string> , "NGC224"^^<http://www.w3.org/2001/XMLSchema#string> , "CGCG535-17"^^<http://www.w3.org/2001/XMLSchema#string> , "UGC454"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "yCat_7237"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://vizier.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/list/2e2f3214-26d5-4a6d-9abc-671c6cc501b5/false/2>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/8cc26e16-6958-4086-b3e6-b03e0e420530>
+      <http://palper.phd.labeling.astrocase/hasMorphology>
+              "0.45"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/c6c14e35-7d22-407c-ab19-8847e6db9eee>
+      <http://palper.phd.labeling.astrocase/hasMorphology>
+              "0.45"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/ref/fad1a995-e2a6-48d2-abd6-3af69fec0f3e>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+<http://ns.taverna.org.uk/2011/data/dd4d5000-625c-4c99-8997-cee230277d31/list/f39f3120-6873-48e5-8897-5db78302ff4d/false/1>
+      <http://palper.phd.labeling.astrocase/hasSubject>
+              "M31"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceCatalog>
+              "Sc=Simbad (CDS, via client/server)"^^<http://www.w3.org/2001/XMLSchema#string> , "N=NED"^^<http://www.w3.org/2001/XMLSchema#string> ;
+      <http://palper.phd.labeling.astrocase/referenceURI>
+              "http://cdsws.u-strasbg.fr/"^^<http://www.w3.org/2001/XMLSchema#string> .

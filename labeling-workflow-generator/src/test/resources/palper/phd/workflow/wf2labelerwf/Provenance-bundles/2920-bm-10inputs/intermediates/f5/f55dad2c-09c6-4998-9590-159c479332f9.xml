@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VOTABLE version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.ivoa.net/xml/VOTable/v1.1"
+  xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.1 http://www.ivoa.net/xml/VOTable/v1.1">
+ <DESCRIPTION>
+   VizieR Astronomical Server vizier.u-strasbg.fr
+    Date: 2016-01-22T08:04:25 [V1.99+ (14-Oct-2013)]
+   Explanations and Statistics of UCDs:			See LINK below
+   In case of problem, please report to:	cds-question@unistra.fr
+   In this version, NULL integer columns are written as an empty string
+   &lt;TD&gt;&lt;/TD&gt;, explicitely possible from VOTable-1.3
+ </DESCRIPTION>
+<!-- VOTable description at http://www.ivoa.net/Documents/latest/VOT.html -->
+
+<DEFINITIONS>
+  <COOSYS ID="J2000" system="eq_FK5" equinox="J2000"/>
+</DEFINITIONS>
+
+<INFO ID="VERSION" name="votable-version" value="1.99+ (14-Oct-2013)"/>
+<INFO ID="Ref" name="-ref" value="VOTx9737"/>
+<INFO name="MaxTuples" value="50000" />
+<INFO name="queryParameters" value="6">
+-oc.form=DM
+-source=VII/237
+-c
+-c.ra=190.509675
+-c.dec=11.64693056
+-c.rd=0.001
+</INFO>
+
+<!-- INFO queryParameters: #2
+-oc.form=DM
++source=VII/237
+-c
+-c.ra=190.509675
+-c.dec=11.64693056
+-c.rd=0.001
+-out=_r _RAJ() _DEJ() *
+ -->
+
+<!--
+Execution Reports
+ -->
+<INFO ID="Target" name="-c" value="190.509675+11.646931,rd=0.001">
+</INFO>
+
+<RESOURCE ID="yCat_7237" name="VII/237">
+  <DESCRIPTION>HYPERLEDA. I. Catalog of galaxies (Paturel+, 2003)</DESCRIPTION>
+  <TABLE ID="VII_237_pgc" name="VII/237/pgc">
+    <DESCRIPTION>Catalog of galaxies (table 5 in the paper)</DESCRIPTION>
+    <!-- Definitions of GROUPs and FIELDs -->
+    <FIELD name="_r" ucd="pos.angDistance" datatype="double" width="7" precision="5" unit="deg"><!-- ucd="POS_ANG_DIST_GENERAL" -->
+      <DESCRIPTION>Distance from center (12 42 02.3+11 38 49)[FK5/J2000]</DESCRIPTION>
+    </FIELD>
+    <FIELD name="_RAJ2000" ucd="POS_EQ_RA_MAIN" ref="J2000" datatype="double" width="8" precision="4" unit="deg"><!-- ucd="pos.eq.ra;meta.main" -->
+      <DESCRIPTION>Right ascension (FK5, Equinox=J2000.0) (computed by VizieR, not part of the original data)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="_DEJ2000" ucd="POS_EQ_DEC_MAIN" ref="J2000" datatype="double" width="8" precision="4" unit="deg"><!-- ucd="pos.eq.dec;meta.main" -->
+      <DESCRIPTION>Declination (FK5, Equinox=J2000.0) (computed by VizieR, not part of the original data)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="PGC" ucd="ID_MAIN" datatype="char" arraysize="7*"><!-- ucd="meta.id;meta.main" -->
+      <DESCRIPTION>PGC number [datatype=int]</DESCRIPTION>
+    </FIELD>
+    <FIELD name="RAJ2000" ucd="pos.eq.ra" ref="J2000" datatype="char" arraysize="10" unit="&quot;h:m:s&quot;"><!-- ucd="POS_EQ_RA" -->
+      <DESCRIPTION>Right ascension (J2000)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="DEJ2000" ucd="pos.eq.dec" ref="J2000" datatype="char" arraysize="9" unit="&quot;d:m:s&quot;"><!-- ucd="POS_EQ_DEC" -->
+      <DESCRIPTION>Declination (J2000)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="OType" ucd="src.class" datatype="char" arraysize="2"><!-- ucd="CLASS_OBJECT" -->
+      <DESCRIPTION>[GM ] Object type (1)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="MType" ucd="src.morph.type" datatype="char" arraysize="5*"><!-- ucd="MORPH_TYPE" -->
+      <DESCRIPTION>Provisional morphological type from LEDA according to the RC2 code.</DESCRIPTION>
+    </FIELD>
+    <FIELD name="logD25" ucd="phys.angSize;src" datatype="float" width="5" precision="2" unit="[0.1arcmin]"><!-- ucd="EXTENSION_DIAM" -->
+      <DESCRIPTION>? Apparent diameter (2)</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="logR25" ucd="phys.size;arith.ratio" datatype="float" width="5" precision="2" unit="[---]"><!-- ucd="PHYS_AXIS-RATIO" -->
+      <DESCRIPTION>? Axis ratio in log scale (log of major axis to minor axis)</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="PA" ucd="pos.posAng" datatype="float" width="4" unit="deg"><!-- ucd="POS_POS-ANG" -->
+      <DESCRIPTION>? Adopted 1950-position angle (3)</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="ANames" ucd="meta.id" datatype="char" arraysize="255*"><!-- ucd="ID_ALTERNATIVE" -->
+      <DESCRIPTION>Alternate names (4)</DESCRIPTION>
+    </FIELD>
+<DATA><TABLEDATA>
+<TR><TD>0.00098</TD><TD>190.5092</TD><TD>+11.6478</TD><TD>42628</TD><TD>12 42 02.2</TD><TD>+11 38 52</TD><TD>G</TD><TD>E</TD><TD>1.74</TD><TD>0.14</TD><TD>164</TD><TD>NGC4621               UGC7858               MCG2-32-183           CGCG70-223            VCC1903</TD></TR>
+</TABLEDATA></DATA>
+</TABLE>
+</RESOURCE>
+</VOTABLE>

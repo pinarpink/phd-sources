@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M102</name>
+  <!-- Q358615 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>14:03:12.54 +54:20:56.2</jpos>
+    <jradeg>210.8022671</jradeg>
+    <jdedeg>+54.34895</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>120</errRAmas><errDEmas>120</errDEmas>
+    <Vel><v>241.03317</v><e>2.09855</e><r>1991RC3.9.C...0000d</r></Vel>
+    <MType>SAB(rs)cd</MType>
+    <oname>MESSIER 101 </oname>
+    <alias>MESSIER 102</alias>
+    <alias>NGC 5457</alias>
+    <alias>UGC 08981</alias>
+    <alias>ARP 026</alias>
+    <alias>VV 344a</alias>
+    <alias>VV 456</alias>
+    <alias>CGCG 272-021</alias>
+    <alias>CGCG 1401.5+5435</alias>
+    <alias>MCG +09-23-028</alias>
+    <alias>SDSS J140312.52+542056.2</alias>
+    <alias>IRAS  14013+5435</alias>
+    <alias>IRAS F14012+5434</alias>
+    <alias>AKARI J1403130+542102</alias>
+    <alias>KIG 0610</alias>
+    <alias>LDCE 0842 NED010</alias>
+    <alias>HDCE 0853 NED001</alias>
+    <alias>PGC 050063</alias>
+    <alias>UZC J140312.5+542056</alias>
+    <alias>11HUGS 363</alias>
+    <alias>[WB92] 1401+5434</alias>
+    <alias>6C B140129.2+543437</alias>
+    <alias>CXO J140312.5+542056</alias>
+    <alias>CXOU J140312.5+542053</alias>
+    <alias>XMMU J140312.4+542056</alias>
+    <alias>CXO J140312.54+542056.2</alias>
+    <alias>[SPB93] 243</alias>
+    <alias>LGG 371:[G93] 001</alias>
+    <alias>NGC 5457:[RPS97] 06</alias>
+    <alias>[M98j] 170 NED77</alias>
+    <alias>MESSIER 101:[WIP99] H23</alias>
+    <alias>MESSIER 101:[WIP99] P16</alias>
+    <alias>NGC 5457:[RW2000] X-11</alias>
+    <alias>MESSIER 101:[PSM2001] 040</alias>
+    <alias>MESSIER 101:[JRW2004] XMM-10</alias>
+    <alias>MESSIER 101:[JRW2005] 051</alias>
+    <alias>NGC 5457:[LB2005] X01</alias>
+    <alias>NGC 5457:[L2011a] X0019</alias>
+    <alias>NGC 5457:[MGS2012] 001</alias>
+    <alias>1401+5434</alias>
+    <alias>LEDA 050063</alias>
+    <nrefs>1390</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 100ms [1] -->
+    <oid>457084</oid>
+    <otype>SyG</otype>
+    <jpos>15:06:29.56 +55:45:47.9</jpos>
+    <jradeg>226.62317083</jradeg>
+    <jdedeg>55.76330833</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <z><v>0.002528</v><e>0.000417</e><q>D</q><r>2002LEDA.........0P</r></z>
+    <MType>-1</MType>
+    <oname>M 102</oname>
+    <alias>M 102</alias>
+    <alias>1E 1505.1+5557</alias>
+    <alias>IRAS 15051+5557</alias>
+    <alias>IRAS F15051+5557</alias>
+    <alias>JCMTSE J150629.2+554546</alias>
+    <alias>JCMTSF J150629.2+554552</alias>
+    <alias>LEDA 53933</alias>
+    <alias>2MASX J15062956+5545479</alias>
+    <alias>MCG+09-25-017</alias>
+    <alias>NGC 5866</alias>
+    <alias>PSCz Q15051+5557</alias>
+    <alias>UGC 9723</alias>
+    <alias>UZC J150629.4+554548</alias>
+    <alias>Z 274-16</alias>
+    <alias>Z 1505.1+5557</alias>
+    <alias>[CHM2007] HDC 903 J150629.56+5545479</alias>
+    <alias>[CHM2007] LDC 1112 J150629.56+5545479</alias>
+    <alias>[VDD93] 203</alias>
+    <alias>[VV2003c] J150629.5+554548</alias>
+    <alias>[VV2006c] J150629.5+554548</alias>
+    <alias>[VV2010c] J150629.5+554548</alias>
+    <nrefs>411</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 1ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-22,08:04:05z)==== -->

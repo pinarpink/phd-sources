@@ -30,61 +30,74 @@ public class TestLabelling {
 
     try {
 
-      URL current = this.getClass().getResource(".");
-      String provFileName =
-          current.getPath() + "Provenance-bundles" + File.separator + "2920-bm-11inputs"
-              + File.separator + "workflowrun.prov.ttl";
-      String sciWfdescFileName = current.getPath() + "2920_bookmarks_elimntd.wfdesc.ttl";
+      int counter = 1;
+
+      while (counter < 12) {
+        URL current = this.getClass().getResource(".");
+        String sciWfdescFileName = current.getPath() + "2920_bookmarks_elimntd.wfdesc.ttl";
+        String provFileName =
+            current.getPath() + "Provenance-bundles" + File.separator + "2920-bm-REPLACEMEinputs"
+                + File.separator + "workflowrun.prov.ttl";
+
+        Model provModel = ModelFactory.createDefaultModel(ReificationStyle.Minimal);
+
+        String currentProvFileName = provFileName.replaceAll("REPLACEME", String.valueOf(counter));
+        provModel.read(
+            new FileInputStream(currentProvFileName),
+            null, "TURTLE");
 
 
-      LabellingExecutionConfig.initialize(sciWfdescFileName, provFileName);
 
-      File sciWfdescFile = new File(sciWfdescFileName);
-      Model sciWfdesc = ModelFactory.createDefaultModel(ReificationStyle.Minimal);
-      InputStream is2 = new FileInputStream(sciWfdescFile);
-      sciWfdesc.read(is2, null, "TURTLE");
+        LabellingExecutionConfig.initialize(sciWfdescFileName, currentProvFileName);
 
-
-      Generator gen = new Generator(sciWfdescFile);
-
-      String result = gen.getLabelingWorkflowAsString();
-      System.out.println("-------------");
-
-      System.out.println(result);
-      System.out.println("-------------");
+        File sciWfdescFile = new File(sciWfdescFileName);
+        Model sciWfdesc = ModelFactory.createDefaultModel(ReificationStyle.Minimal);
+        InputStream is2 = new FileInputStream(sciWfdescFile);
+        sciWfdesc.read(is2, null, "TURTLE");
 
 
-      Model labelingWfdesc = ModelFactory.createDefaultModel(ReificationStyle.Minimal);
-      InputStream is = new ByteArrayInputStream(result.getBytes());
-      labelingWfdesc.read(is, null, "TURTLE");
+        Generator gen = new Generator(sciWfdescFile);
 
-      LabelWfTopoSorter sorter = new LabelWfTopoSorter();
-      sorter.sort(labelingWfdesc);
-      Map<String, Integer> orders = sorter.getActivityOrders();
-      System.out.println(orders);
+        String result = gen.getLabelingWorkflowAsString();
+        System.out.println("-------------");
+        System.out.println(result);
+        System.out.println("-------------");
 
 
-      LabelingOperHandler handler = new LabelingOperHandler();
+        Model labelingWfdesc = ModelFactory.createDefaultModel(ReificationStyle.Minimal);
+        InputStream is = new ByteArrayInputStream(result.getBytes());
+        labelingWfdesc.read(is, null, "TURTLE");
 
-      int max = sorter.getMaxOrder();
+        LabelWfTopoSorter sorter = new LabelWfTopoSorter();
+        sorter.sort(labelingWfdesc);
+        Map<String, Integer> orders = sorter.getActivityOrders();
+        System.out.println(orders);
 
-      for (int i = 0; i <= max; i++) {
-        List<String> activitiesToRun = sorter.getActivitiesByOrder().get(i);
 
-        for (String activity : activitiesToRun) {
-         String labelingSpecJson = WfDescRdfUtils.getScriptValue(activity,labelingWfdesc);
-         handler.execute(labelingSpecJson);
+        LabelingOperHandler handler = new LabelingOperHandler();
+
+        int max = sorter.getMaxOrder();
+
+        for (int i = 0; i <= max; i++) {
+          List<String> activitiesToRun = sorter.getActivitiesByOrder().get(i);
+
+          for (String activity : activitiesToRun) {
+            String labelingSpecJson = WfDescRdfUtils.getScriptValue(activity, labelingWfdesc);
+            handler.execute(labelingSpecJson);
+          }
         }
+
+
+        File labelFile = new File(currentProvFileName.replaceFirst("\\..*", "") + "-Labels.ttl");
+
+        OutputStream oss;
+        oss = new FileOutputStream(labelFile);
+        LabellingExecutionConfig.getInstance().getLabelingResultModel().write(oss, "TURTLE", null);
+
+        System.out.println("Labels written to" + labelFile.getAbsolutePath());
+        
+        counter++;
       }
-
-
-      File labelFile = new File(provFileName.replaceFirst("\\..*", "") + "-Labels.ttl");
-
-      OutputStream oss;
-      oss = new FileOutputStream(labelFile);
-      LabellingExecutionConfig.getInstance().getLabelingResultModel().write(oss, "TURTLE", null);
-
-      System.out.println("Labels written to" + labelFile.getAbsolutePath());
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

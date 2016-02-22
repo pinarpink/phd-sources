@@ -272,7 +272,7 @@ public class WfDescRdfUtils {
 
   }
 
-  
+ 
   public static boolean isTopLevelVisible(Resource port, Model model){
     
     StmtIterator iter =

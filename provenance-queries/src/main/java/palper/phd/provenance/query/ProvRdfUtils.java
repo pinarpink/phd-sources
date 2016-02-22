@@ -70,7 +70,39 @@ public class ProvRdfUtils {
     return result;
   }
 
-  
+ public static Set<Resource> getEntitiesWithLabel(String labelUriString, String labelValue, Model model){
+   
+    
+    Set<Resource> result = new HashSet<Resource>();
+
+    String queryStr =
+        " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+        +"PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+            + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n" 
+        + " SELECT DISTINCT ?data  \n"
+            + " WHERE { \n" 
+            + " ?data a prov:Entity . \n"
+            + " ?data <" +labelUriString+"> \""+labelValue+"\" . \n"
+            + " } \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        result.add(soln.getResource("data"));
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+    
+    
+  }
   public static String getInlineContentforDataArtifact(String dataArtifactUriString, Model model){
     String result = null;
 
@@ -651,7 +683,8 @@ public static Resource getUsageRole(String dataArtifactUriString, String activit
         " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
             + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
             + " SELECT DISTINCT ?entit1  \n" + " WHERE { \n"
-            + " ?entit1 prov:qualifiedGeneration ?gen1 . \n" + " ?gen1 prov:hadRole" + " <"
+            + " ?entit1 prov:qualifiedGeneration ?gen1 . \n" 
+            + " ?gen1 prov:hadRole" + " <"
             + portUriString + "> . \n" + " ?gen1 prov:activity" + " <" + activityUriString
             + "> . \n" + " } \n";
 
@@ -807,7 +840,9 @@ public static Resource getUsageRole(String dataArtifactUriString, String activit
     String queryString =
         " PREFIX prov: <http://www.w3.org/ns/prov#> \n"
             + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n"
-            + " SELECT DISTINCT ?actvty  \n" + " WHERE { \n" + "?actvty prov:used <"
+            + " SELECT DISTINCT ?actvty  \n" 
+            + " WHERE { \n" 
+            + "?actvty prov:used <"
             + provNode.getURI() + "> . \n" + "} \n";
 
 
@@ -857,6 +892,49 @@ public static Resource getUsageRole(String dataArtifactUriString, String activit
       qexec.close();
     }
     return resultSet;
+  }
+
+  public static Set<String> getALabelOfEntity(Resource res, String labelUriString, Model provModel) {
+    
+    Set<String> result = new HashSet<String>();
+
+    String queryStr =
+        " PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#> \n"
+        +"PREFIX prov: <http://www.w3.org/ns/prov#> \n"
+       + " PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> \n" 
+        + " SELECT DISTINCT ?lbl  \n"
+            + " WHERE { \n" 
+            + " <"+res.getURI()+">  <" +labelUriString + "> ?lbl . \n"
+            + " } \n";
+
+    Query query = QueryFactory.create(queryStr);
+    QueryExecution qexec = QueryExecutionFactory.create(query, provModel);
+    try {
+      ResultSet results = qexec.execSelect();
+
+      for (; results.hasNext();) {
+
+        QuerySolution soln = results.nextSolution();
+
+        result.add(soln.getLiteral("lbl").getString());
+      }
+    } finally {
+      qexec.close();
+    }
+    return result;
+  }
+
+  public static boolean hasLabel(Resource entity, String labelUriString, String labelValue, Model provModel) {
+    StmtIterator iter =
+        provModel.listStatements(entity, provModel.createProperty(labelUriString),
+            labelValue);
+
+    if (iter.hasNext()) {
+      return true;
+
+    } else {
+      return false;
+    }
   }
 
 

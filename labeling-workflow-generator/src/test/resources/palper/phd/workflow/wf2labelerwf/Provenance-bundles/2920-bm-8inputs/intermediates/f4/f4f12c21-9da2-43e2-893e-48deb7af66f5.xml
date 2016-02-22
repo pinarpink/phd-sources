@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M105</name>
+  <!-- Q358520 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>10:47:49.58 +12:34:53.8</jpos>
+    <jradeg>161.9566158</jradeg>
+    <jdedeg>+12.5816239</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>190</errRAmas><errDEmas>190</errDEmas>
+    <Vel><v>911.06941</v><e>2.39834</e><r>2000MNRAS.313..469S</r></Vel>
+    <MType>E1</MType>
+    <oname>MESSIER 105 </oname>
+    <alias>NGC 3379</alias>
+    <alias>UGC 05902</alias>
+    <alias>CGCG 066-018</alias>
+    <alias>CGCG 1045.2+1251</alias>
+    <alias>MCG +02-28-011</alias>
+    <alias>GIN 773</alias>
+    <alias>2MASX J10474959+1234538</alias>
+    <alias>2MASXi J1047495+123455</alias>
+    <alias>2MASXi J1047496+123455</alias>
+    <alias>GALEXASC J104749.60+123455.0</alias>
+    <alias>KTG 33A</alias>
+    <alias>LDCE 0778 NED009</alias>
+    <alias>HDCE 0626 NED004</alias>
+    <alias>USGC U323 NED05</alias>
+    <alias>HOLM 212A</alias>
+    <alias>PGC 032256</alias>
+    <alias>UZC J104749.6+123453</alias>
+    <alias>NVSS J104749+123444</alias>
+    <alias>CXO J104749.5+123453</alias>
+    <alias>CXOU J104749.6+123454</alias>
+    <alias>1AXG J104750+1234</alias>
+    <alias>CXO J104749.57+123453.8</alias>
+    <alias>Leo GROUP:[FS90] 025</alias>
+    <alias>LGG 217:[G93] 004</alias>
+    <alias>[M98j] 095 NED08</alias>
+    <alias>NGC 3379:[RW2000] X-01</alias>
+    <alias>[CHP2004] J104749.6+123454</alias>
+    <alias>Leo I GROUP:[TT2002] 02</alias>
+    <alias>NGC 3379:[DJF2005] 01</alias>
+    <alias>NGC 3379:[LB2005] X01</alias>
+    <alias>NGC 3379:[BFK2008] 081</alias>
+    <alias>[GMM2009b] 21</alias>
+    <alias>NGC 3379:[L2011a] X0010</alias>
+    <alias>LEDA 032256</alias>
+    <nrefs>969</nrefs>
+  </Resolver>
+  <Resolver name="Sc=Simbad (CDS, via client/server)"><!--delay: 114ms [2] -->
+    <oid>1750333</oid>
+    <otype>LIN</otype>
+    <jpos>10:47:49.60 +12:34:53.8</jpos>
+    <jradeg>161.95666667</jradeg>
+    <jdedeg>12.58163056</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <z><v>0.002922</v><e>0.000207</e><q>D</q><r>2002LEDA.........0P</r></z>
+    <MType>E1</MType>
+    <oname>M 105</oname>
+    <alias>M 105</alias>
+    <alias>GIN 773</alias>
+    <alias>K79 33A</alias>
+    <alias>LEDA 32256</alias>
+    <alias>2MASX J10474959+1234538</alias>
+    <alias>MCG+02-28-011</alias>
+    <alias>NGC 3379</alias>
+    <alias>UGC 5902</alias>
+    <alias>UZC J104749.6+123453</alias>
+    <alias>Z 66-18</alias>
+    <alias>Z 1045.2+1251</alias>
+    <alias>[CHM2007] HDC 626 J104749.59+1234538</alias>
+    <alias>[CHM2007] LDC 778 J104749.59+1234538</alias>
+    <alias>[FS90] Leo 25</alias>
+    <alias>[FWB89] Galaxy 208</alias>
+    <alias>[TT2002] Leo 2</alias>
+    <nrefs>1249</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 2ms [2] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2016-Jan-22,07:59:41z)==== -->
