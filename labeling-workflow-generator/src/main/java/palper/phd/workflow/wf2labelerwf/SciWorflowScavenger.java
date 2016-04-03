@@ -47,16 +47,13 @@ public class SciWorflowScavenger {
 		this.adjustmentSpecBag = adjustmentSpecBag;
 	}
 
-//	private Map<String, Integer> predictedDepths;
 
-	public SciWorflowScavenger(Model wfdescModel/*,
-			Map<String, Integer> predictedDepths*/) {
+	public SciWorflowScavenger(Model wfdescModel) {
 
 		super();
 
 		sciWorkflowWfdesc = wfdescModel;
 
-//		this.predictedDepths = predictedDepths;
 
 		obtainLabelingSpecs();
 
@@ -123,6 +120,8 @@ public class SciWorflowScavenger {
 				// there is just a workflow input port and a follow-on labeling
 				// operator of type mint or propagate.
 
+		        // APP SPECIFIC
+			  
 				// adjustment sadece wrapdping case'i icin gerekli
 
 			} else if (WfDescRdfUtils.isWorkflowOutputPort(sinkPort,
@@ -132,34 +131,8 @@ public class SciWorflowScavenger {
 				// label the enclosing lists all the way to the top.
 
 			  
-			  //for the time being I have commented out the following generalization adjustment
-			  // 
-			  
-			  
-//				Integer srcDepth = WfDescRdfUtils.getDepth(sourcePort,
-//						sciWorkflowWfdesc);
-//				Integer snkDepth = predictedDepths.get(sinkPort.getURI());
-//
-//
-//				int depthDiff = srcDepth - snkDepth;
-//				while (depthDiff < 0) {
-//					LabelingSpecBean adjustedBefore = hasAssociatedLabelingSpec(
-//							sourcePort, depthDiff);
-//					if (adjustedBefore == null) {
-//					  
-//					 // Resource sourceOp = WfDescRdfUtils.getOperationWithOutput(sciWorkflowWfdesc, sourcePort);
-//						LabelingSpecBean spec = LabelSpecFactory.createAdjustmentSpec(sourcePort.getURI(),depthDiff);
-//						putToAdjustmentSpecBag(sourcePort, spec);
-//						
-//					} else {
-//						adjustedBefore.getWfElementUriStringList().add(
-//								link.getURI());
-//						// add it to the workflow elements list
-//					}
-//					depthDiff++;
-//				}
-
-			  
+			 // APP SPECIFIC
+	
 			  //Note that
 				// we also need to saturate the labels downwards to inner lists.
 				// think of a workflow that ends with a split operator!!!.
@@ -190,18 +163,20 @@ public class SciWorflowScavenger {
 										depthDiff);
 						putToAdjustmentSpecBag(sourcePort, spec);
 					} else {
-//						adjustedBefore.getWfElementUriStringList().add(
-//								link.getURI());
+
+					  
+					  //there already is an adjustment spec for the source port and the depth diference 
+					  //therefore we do not need to create another adjustment spec for the source port of this datalink.. 
 					}
 
 				} else {
-					// no adjustment needed for this data link as it has been
-					// addressed before
+				  
+					//there is no depth difference among the two sides of this link so no adjustment spec is needed
 
 				}
 			} else {
 
-				// we just ignore this data link
+				// the source port of this is not tainted by labels in any way therefore we ignore this link
 			}
 
 		}
@@ -303,18 +278,6 @@ public class SciWorflowScavenger {
 			}
 		}
 
-		Set<Resource> upstreamWorkfInputs = WfDescRdfUtils
-				.getUpstreamWorkflowInputs(procResource, sciWorkflowWfdesc);
-		for (Resource wfInput : upstreamWorkfInputs) {
-			for (String snk : coveredSourcePorts) {
-
-				Resource snkRes = sciWorkflowWfdesc.getResource(snk);
-				if (WfDescRdfUtils.datalinkExists(wfInput, snkRes,
-						sciWorkflowWfdesc)) {
-					allblackbox = false;
-				}
-			}
-		}
 		return allblackbox;
 	}
 

@@ -29,9 +29,6 @@ public class LabelingSpecBean implements Serializable {
   @JsonIgnore
   private static final long serialVersionUID = 1L;
 
-  // @JsonProperty("wfElementUriList")
-  // @JsonIgnore
-  // private List<String> wfElementUriStringList;
 
   @JsonProperty("processor")
   private String processorUriString;
