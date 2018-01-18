@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M104</name>
+  <!-- Q81283088 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>12:39:59.43 -11:37:22.9</jpos>
+    <jradeg>189.997633</jradeg>
+    <jdedeg>-11.623054</jdedeg>
+    <refPos>2006AJ....131.1872P</refPos>
+    <errRAmas>0.530000</errRAmas><errDEmas>1.930000</errDEmas>
+    <alias>MESSIER 104</alias>
+    <oname>MESSIER 104</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>12:39:59.43 -11:37:22.9</jpos>
+    <jradeg>189.99763270833</jradeg>
+    <jdedeg>-11.62305427778</jdedeg>
+    <refPos>2004AJ....127.3587F</refPos>
+    <errRAmas>0.054</errRAmas><errDEmas>2.310</errDEmas>
+    <otype>LIN</otype>
+    <Vel><v>1090</v><e>5</e><q>D</q><r>2011MNRAS.416.2840L</r></Vel>
+    <MType>Sa</MType>
+    <oname>M 104</oname>
+    <alias>NAME Sombrero Galaxy</alias>
+    <alias>NAME Sombrero</alias>
+    <alias>[NKB95] N4594</alias>
+    <alias>[CAB95] IRAS F12374-1120</alias>
+    <alias>PMN J1239-1137</alias>
+    <alias>NVSS J123959-113723</alias>
+    <alias>VCS4 J1239-1137</alias>
+    <alias>2E 2814</alias>
+    <alias>EQ 1237-113</alias>
+    <alias>IERS B1237-113</alias>
+    <alias>IRAS 12373-1121</alias>
+    <alias>IRAS F12374-1120</alias>
+    <alias>LEDA 42407</alias>
+    <alias>MCG-02-32-020</alias>
+    <alias>NGC 4594</alias>
+    <alias>UGCA 293</alias>
+    <alias>[DML87] 660</alias>
+    <alias>2MASX J12395949-1137230</alias>
+    <alias>JCMTSE J123959.3-113726</alias>
+    <alias>JCMTSF J123959.3-113726</alias>
+    <alias>1E 1237.3-1120</alias>
+    <alias>1RXP J123959.2-113731</alias>
+    <alias>1RXS J123959.8-113725</alias>
+    <alias>2E 1237.3-1120</alias>
+    <alias>6dFGS gJ123959.4-113723</alias>
+    <alias>ICRF J123959.4-113722</alias>
+    <alias>WISH B1237.3-1121</alias>
+    <alias>[CHM2007] LDC 904 J123959.49-1137230</alias>
+    <alias>[M98c] 123723.3-112055</alias>
+    <alias>[VV2000c] J123959.3-113723</alias>
+    <alias>[VV2003c] J123959.3-113723</alias>
+    <alias>[VV2006c] J123959.3-113723</alias>
+    <alias>[VV98c] J123959.3-113723</alias>
+    <alias>[VV2010c] J123959.3-113723</alias>
+    <alias>AT20G J123959-113721</alias>
+    <nrefs>1165</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 55ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:37:08z)==== -->

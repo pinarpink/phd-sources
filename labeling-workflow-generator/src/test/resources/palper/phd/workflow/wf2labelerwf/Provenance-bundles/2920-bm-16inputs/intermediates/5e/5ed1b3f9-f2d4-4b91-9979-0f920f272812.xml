@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M33</name>
+  <!-- Q81282994 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>01:33:50.89 +30:39:36.7</jpos>
+    <jradeg>23.462042</jradeg>
+    <jdedeg>+30.660222</jdedeg>
+    <refPos>2008ApJS..174..366P</refPos>
+    <errRAmas>7.500000</errRAmas><errDEmas>75.000000</errDEmas>
+    <alias>MESSIER 033</alias>
+    <oname>MESSIER 033</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>01:33:50.90 +30:39:35.7</jpos>
+    <jradeg>023.4621</jradeg>
+    <jdedeg>+30.65994166667</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>GiG</otype>
+    <Vel><v>-179.2</v><e>1.7</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>SA(s)cd</MType>
+    <oname>M 33</oname>
+    <alias>NAME Triangulum Pinwheel</alias>
+    <alias>NAME Triangulum Galaxy</alias>
+    <alias>1AXG J013351+3039</alias>
+    <alias>2E 409</alias>
+    <alias>2E 0131.0+3024</alias>
+    <alias>HIJASS J0133+30</alias>
+    <alias>LEDA 5818</alias>
+    <alias>MCG+05-04-069</alias>
+    <alias>NGC 598</alias>
+    <alias>RBS 214</alias>
+    <alias>RX J013351+30399</alias>
+    <alias>TC 906</alias>
+    <alias>UGC 1117</alias>
+    <alias>Z 0131.0+3024</alias>
+    <alias>Z 502-110</alias>
+    <alias>2MASX J01335090+3039357</alias>
+    <alias>1ES 0131+30.3</alias>
+    <alias>1RXS J013350.9+303932</alias>
+    <alias>[CHM2007] LDC 160 J013350.90+3039357</alias>
+    <alias>[M98c] 013101.7+302415</alias>
+    <alias>UZC J013351.1+303922</alias>
+    <nrefs>4687</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 0ms [0] -->
+    <INFO>Zero (0) answers</INFO>
+    <INFO>from cache</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:34:19z)==== -->

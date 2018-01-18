@@ -1,0 +1,43 @@
+<?xml version='1.0'?>
+<VOTABLE version="1.1"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.1 http://www.ivoa.net/xml/VOTable/v1.1"
+ xmlns="http://www.ivoa.net/xml/VOTable/v1.1">
+<!--
+ !  VOTable written by STIL version 3.0-3 (uk.ac.starlink.votable.VOTableWriter)
+ !  at 2018-01-15T21:45:46
+ !-->
+<RESOURCE>
+<TABLE name="VII/237/pgc" nrows="1">
+<DESCRIPTION>
+Catalog of galaxies (table 5 in the paper)
+</DESCRIPTION>
+<PARAM arraysize="19" datatype="char" name="votable-version" value="1.99+ (14-Oct-2013)"/>
+<PARAM arraysize="8" datatype="char" name="-ref" value="VOTx6144"/>
+<PARAM arraysize="5" datatype="char" name="MaxTuples" value="50000"/>
+<PARAM arraysize="1" datatype="char" name="queryParameters" value="6">
+<DESCRIPTION>-oc.form=DM
+-source=VII/237
+-c
+-c.ra=189.99763270833
+-c.dec=-11.62305427778
+-c.rd=0.001</DESCRIPTION>
+</PARAM>
+<PARAM arraysize="29" datatype="char" name="-c" value="189.997633-11.623054,rd=0.001"/>
+<FIELD datatype="float" name="logR25" precision="2" ucd="phys.size;arith.ratio" unit="[---]" width="5">
+<DESCRIPTION>? Axis ratio in log scale (log of major axis to minor axis)</DESCRIPTION>
+</FIELD>
+<FIELD arraysize="*" datatype="char" name="MType" ucd="src.morph.type">
+<DESCRIPTION>Provisional morphological type from LEDA according to the RC2 code.</DESCRIPTION>
+</FIELD>
+<DATA>
+<TABLEDATA>
+  <TR>
+    <TD>0.23</TD>
+    <TD>Sa</TD>
+  </TR>
+</TABLEDATA>
+</DATA>
+</TABLE>
+</RESOURCE>
+</VOTABLE>

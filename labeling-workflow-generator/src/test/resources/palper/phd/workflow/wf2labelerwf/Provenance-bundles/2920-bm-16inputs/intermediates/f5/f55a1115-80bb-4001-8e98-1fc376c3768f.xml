@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M31</name>
+  <!-- Q81282992 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>00:42:44.35 +41:16:08.6</jpos>
+    <jradeg>10.684793</jradeg>
+    <jdedeg>+41.269065</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>8.000000</errRAmas><errDEmas>80.000000</errDEmas>
+    <alias>MESSIER 031</alias>
+    <oname>MESSIER 031</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>00:42:44.32 +41:16:07.5</jpos>
+    <jradeg>010.68470833333</jradeg>
+    <jdedeg>+41.26875</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>G</otype>
+    <Vel><v>-300.0</v><e>4.0</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>SA(s)b</MType>
+    <oname>M 31</oname>
+    <alias>2FGL J0042.5+4114</alias>
+    <alias>3FGL J0042.5+4117</alias>
+    <alias>NAME Andromeda Nebula</alias>
+    <alias>NAME Andromeda Galaxy</alias>
+    <alias>NAME Andromeda</alias>
+    <alias>NAME And Nebula</alias>
+    <alias>2MAXI J0043+412</alias>
+    <alias>2C 56</alias>
+    <alias>DA 21</alias>
+    <alias>GIN 801</alias>
+    <alias>IRAS F00400+4059</alias>
+    <alias>IRAS 00400+4059</alias>
+    <alias>IRC +40013</alias>
+    <alias>K79 1C</alias>
+    <alias>LEDA 2557</alias>
+    <alias>MCG+07-02-016</alias>
+    <alias>NGC 224</alias>
+    <alias>RAFGL 104</alias>
+    <alias>UGC 454</alias>
+    <alias>XSS J00425+4102</alias>
+    <alias>Z 535-17</alias>
+    <alias>Z 0040.0+4100</alias>
+    <alias>[DGW65] 4</alias>
+    <alias>2MASX J00424433+4116074</alias>
+    <alias>[M98c] 004000.1+405943</alias>
+    <alias>[VV2000c] J004244.3+411610</alias>
+    <alias>[VV2003c] J004244.3+411610</alias>
+    <alias>[VV2006] J004244.3+411610</alias>
+    <alias>[VV98c] J004245.1+411622</alias>
+    <alias>UZC J004244.3+411608</alias>
+    <alias>[VV2010] J004244.3+411610</alias>
+    <nrefs>9652</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 0ms [0] -->
+    <INFO>Zero (0) answers</INFO>
+    <INFO>from cache</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:34:18z)==== -->

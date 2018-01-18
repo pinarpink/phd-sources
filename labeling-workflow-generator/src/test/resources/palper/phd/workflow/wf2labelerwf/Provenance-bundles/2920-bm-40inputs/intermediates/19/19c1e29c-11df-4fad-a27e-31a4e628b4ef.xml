@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M32</name>
+  <!-- Q81341489 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>00:42:41.83 +40:51:55.0</jpos>
+    <jradeg>10.6743</jradeg>
+    <jdedeg>+40.865287</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>26</errRAmas><errDEmas>260</errDEmas>
+    <alias>MESSIER 032</alias>
+    <oname>MESSIER 032</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>00:42:41.82 +40:51:54.6</jpos>
+    <jradeg>010.67427083333</jradeg>
+    <jdedeg>+40.86516944444</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>IG</otype>
+    <pm>
+      <v>17.7</v><e>6.2</e><q>B</q><r>1988A&amp;AS...74..449R</r>
+      <pa>254</pa>
+      <pmRA>-17.0</pmRA><epmRA>4.5</epmRA>
+      <pmDE>-5.0</pmDE><epmDE>4.3</epmDE>
+    </pm>
+    <Vel><v>-199.0</v><e>6.0</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>cE2</MType>
+    <oname>M 32</oname>
+    <alias>APG 168</alias>
+    <alias>Ark 12</alias>
+    <alias>IRAS 00399+4035</alias>
+    <alias>K79 1B</alias>
+    <alias>LEDA 2555</alias>
+    <alias>MCG+07-02-015</alias>
+    <alias>NGC 221</alias>
+    <alias>UGC 452</alias>
+    <alias>Z 535-16</alias>
+    <alias>2MASX J00424182+4051546</alias>
+    <alias>[FWB89] Galaxy 8</alias>
+    <alias>RX J0042.6+4052</alias>
+    <alias>Z 0039.9+4036</alias>
+    <alias>[CHM2007] LDC 31 J004241.82+4051546</alias>
+    <alias>[CHM2007] HDC 29 J004241.82+4051546</alias>
+    <alias>[M98c] 003957.7+403529</alias>
+    <alias>UZC J004241.8+405154</alias>
+    <alias>AG+40 59</alias>
+    <alias>BD+40 147</alias>
+    <alias>PPM 43225</alias>
+    <nrefs>1864</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 56ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-15,21:49:54z)==== -->

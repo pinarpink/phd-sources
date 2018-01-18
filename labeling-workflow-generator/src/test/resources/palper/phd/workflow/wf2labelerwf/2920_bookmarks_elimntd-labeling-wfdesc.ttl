@@ -1,0 +1,96 @@
+@base <http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/labelingPipeline/> .
+@prefix wfdesc: <http://purl.org/wf4ever/wfdesc#> .
+@prefix wf4ever: <http://purl.org/wf4ever/wf4ever#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix lblwf: <http://www.semanticweb.org/pinarpink/ontologies/2013/10/labelingwf#> .
+@prefix : <#> .
+
+<DISTRIBUTE_12> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"DISTRIBUTE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List/out/outputlist\"],\"sinkPortList\":null,\"depthDifference\":1,\"labelingFunction\":null}" .
+
+<DISTRIBUTE_13> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"DISTRIBUTE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List_2/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List_2/out/outputlist\"],\"sinkPortList\":null,\"depthDifference\":1,\"labelingFunction\":null}" .
+
+<GENERALIZE_11> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"GENERALIZE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/out/nodelist\"],\"sinkPortList\":null,\"depthDifference\":-1,\"labelingFunction\":null}" .
+
+<GENERALIZE_14> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"GENERALIZE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/out/nodelist\"],\"sinkPortList\":null,\"depthDifference\":-1,\"labelingFunction\":null}" .
+
+<MINT_2> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"MINT\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/SesameXML/\",\"sourcePortList\":null,\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/SesameXML/out/return\"],\"depthDifference\":0,\"labelingFunction\":\"palper.phd.labeling.astro.SesameLabeler\"}" .
+
+<MINT_5> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"MINT\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/VII_237/\",\"sourcePortList\":null,\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/VII_237/out/responseBody\"],\"depthDifference\":0,\"labelingFunction\":\"palper.phd.labeling.astro.VizieRLabeler\"}" .
+
+<MINT_9> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"MINT\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/calculate_internal_extinction/\",\"sourcePortList\":null,\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/calculate_internal_extinction/out/STDOUT\"],\"depthDifference\":0,\"labelingFunction\":\"palper.phd.labeling.astro.ExtinctionLabeler\"}" .
+
+<PROPAGATE_1> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/in/xml-text\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_RA/out/nodelist\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<PROPAGATE_10> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Write_Text_File/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Write_Text_File/in/filecontents\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Write_Text_File/out/outputFile\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<PROPAGATE_3> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List/in/inputlist\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List/out/outputlist\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<PROPAGATE_4> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Format_conversion/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Format_conversion/in/voTable\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Format_conversion/out/outputTable\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<PROPAGATE_6> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Select_logr25_Mtype/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Select_logr25_Mtype/in/voTable\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Select_logr25_Mtype/out/outputTable\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<PROPAGATE_7> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List_2/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List_2/in/inputlist\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Flatten_List_2/out/outputlist\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<PROPAGATE_8> a wf4ever:BeanshellScript , wfdesc:Process , wfdesc:Description , <http://www.w3.org/2002/07/owl#Thing> ;
+	wf4ever:script "{\"operator\":\"PROPAGATE\",\"processor\":\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/\",\"sourcePortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/in/xml-text\"],\"sinkPortList\":[\"http://ns.taverna.org.uk/2010/workflowBundle/5007a32e-5354-4cfe-8557-8cff34307444/workflow/Workflow4/processor/Extracting_DEC/out/nodelist\"],\"depthDifference\":0,\"labelingFunction\":null}" .
+
+<> a wfdesc:Workflow ;
+	wfdesc:hasSubProcess <PROPAGATE_1> , <MINT_2> , <PROPAGATE_3> , <PROPAGATE_4> , <MINT_5> , <PROPAGATE_6> , <PROPAGATE_7> , <PROPAGATE_8> , <MINT_9> , <PROPAGATE_10> , <GENERALIZE_11> , <DISTRIBUTE_12> , <DISTRIBUTE_13> , <GENERALIZE_14> ;
+	lblwf:hasBlockingControlLink <controllink:0.8908774813540177> , <controllink:0.44685764767446967> , <controllink:0.7678822913245739> , <controllink:0.6271716233727745> , <controllink:0.6588423536273724> , <controllink:0.8099124907650664> , <controllink:0.16331126269532892> , <controllink:0.6450844122674939> , <controllink:0.2176430034966833> , <controllink:0.15144950748759023> , <controllink:0.24217777150972575> .
+
+<controllink:0.15144950748759023> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <PROPAGATE_6> ;
+	lblwf:hasControlSink <PROPAGATE_4> .
+
+<controllink:0.16331126269532892> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <MINT_2> ;
+	lblwf:hasControlSink <PROPAGATE_1> .
+
+<controllink:0.2176430034966833> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <PROPAGATE_4> ;
+	lblwf:hasControlSink <PROPAGATE_10> .
+
+<controllink:0.24217777150972575> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <PROPAGATE_1> ;
+	lblwf:hasControlSink <GENERALIZE_11> .
+
+<controllink:0.44685764767446967> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <PROPAGATE_7> ;
+	lblwf:hasControlSink <DISTRIBUTE_13> .
+
+<controllink:0.6271716233727745> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <PROPAGATE_8> ;
+	lblwf:hasControlSink <GENERALIZE_14> .
+
+<controllink:0.6450844122674939> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <GENERALIZE_14> ;
+	lblwf:hasControlSink <PROPAGATE_7> .
+
+<controllink:0.6588423536273724> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <GENERALIZE_11> ;
+	lblwf:hasControlSink <PROPAGATE_3> .
+
+<controllink:0.7678822913245739> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <MINT_5> ;
+	lblwf:hasControlSink <PROPAGATE_6> .
+
+<controllink:0.8099124907650664> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <MINT_2> ;
+	lblwf:hasControlSink <PROPAGATE_8> .
+
+<controllink:0.8908774813540177> a lblwf:BlockingControlLink ;
+	lblwf:hasControlSource <PROPAGATE_3> ;
+	lblwf:hasControlSink <DISTRIBUTE_12> .

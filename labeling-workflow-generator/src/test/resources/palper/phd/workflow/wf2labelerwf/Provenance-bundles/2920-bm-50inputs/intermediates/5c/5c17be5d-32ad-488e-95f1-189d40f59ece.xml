@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M105</name>
+  <!-- Q81283579 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>10:47:49.58 +12:34:53.8</jpos>
+    <jradeg>161.956616</jradeg>
+    <jdedeg>+12.581624</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>19</errRAmas><errDEmas>190</errDEmas>
+    <alias>MESSIER 105</alias>
+    <oname>MESSIER 105</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>10:47:49.60 +12:34:53.8</jpos>
+    <jradeg>161.95666666667</jradeg>
+    <jdedeg>+12.58163055556</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>LIN</otype>
+    <z><v>0.002922</v><e>0.000207</e><q>D</q><r>2002LEDA.........0P</r></z>
+    <MType>E1</MType>
+    <oname>M 105</oname>
+    <alias>SDSS J104749.60+123453.9</alias>
+    <alias>GIN 773</alias>
+    <alias>K79 33A</alias>
+    <alias>LEDA 32256</alias>
+    <alias>MCG+02-28-011</alias>
+    <alias>NGC 3379</alias>
+    <alias>UGC 5902</alias>
+    <alias>Z 66-18</alias>
+    <alias>[FS90] Leo 25</alias>
+    <alias>[TT2002] Leo 2</alias>
+    <alias>2MASX J10474959+1234538</alias>
+    <alias>[FWB89] Galaxy 208</alias>
+    <alias>UZC J104749.6+123453</alias>
+    <alias>Z 1045.2+1251</alias>
+    <alias>[CHM2007] HDC 626 J104749.59+1234538</alias>
+    <alias>[CHM2007] LDC 778 J104749.59+1234538</alias>
+    <nrefs>1311</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 57ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:59:38z)==== -->

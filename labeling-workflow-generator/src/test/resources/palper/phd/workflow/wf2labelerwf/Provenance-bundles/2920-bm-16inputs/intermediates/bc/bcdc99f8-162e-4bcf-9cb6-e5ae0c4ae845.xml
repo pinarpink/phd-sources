@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M60</name>
+  <!-- Q81282991 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>12:43:39.97 +11:33:09.7</jpos>
+    <jradeg>190.916564</jradeg>
+    <jdedeg>+11.552706</jdedeg>
+    <refPos>2007SDSS6.C...0000.</refPos>
+    <errRAmas>50</errRAmas><errDEmas>500</errDEmas>
+    <alias>MESSIER 060</alias>
+    <oname>MESSIER 060</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 0ms [0] -->
+    <jpos>12:43:40.00 +11:33:09.3</jpos>
+    <jradeg>190.9167</jradeg>
+    <jdedeg>+11.55261111111</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>GiP</otype>
+    <z><v>0.00339</v><e>0.00012</e><q>C</q><r>2009yCat.2294....0A</r></z>
+    <MType>S0</MType>
+    <oname>M 60</oname>
+    <alias>EVCC 1101</alias>
+    <alias>SDSS J124342.26+113329.6</alias>
+    <alias>ACSVCS 3</alias>
+    <alias>2E 2835</alias>
+    <alias>KPG 353b</alias>
+    <alias>LEDA 42831</alias>
+    <alias>MCG+02-33-002</alias>
+    <alias>NGC 4649</alias>
+    <alias>NVSS B124108+114934</alias>
+    <alias>RBS 1150</alias>
+    <alias>UGC 7898</alias>
+    <alias>VCC 1978</alias>
+    <alias>VV 206a</alias>
+    <alias>VV 206</alias>
+    <alias>Z 71-16</alias>
+    <alias>[DLB87] V19</alias>
+    <alias>[T76] 78B</alias>
+    <alias>[TH2002] 2</alias>
+    <alias>2MASX J12434000+1133093</alias>
+    <alias>[FWB89] Galaxy 284</alias>
+    <alias>[CHM2007] LDC 904 J124340.00+1133093</alias>
+    <alias>[CHM2007] HDC 720 J124340.00+1133093</alias>
+    <alias>1RXS J124340.6+113309</alias>
+    <alias>2E 1241.1+1149</alias>
+    <alias>RX J1243.6+1133</alias>
+    <alias>RXC J1243.6+1133</alias>
+    <alias>UZC J124339.7+113307</alias>
+    <alias>Z 1241.1+1150</alias>
+    <alias>[ZEH2003] RX J1243.6+1133 1</alias>
+    <alias>[BEC2010] HRS 245</alias>
+    <alias>SDSS J124339.97+113309.7</alias>
+    <nrefs>1161</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 57ms [0] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:34:18z)==== -->

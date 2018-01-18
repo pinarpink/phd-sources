@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M101</name>
+  <!-- Q81341312 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>14:03:12.54 +54:20:56.2</jpos>
+    <jradeg>210.802267</jradeg>
+    <jdedeg>+54.34895</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>12</errRAmas><errDEmas>120</errDEmas>
+    <alias>MESSIER 101</alias>
+    <oname>MESSIER 101</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 0ms [0] -->
+    <jpos>14:03:12.58 +54:20:55.5</jpos>
+    <jradeg>210.80242916667</jradeg>
+    <jdedeg>+54.34875</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>IG</otype>
+    <z><v>0.000811</v><e>0.000016</e><q>C</q><r>2012A&amp;A...545A..15S</r></z>
+    <MType>SABc</MType>
+    <oname>M 101</oname>
+    <alias>NAME Pinwheel</alias>
+    <alias>APG 26</alias>
+    <alias>IRAS F14012+5434</alias>
+    <alias>IRAS 14013+5435</alias>
+    <alias>K73 610</alias>
+    <alias>LEDA 50063</alias>
+    <alias>MCG+09-23-028</alias>
+    <alias>NGC 5457</alias>
+    <alias>SPB 243</alias>
+    <alias>TC 302</alias>
+    <alias>UGC 8981</alias>
+    <alias>VV 344a</alias>
+    <alias>VV 456</alias>
+    <alias>VV 344</alias>
+    <alias>Z 272-21</alias>
+    <alias>2MASX J14031258+5420555</alias>
+    <alias>Z 1401.5+5435</alias>
+    <alias>[CHM2007] HDC 853 J140312.58+5420555</alias>
+    <alias>[CHM2007] LDC 842 J140312.58+5420555</alias>
+    <alias>[M98c] 140126.6+543525</alias>
+    <alias>UZC J140312.5+542056</alias>
+    <alias>PSCz Q14013+5435</alias>
+    <alias>SDSS J140312.52+542056.2</alias>
+    <nrefs>2324</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 0ms [0] -->
+    <INFO>Zero (0) answers</INFO>
+    <INFO>from cache</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-15,21:45:46z)==== -->

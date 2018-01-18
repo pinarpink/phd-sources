@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M110</name>
+  <!-- Q81282896 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>00:40:22.08 +41:41:07.1</jpos>
+    <jradeg>10.092</jradeg>
+    <jdedeg>+41.685306</jdedeg>
+    <refPos>20032MASX.C........</refPos>
+    <errRAmas>125</errRAmas><errDEmas>1250</errDEmas>
+    <alias>MESSIER 110</alias>
+    <oname>MESSIER 110</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>00:40:22.07 +41:41:07.0</jpos>
+    <jradeg>010.09197916667</jradeg>
+    <jdedeg>+41.6853</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>GiG</otype>
+    <Vel><v>-246.0</v><e>1.0</e><q>C</q><r>2012AJ....144....4M</r></Vel>
+    <MType>E5pec</MType>
+    <oname>M 110</oname>
+    <alias>IRAS 00376+4124</alias>
+    <alias>ISOSS J00403+4140</alias>
+    <alias>LEDA 2429</alias>
+    <alias>MCG+07-02-014</alias>
+    <alias>NGC 205</alias>
+    <alias>UGC 426</alias>
+    <alias>Z 535-14</alias>
+    <alias>[SLK2004] 93</alias>
+    <alias>2MASX J00402207+4141070</alias>
+    <alias>[FWB89] Galaxy 7</alias>
+    <alias>[CHM2007] LDC 31 J004022.07+4141070</alias>
+    <alias>Z 0037.6+4125</alias>
+    <alias>[CHM2007] HDC 29 J004022.07+4141070</alias>
+    <alias>[M98c] 003738.7+412444</alias>
+    <alias>UZC J004022.0+414107</alias>
+    <nrefs>1125</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 58ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:30:36z)==== -->

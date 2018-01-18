@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sesame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://vizier.u-strasbg.fr/xml/sesame_4x.xsd">
+<Target option="A">
+  <name>M59</name>
+  <!-- Q81283066 #1 -->
+  <Resolver name="N=NED"><!--delay: 0ms [0] -->
+    <INFO>from cache</INFO>
+    <otype>G</otype>
+    <jpos>12:42:02.24 +11:38:49.2</jpos>
+    <jradeg>190.509348</jradeg>
+    <jdedeg>+11.647027</jdedeg>
+    <refPos>2010ApJS..189...37E</refPos>
+    <errRAmas>42</errRAmas><errDEmas>420</errDEmas>
+    <alias>MESSIER 059</alias>
+    <oname>MESSIER 059</oname>
+  </Resolver>
+  <Resolver name="S0=Simbad(IV) as of 1-Dec-2017"><!--delay: 1ms [1] -->
+    <jpos>12:42:02.32 +11:38:48.9</jpos>
+    <jradeg>190.509675</jradeg>
+    <jdedeg>+11.64693055556</jdedeg>
+    <refPos>2006AJ....131.1163S</refPos>
+    <otype>GiG</otype>
+    <z><v>0.001438</v><e>0.000040</e><q>D</q><r>2002LEDA.........0P</r></z>
+    <MType>E-E/S0</MType>
+    <oname>M 59</oname>
+    <alias>EVCC 2207</alias>
+    <alias>ACSVCS 9</alias>
+    <alias>2E 2825</alias>
+    <alias>LEDA 42628</alias>
+    <alias>MCG+02-32-183</alias>
+    <alias>NGC 4621</alias>
+    <alias>UGC 7858</alias>
+    <alias>VCC 1903</alias>
+    <alias>Z 70-223</alias>
+    <alias>[DLB87] V17</alias>
+    <alias>[TH2002] 8</alias>
+    <alias>2MASX J12420232+1138489</alias>
+    <alias>[FWB89] Galaxy 279</alias>
+    <alias>2E 1239.5+1155</alias>
+    <alias>UZC J124202.4+113848</alias>
+    <alias>Z 1239.5+1155</alias>
+    <alias>[CHM2007] HDC 720 J124202.32+1138489</alias>
+    <alias>[CHM2007] LDC 904 J124202.32+1138489</alias>
+    <alias>[M98c] 123931.2+115515</alias>
+    <alias>[BEC2010] HRS 236</alias>
+    <alias>SDSS J124202.25+113848.8</alias>
+    <nrefs>617</nrefs>
+  </Resolver>
+  <Resolver name="Vl=VizieR (local)"><!--delay: 58ms [1] -->
+    <INFO>Zero (0) answers</INFO>
+  </Resolver>
+</Target>
+</Sesame>
+<!--- ====Done (2018-Jan-14,20:36:21z)==== -->
